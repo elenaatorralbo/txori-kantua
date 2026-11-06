@@ -8,7 +8,7 @@
 4. Solicitar revisión a otro miembro. Resolver observaciones antes de fusionar; no autoaprobar ni marcar Done con pruebas pendientes.
 5. Tras integración, comprobar estado real y cerrar la issue si la evidencia satisface el alcance. Actualizar documentación y Project.
 
-Evitar commits directos a main cuando exista una alternativa razonable. No se activan reglas que requieran checks inexistentes. La protección técnica de rama se revisará cuando el flujo de revisión y CI estén validados; la revisión por otro miembro es desde ahora una norma del equipo.
+Evitar commits directos a main cuando exista una alternativa razonable. No se activan reglas que requieran checks inexistentes. Desde el 06/11/2026, main requiere una aprobación de otro miembro y conversaciones resueltas; nuevos cambios invalidan aprobaciones anteriores. No se permiten force-push ni borrado de main. No hay checks de CI obligatorios todavía. La administradora conserva capacidad de excepción para recuperación, aunque debe seguir el flujo de PR y revisión en el trabajo normal.
 
 ## Configuración, datos y calidad
 

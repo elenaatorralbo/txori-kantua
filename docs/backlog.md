@@ -17,7 +17,7 @@
 | [#9 Agree architecture storage decisions and MVP boundaries](https://github.com/elenaatorralbo/txori-kantua/issues/9) | Data | Critical | Javier | 3 | — |
 | [#10 Define versioned MQTT and REST contracts](https://github.com/elenaatorralbo/txori-kantua/issues/10) | Backend | Critical | Javier | 5 | [#9](https://github.com/elenaatorralbo/txori-kantua/issues/9) |
 | [#11 Define and verify local audio privacy safeguards](https://github.com/elenaatorralbo/txori-kantua/issues/11) | Testing | Critical | David | 3 | — |
-| [#12 Confirm team eligibility and Sprint 1 review evidence](https://github.com/elenaatorralbo/txori-kantua/issues/12) | Documentation | High | David | 3 | [#9](https://github.com/elenaatorralbo/txori-kantua/issues/9) |
+| [#12 Prepare Sprint 1 review and confirm team capacity](https://github.com/elenaatorralbo/txori-kantua/issues/12) | Documentation | High | David | 3 | [#9](https://github.com/elenaatorralbo/txori-kantua/issues/9) |
 
 ## Sprint 2
 
@@ -56,6 +56,10 @@
 | [#33 Explore Euskalmet context and Leaflet nature maps](https://github.com/elenaatorralbo/txori-kantua/issues/33) | Frontend | Low | Erik | 3 | [#31](https://github.com/elenaatorralbo/txori-kantua/issues/31) |
 | [#34 Explore anomaly alerts dawn chorus and period comparisons](https://github.com/elenaatorralbo/txori-kantua/issues/34) | Data | Low | Erik | 3 | [#31](https://github.com/elenaatorralbo/txori-kantua/issues/31) |
 
+## Javier: cuenta y asignación confirmadas
+
+Cuenta verificada: [javiers2004](https://github.com/javiers2004). Responsabilidad prevista sobre #2, #9, #10, #13, #18, #19, #20, #26, #29 y #32. Tras aceptar la invitación, GitHub confirmó la asignación efectiva de las diez issues a javiers2004 el 06/11/2026, sin retirar otros responsables. Owner = Javier y la vista Javier conservan la misma planificación; My Tasks también muestra sus tareas al iniciar sesión con su cuenta.
+
 ## Carga propuesta para revisar
 
 | Responsable | Sprint 1 | Sprint 2 | Sprint 3 |
@@ -65,4 +69,4 @@
 | Elena | 12 | 10 | 5 |
 | Erik | 5 | 11 | 6 |
 
-Los puntos no equivalen a horas y las habilidades no son intercambiables. Erik apoyará las pruebas y el registro de hardware durante Sprint 1, revisará consultas junto a Javier en Sprint 2 y ayudará en ensayo/documentación durante Sprint 3. David y Elena compartirán validación física; todos revisarán PR ajenas. La confirmación de capacidad y del grupo con el profesor es obligatoria antes de convertir esta previsión en compromiso.
+Los puntos no equivalen a horas y las habilidades no son intercambiables. Erik apoyará las pruebas y el registro de hardware durante Sprint 1, revisará consultas junto a Javier en Sprint 2 y ayudará en ensayo/documentación durante Sprint 3. David y Elena compartirán validación física; todos revisarán PR ajenas. Elena confirmó el grupo el 06/11/2026; aún debe confirmarse capacidad neta antes de convertir esta previsión en compromiso.
