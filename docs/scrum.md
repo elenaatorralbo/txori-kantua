@@ -17,7 +17,7 @@ Las fechas compartidas son días de revisión y transición, no dos jornadas de 
 | Persona | Responsabilidad propuesta | Cuenta comprobada | Asignación inicial |
 |---|---|---|---|
 | David Fernández | Scrum Master; audio y BirdNET; apoyo calidad | `DavidFernandezUD`, perfil David Fernández Fernández y acceso write | Audio, AI, coordinación y pruebas |
-| Javier Santamaría | Product Owner; MQTT, API y datos; provisión | `javiers2004`, perfil Javier Santamaría Pascual; invitación pendiente | Diez issues con Owner = Javier; Assignees espera aceptación |
+| Javier Santamaría | Product Owner; MQTT, API y datos; provisión | `javiers2004`, perfil Javier Santamaría Pascual; acceso verificado | Diez issues asignadas a javiers2004; Owner = Javier |
 | Elena Torralbo | Sensores de interacción, LCD y experiencia | `elenaatorralbo`, perfil Elena Torralbo y admin | Hardware, estación y documentación |
 | Erik Eguskiza | Dashboard, open data y monitorización | `eeguskiza`, perfil Erik Eguskiza Aranda y write | Sensores ambientales, dashboard, observabilidad y reproducción |
 

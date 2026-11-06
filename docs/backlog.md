@@ -56,9 +56,9 @@
 | [#33 Explore Euskalmet context and Leaflet nature maps](https://github.com/elenaatorralbo/txori-kantua/issues/33) | Frontend | Low | Erik | 3 | [#31](https://github.com/elenaatorralbo/txori-kantua/issues/31) |
 | [#34 Explore anomaly alerts dawn chorus and period comparisons](https://github.com/elenaatorralbo/txori-kantua/issues/34) | Data | Low | Erik | 3 | [#31](https://github.com/elenaatorralbo/txori-kantua/issues/31) |
 
-## Javier: cuenta confirmada, invitación pendiente
+## Javier: cuenta y asignación confirmadas
 
-Cuenta verificada: [javiers2004](https://github.com/javiers2004). Responsabilidad prevista sobre #2, #9, #10, #13, #18, #19, #20, #26, #29 y #32. GitHub rechazó la comprobación de asignabilidad y el intento de asignación no añadió ningún assignee el 06/11/2026. El campo Owner = Javier y la vista Javier permiten seguir sus diez tareas mientras acepta. Después, añadirlo a Assignees sin borrar responsables existentes.
+Cuenta verificada: [javiers2004](https://github.com/javiers2004). Responsabilidad prevista sobre #2, #9, #10, #13, #18, #19, #20, #26, #29 y #32. Tras aceptar la invitación, GitHub confirmó la asignación efectiva de las diez issues a javiers2004 el 06/11/2026, sin retirar otros responsables. Owner = Javier y la vista Javier conservan la misma planificación; My Tasks también muestra sus tareas al iniciar sesión con su cuenta.
 
 ## Carga propuesta para revisar
 

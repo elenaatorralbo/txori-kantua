@@ -26,7 +26,7 @@ Había un Project personal sin título, número 1, sin vincular a este repositor
 | Sprint 2 | Board, `sprint:"Sprint 2"`, columnas Status |
 | Sprint 3 | Board, `sprint:"Sprint 3"`, columnas Status |
 | My Tasks | Tabla, `assignee:@me` |
-| Javier | Tabla, `owner:Javier`; diez tareas, incluso con invitación pendiente |
+| Javier | Tabla, `owner:Javier`; diez tareas, también asignadas a javiers2004 |
 | Roadmap | Timeline, excluye `label:optional`; fechas en los items |
 
 Milestones: [Foundations](https://github.com/elenaatorralbo/txori-kantua/milestone/1), 17/11/2026; [Working Pipeline](https://github.com/elenaatorralbo/txori-kantua/milestone/2), 03/12/2026; [MVP Release](https://github.com/elenaatorralbo/txori-kantua/milestone/3), 11/12/2026. La API registra 22:59:59 UTC, equivalente al final del día en Europe/Madrid para estas fechas.
@@ -56,7 +56,7 @@ Si se quiere habilitar una portada de Wiki:
 
 ## Seguimiento del 06/11/2026
 
-La PR #35 está fusionada (commit `aac6515`). Elena confirmó el grupo de cuatro; se registra como confirmación del equipo. Javier corresponde al perfil `javiers2004` (Javier Santamaría Pascual), con invitación pendiente. El endpoint de asignabilidad devolvió 404 y el intento de añadirlo a #2 devolvió la lista de assignees vacía. Sus diez issues conservan Owner = Javier; no se afirma una asignación nativa que GitHub no ha realizado.
+La PR #35 está fusionada (commit `aac6515`). Elena confirmó el grupo de cuatro; se registra como confirmación del equipo. Javier corresponde al perfil `javiers2004` (Javier Santamaría Pascual). Tras aceptar la invitación, la comprobación de asignabilidad tuvo éxito y las diez issues #2, #9, #10, #13, #18, #19, #20, #26, #29 y #32 quedaron asignadas nativamente a su cuenta el 06/11/2026. Owner = Javier coincide con esa responsabilidad.
 
 Se intentó configurar Roadmap desde Dia. La sesión no permite ejecutar JavaScript de automatización; los controles de accesibilidad no produjeron cambios y la captura de pantalla falló. Elena indicó que habilitar el acceso requeriría reiniciar la terminal. Por ello, las fechas de items sí están cargadas, pero la selección visual de campos sigue pendiente. No se alteraron las opciones del navegador ni se reinició la sesión.
 
@@ -64,7 +64,6 @@ Se intentó configurar Roadmap desde Dia. La sesión no permite ejecutar JavaScr
 
 - Revisar la PR de seguimiento documental; la PR inicial #35 ya está fusionada.
 - Comprobar campos de fecha de Roadmap en la interfaz.
-- Javier debe aceptar la invitación; entonces asignar nativamente sus diez issues. Su cuenta y el grupo ya están confirmados.
 - Confirmar disponibilidad/capacidad del equipo y material; ninguna prueba física se ha ejecutado.
 - Inicializar Wiki solo si aporta valor; no bloquea el proyecto.
 - Revisar acceso de edición al Project si el equipo va a mover tarjetas directamente.
