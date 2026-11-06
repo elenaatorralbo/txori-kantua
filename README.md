@@ -64,4 +64,4 @@ Todavía no hay aplicación ejecutable, dependencias fijadas, imágenes Docker n
 - [Configuración de GitHub y Wiki](docs/github-management.md)
 - [Cómo contribuir](CONTRIBUTING.md)
 
-El equipo original incluye a David Fernández, Javier Santamaría, Elena Torralbo y Erik Eguskiza. **Debe confirmarse con el profesor la compatibilidad con el enunciado de grupos de 2–3 personas.** Esta consulta no bloquea el backlog.
+El equipo original incluye a David Fernández, Javier Santamaría, Elena Torralbo y Erik Eguskiza. **Elena confirmó el grupo de cuatro el 06/11/2026.** Se conserva esta confirmación del equipo; no se atribuye una aprobación documental al profesor. Javier está identificado como `javiers2004`, con invitación al repositorio pendiente de aceptar.

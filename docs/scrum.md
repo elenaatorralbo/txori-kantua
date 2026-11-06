@@ -17,13 +17,13 @@ Las fechas compartidas son días de revisión y transición, no dos jornadas de 
 | Persona | Responsabilidad propuesta | Cuenta comprobada | Asignación inicial |
 |---|---|---|---|
 | David Fernández | Scrum Master; audio y BirdNET; apoyo calidad | `DavidFernandezUD`, perfil David Fernández Fernández y acceso write | Audio, AI, coordinación y pruebas |
-| Javier Santamaría | Product Owner; MQTT, API y datos; provisión | No confirmada | Issues sin assignee, responsable propuesto en texto |
+| Javier Santamaría | Product Owner; MQTT, API y datos; provisión | `javiers2004`, perfil Javier Santamaría Pascual; invitación pendiente | Diez issues con Owner = Javier; Assignees espera aceptación |
 | Elena Torralbo | Sensores de interacción, LCD y experiencia | `elenaatorralbo`, perfil Elena Torralbo y admin | Hardware, estación y documentación |
 | Erik Eguskiza | Dashboard, open data y monitorización | `eeguskiza`, perfil Erik Eguskiza Aranda y write | Sensores ambientales, dashboard, observabilidad y reproducción |
 
-Verificación mediante perfiles y colaboradores el 05/11/2026. También existe `dieguich`, cuyo perfil no acredita correspondencia con Javier: no se le asignan tareas ni se cambian sus permisos. Las responsabilidades son propuestas, no compromisos de disponibilidad confirmados.
+Verificación inicial mediante perfiles y colaboradores el 05/11/2026; Javier se verificó mediante su perfil e invitación el 06/11/2026. `dieguich` no es la cuenta identificada de Javier: no se le asignan tareas ni se cambian sus permisos. Las responsabilidades son propuestas, no compromisos de disponibilidad confirmados.
 
-**Discrepancia a resolver:** la propuesta identifica cuatro personas y el enunciado final indica grupos de 2–3. David coordina la consulta al profesor y registra respuesta; Javier adapta alcance/capacidad con el equipo. No se inventan miembros ni se retira acceso a nadie.
+**Grupo confirmado por Elena el 06/11/2026:** se mantiene el equipo de cuatro. El requisito de 2–3 del enunciado se conserva como antecedente; la confirmación registrada procede del equipo, sin inventar un acta o una respuesta del profesor. Falta confirmar capacidad neta por persona en planning.
 
 ## Ritmo de trabajo
 
@@ -45,7 +45,7 @@ Estimaciones iniciales de 3 o 5 puntos son relativas y deben revisarse, no son h
 - Review: PR abierta con pruebas y criterios cumplidos, revisión por otro miembro.
 - Done: criterios comprobados, documentación actualizada y PR integrada. Cerrar issue solo con evidencia.
 
-Las 34 issues nuevas se crean en **Backlog**. El milestone y la iteración indican previsión, no estado de ejecución. Los bloqueos se anotan con causa, dependencia y siguiente acción; no se marca Done para mejorar métricas.
+Las 34 issues nuevas se crean en **Backlog**. El campo **Owner** identifica al responsable planificado incluso si su acceso está pendiente; **Assignees** conserva la asignación efectiva de GitHub. La vista Javier filtra `owner:Javier` y muestra sus diez tareas. El milestone y la iteración indican previsión, no estado de ejecución. Los bloqueos se anotan con causa, dependencia y siguiente acción; no se marca Done para mejorar métricas.
 
 ## Definition of Ready / Done
 
