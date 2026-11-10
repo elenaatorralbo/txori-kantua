@@ -1,0 +1,428 @@
+openapi: 3.1.0
+info:
+  title: Txori Kantua — Read API
+  version: 1.0.0
+  summary: Query of bird detections, environmental readings and aggregates.
+  description: |
+    **Read-only** API over the persisted data of the station.
+
+    - There are no write, audio or remote execution endpoints. Data only
+      enters through MQTT.
+    - Every instant is RFC 3339 in UTC with a `Z` suffix.
+    - Intervals are half-open: `[from, to)`.
+    - Lists are sorted by `(observed_at, event_id)` ascending and paginated
+      with an opaque cursor.
+    - A query without results returns `200` with `items: []`. Storage being
+      down returns `503`: **never** an empty list that looks like an absence
+      of birds.
+    - Intended for a restricted local network. It defines no authentication;
+      exposing it outside the local network is outside the MVP
+      (docs/mvp-scope.md).
+
+    The examples are synthetic, not data from a working station.
+servers:
+  - url: /api/v1
+    description: Version 1 prefix on the station itself.
+tags:
+  - name: status
+  - name: observations
+  - name: aggregates
+
+paths:
+  /health:
+    get:
+      tags: [status]
+      operationId: getHealth
+      summary: Status of the API and its storage.
+      description: Exposes only the minimal status. It includes no paths, system versions or secrets.
+      responses:
+        "200":
+          description: The API responds and can read the storage.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Health" }
+              example: { status: ok, storage: ok, api_version: "1.0.0", time: "2026-11-17T09:00:00.000Z" }
+        "503":
+          description: The API responds but cannot read the storage.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Health" }
+              example: { status: unavailable, storage: unavailable, api_version: "1.0.0", time: "2026-11-17T09:00:00.000Z" }
+
+  /detections:
+    get:
+      tags: [observations]
+      operationId: listDetections
+      summary: Bird detections in an interval.
+      parameters:
+        - $ref: "#/components/parameters/From"
+        - $ref: "#/components/parameters/To"
+        - $ref: "#/components/parameters/StationId"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Cursor"
+        - name: species
+          in: query
+          required: false
+          description: Exact scientific name.
+          schema: { type: string, pattern: "^[A-Z][a-z]+(?: [a-z-]+){1,2}$" }
+          example: Turdus merula
+        - name: min_confidence
+          in: query
+          required: false
+          description: Minimum score, between 0 and 1.
+          schema: { type: number, minimum: 0, maximum: 1 }
+          example: 0.5
+      responses:
+        "200":
+          description: Page of detections; `items` empty if there are none.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DetectionPage" }
+              examples:
+                with_data:
+                  value:
+                    items:
+                      - event_id: a0a74d86-74b8-4a0c-a2b7-0b0d880766a4
+                        station_id: station-01
+                        observed_at: "2026-11-17T09:00:00.000Z"
+                        window_end: "2026-11-17T09:00:03.000Z"
+                        received_at: "2026-11-17T09:00:03.412Z"
+                        species: { scientific_name: Turdus merula }
+                        confidence: 0.87
+                        model: { name: BirdNET, version: example-not-validated }
+                    next_cursor: null
+                empty:
+                  value: { items: [], next_cursor: null }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "503": { $ref: "#/components/responses/StorageUnavailable" }
+
+  /environment:
+    get:
+      tags: [observations]
+      operationId: listEnvironment
+      summary: Environmental readings in an interval.
+      parameters:
+        - $ref: "#/components/parameters/From"
+        - $ref: "#/components/parameters/To"
+        - $ref: "#/components/parameters/StationId"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Cursor"
+      responses:
+        "200":
+          description: Page of environmental events; `items` empty if there are none.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EnvironmentPage" }
+              examples:
+                with_data:
+                  value:
+                    items:
+                      - event_id: d5f170c9-d35e-470c-83b6-932e6e3a60a3
+                        station_id: station-01
+                        observed_at: "2026-11-17T09:00:00.000Z"
+                        received_at: "2026-11-17T09:00:00.120Z"
+                        readings:
+                          temperature: { value: 17.4, unit: degC, quality: ok }
+                          humidity: { value: 68.0, unit: percent, quality: ok }
+                          pressure: { value: 1012.4, unit: hPa, quality: ok }
+                          light: { value: null, unit: raw, quality: unavailable }
+                    next_cursor: null
+                empty:
+                  value: { items: [], next_cursor: null }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "503": { $ref: "#/components/responses/StorageUnavailable" }
+
+  /summaries/daily:
+    get:
+      tags: [aggregates]
+      operationId: listDailySummaries
+      summary: Aggregates per local day (Europe/Madrid).
+      description: |
+        One item per day and station. The day is the **Europe/Madrid local
+        day**; `start_utc` and `end_utc` make its limits explicit, including
+        the 23- and 25-hour days of clock changes.
+
+        **Provisional:** the shape of `environment` and `species` is settled
+        with Erik in issue #28. Until then the server computes the aggregates
+        on the fly over the raw data within retention.
+      parameters:
+        - name: from_date
+          in: query
+          required: true
+          description: First local day included.
+          schema: { type: string, format: date }
+          example: "2026-11-17"
+        - name: to_date
+          in: query
+          required: true
+          description: Local day excluded. At most 92 days after `from_date`.
+          schema: { type: string, format: date }
+          example: "2026-11-18"
+        - $ref: "#/components/parameters/StationId"
+      responses:
+        "200":
+          description: Daily aggregates; `items` empty if there is no data.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DailySummaryList" }
+              examples:
+                with_data:
+                  value:
+                    items:
+                      - date: "2026-11-17"
+                        timezone: Europe/Madrid
+                        start_utc: "2026-11-16T23:00:00.000Z"
+                        end_utc: "2026-11-17T23:00:00.000Z"
+                        station_id: station-01
+                        detections_total: 3
+                        species:
+                          - { scientific_name: Turdus merula, count: 2, max_confidence: 0.87 }
+                          - { scientific_name: Erithacus rubecula, count: 1, max_confidence: 0.61 }
+                        environment:
+                          temperature: { unit: degC, count: 2880, min: 9.1, max: 17.4, mean: 13.2 }
+                empty:
+                  value: { items: [] }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "503": { $ref: "#/components/responses/StorageUnavailable" }
+
+components:
+  parameters:
+    From:
+      name: from
+      in: query
+      required: true
+      description: Start of the interval, included. RFC 3339 in UTC with `Z`.
+      schema: { $ref: "#/components/schemas/Timestamp" }
+      example: "2026-11-17T00:00:00Z"
+    To:
+      name: to
+      in: query
+      required: true
+      description: End of the interval, excluded. Later than `from` and at most 31 days after it.
+      schema: { $ref: "#/components/schemas/Timestamp" }
+      example: "2026-11-18T00:00:00Z"
+    StationId:
+      name: station_id
+      in: query
+      required: false
+      description: Limits to one station. Without it, all are returned.
+      schema: { $ref: "#/components/schemas/StationId" }
+      example: station-01
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Page size. An out-of-range value is a 400 error; it is not silently clamped.
+      schema: { type: integer, minimum: 1, maximum: 500, default: 100 }
+      example: 100
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      description: |
+        Value of `next_cursor` from the previous page. Opaque: it is not built
+        by hand. It is only valid with the same filters it was obtained with.
+      schema: { type: string, minLength: 1, maxLength: 512 }
+      example: eyJ2IjoxfQ
+
+  responses:
+    BadRequest:
+      description: Missing, malformed or out-of-range parameter. It is not silently corrected.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+          examples:
+            inverted_range:
+              value: { error: { code: INVALID_RANGE, message: from must precede to, request_id: example-request-01 } }
+            range_too_large:
+              value: { error: { code: RANGE_TOO_LARGE, message: range exceeds 31 days, request_id: example-request-02 } }
+            limit_too_large:
+              value: { error: { code: INVALID_PARAMETER, message: limit must be between 1 and 500, request_id: example-request-03 } }
+            invalid_cursor:
+              value: { error: { code: INVALID_CURSOR, message: cursor is malformed or belongs to a different query, request_id: example-request-04 } }
+    StorageUnavailable:
+      description: Storage is not available. It is not equivalent to "there is no data".
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+          example: { error: { code: STORAGE_UNAVAILABLE, message: storage is not available, request_id: example-request-05 } }
+
+  schemas:
+    Timestamp:
+      type: string
+      pattern: "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,9})?Z$"
+      description: RFC 3339 in UTC with a Z suffix. Responses always use milliseconds.
+    StationId:
+      type: string
+      pattern: "^[a-z0-9][a-z0-9-]{0,31}$"
+    EventId:
+      type: string
+      pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status, storage, api_version, time]
+      properties:
+        status: { type: string, enum: [ok, unavailable] }
+        storage: { type: string, enum: [ok, unavailable] }
+        api_version: { type: string }
+        time: { $ref: "#/components/schemas/Timestamp" }
+
+    Detection:
+      type: object
+      additionalProperties: false
+      required: [event_id, station_id, observed_at, window_end, received_at, species, confidence, model]
+      properties:
+        event_id: { $ref: "#/components/schemas/EventId" }
+        station_id: { $ref: "#/components/schemas/StationId" }
+        observed_at:
+          allOf: [{ $ref: "#/components/schemas/Timestamp" }]
+          description: Start of the analysed window, declared by the producer.
+        window_end: { $ref: "#/components/schemas/Timestamp" }
+        received_at:
+          allOf: [{ $ref: "#/components/schemas/Timestamp" }]
+          description: Instant at which ingest first received the event. A resend does not change it.
+        species:
+          type: object
+          additionalProperties: false
+          required: [scientific_name]
+          properties:
+            scientific_name: { type: string }
+            taxon_key: { type: string }
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Model score; it is not a calibrated probability.
+        model:
+          type: object
+          additionalProperties: false
+          required: [name, version]
+          properties:
+            name: { type: string }
+            version: { type: string }
+
+    Reading:
+      type: object
+      additionalProperties: false
+      required: [value, unit, quality]
+      properties:
+        value: { type: [number, "null"] }
+        unit: { type: string, enum: [degC, percent, hPa, lux, raw] }
+        quality: { type: string, enum: [ok, unavailable, error] }
+
+    EnvironmentEvent:
+      type: object
+      additionalProperties: false
+      required: [event_id, station_id, observed_at, received_at, readings]
+      properties:
+        event_id: { $ref: "#/components/schemas/EventId" }
+        station_id: { $ref: "#/components/schemas/StationId" }
+        observed_at: { $ref: "#/components/schemas/Timestamp" }
+        received_at: { $ref: "#/components/schemas/Timestamp" }
+        readings:
+          type: object
+          minProperties: 1
+          propertyNames: { enum: [temperature, humidity, pressure, light] }
+          additionalProperties: { $ref: "#/components/schemas/Reading" }
+
+    DetectionPage:
+      type: object
+      additionalProperties: false
+      required: [items, next_cursor]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/Detection" }
+        next_cursor:
+          type: [string, "null"]
+          description: null when there are no more pages.
+
+    EnvironmentPage:
+      type: object
+      additionalProperties: false
+      required: [items, next_cursor]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/EnvironmentEvent" }
+        next_cursor:
+          type: [string, "null"]
+
+    SpeciesCount:
+      type: object
+      additionalProperties: false
+      required: [scientific_name, count, max_confidence]
+      properties:
+        scientific_name: { type: string }
+        count: { type: integer, minimum: 1 }
+        max_confidence: { type: number, minimum: 0, maximum: 1 }
+
+    MetricSummary:
+      type: object
+      additionalProperties: false
+      required: [unit, count, min, max, mean]
+      description: Statistics only over readings with quality ok.
+      properties:
+        unit: { type: string }
+        count: { type: integer, minimum: 1 }
+        min: { type: number }
+        max: { type: number }
+        mean: { type: number }
+
+    DailySummary:
+      type: object
+      additionalProperties: false
+      required: [date, timezone, start_utc, end_utc, station_id, detections_total, species, environment]
+      properties:
+        date: { type: string, format: date }
+        timezone: { type: string, const: Europe/Madrid }
+        start_utc: { $ref: "#/components/schemas/Timestamp" }
+        end_utc: { $ref: "#/components/schemas/Timestamp" }
+        station_id: { $ref: "#/components/schemas/StationId" }
+        detections_total: { type: integer, minimum: 0 }
+        species:
+          type: array
+          items: { $ref: "#/components/schemas/SpeciesCount" }
+        environment:
+          type: object
+          propertyNames: { enum: [temperature, humidity, pressure, light] }
+          additionalProperties: { $ref: "#/components/schemas/MetricSummary" }
+
+    DailySummaryList:
+      type: object
+      additionalProperties: false
+      required: [items]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/DailySummary" }
+
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message, request_id]
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_PARAMETER
+                - INVALID_RANGE
+                - RANGE_TOO_LARGE
+                - INVALID_CURSOR
+                - NOT_FOUND
+                - METHOD_NOT_ALLOWED
+                - STORAGE_UNAVAILABLE
+                - INTERNAL_ERROR
+            message:
+              type: string
+              description: Text for people. Clients decide by `code`, not by `message`.
+            request_id:
+              type: string
+              description: Identifier that also appears in the server log.

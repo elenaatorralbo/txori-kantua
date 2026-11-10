@@ -1,0 +1,12 @@
+{
+  "expect": "ContractViolation",
+  "why": "availability does not accept event_id",
+  "event": {
+    "schema_version": "1.0",
+    "station_id": "station-01",
+    "service": "capture",
+    "status": "online",
+    "observed_at": "2026-11-17T09:00:00Z",
+    "event_id": "a0a74d86-74b8-4a0c-a2b7-0b0d880766a4"
+  }
+}

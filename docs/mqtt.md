@@ -1,6 +1,6 @@
 # Initial MQTT contract (proposed)
 
-Design version `v1`, pending approval and an executable JSON Schema in the contracts issue. All examples are synthetic. They are not samples from a working system.
+Design version `v1`, pending team approval. **The executable source of truth is in [contracts/](../contracts/README.md)**: JSON Schema, valid and invalid examples and tests (`pytest tests/contracts`). If this document and the schemas disagree, the schemas win. All examples are synthetic. They are not samples from a working system.
 
 | Topic | Producer → consumer | Proposed QoS / retain |
 |---|---|---|
@@ -76,4 +76,4 @@ Availability: `{"schema_version":"1.0","station_id":"station-01","service":"capt
 - Events without retain; retained state always subject to expiry. Initial LCD proposal: recent detection ≤5 minutes, configurable and reviewed with user experience.
 - Forbidden: audio samples/base64, transcriptions, credentials, personal paths and precise coordinates.
 
-The contracts issue will create schemas, positive/negative fixtures and compatibility tests before integrating producers and consumers.
+The schemas, positive and negative examples and tests already exist in [contracts/](../contracts/README.md) ([#10](https://github.com/elenaatorralbo/txori-kantua/issues/10)); team review is still needed before integrating producers and consumers. Clarifications that the executable contract adds to this document: the `observed_at` of a detection is the start of the analysed window; `received_at` never travels in an MQTT message; `availability` carries no `event_id`; and the message `station_id` must match the one in the topic.

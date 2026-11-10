@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://txori-kantua.invalid/contracts/mqtt/environment.schema.json",
+  "title": "Environmental reading event v1",
+  "description": "Published on txori/v1/{station_id}/environment with QoS 1 and retain false. One event groups the metrics read at the same instant. Core rule: a missing reading is declared null with quality unavailable or error, NEVER as an invented zero, because a zero is data and a gap is not.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "station_id", "observed_at", "readings"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schemaVersion" },
+    "event_id": { "$ref": "common.schema.json#/$defs/eventId" },
+    "station_id": { "$ref": "common.schema.json#/$defs/stationId" },
+    "observed_at": {
+      "allOf": [{ "$ref": "common.schema.json#/$defs/timestampUtc" }],
+      "description": "Instant of the reading, not of the publication."
+    },
+    "readings": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "PROVISIONAL in its list of metrics: it is closed when Elena confirms the real sensor models (docs/interfaces.md). Send only the metrics the station tries to read; a metric that is not attempted is omitted, and one that is attempted and fails is sent with quality error.",
+      "properties": {
+        "temperature": {
+          "$ref": "#/$defs/reading",
+          "properties": { "unit": { "const": "degC" } }
+        },
+        "humidity": {
+          "$ref": "#/$defs/reading",
+          "properties": { "unit": { "const": "percent" } }
+        },
+        "pressure": {
+          "$ref": "#/$defs/reading",
+          "properties": { "unit": { "const": "hPa" } }
+        },
+        "light": {
+          "$ref": "#/$defs/reading",
+          "properties": {
+            "unit": {
+              "enum": ["lux", "raw"],
+              "description": "lux ONLY if the conversion of the specific model is validated; otherwise raw, with the sensor range documented in docs/hardware.md."
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "reading": {
+      "title": "Single reading",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit", "quality"],
+      "properties": {
+        "value": {
+          "type": ["number", "null"],
+          "description": "Measured value, or null if there is no measurement. See the consistency rule with quality."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit fixed per metric in properties. Changing it per event is not allowed."
+        },
+        "quality": {
+          "type": "string",
+          "enum": ["ok", "unavailable", "error"],
+          "description": "ok: valid measurement. unavailable: the sensor is not present or does not respond. error: it answered with a value that does not pass validation."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "quality": { "const": "ok" } }, "required": ["quality"] },
+          "then": {
+            "properties": { "value": { "type": "number" } },
+            "description": "An ok reading requires a number: declaring quality ok with a null value would lie about the availability of the data."
+          }
+        },
+        {
+          "if": {
+            "properties": { "quality": { "enum": ["unavailable", "error"] } },
+            "required": ["quality"]
+          },
+          "then": {
+            "properties": { "value": { "type": "null" } },
+            "description": "An invalid reading requires null: it prevents a zero or a last known value from slipping in as if it were a measurement."
+          }
+        }
+      ]
+    }
+  }
+}

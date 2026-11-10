@@ -1,0 +1,5 @@
+# LF line endings in the repository and in the working copy: shell scripts and
+# systemd units with CRLF fail on the Raspberry Pi.
+* text=auto eol=lf
+*.png binary
+*.jpg binary

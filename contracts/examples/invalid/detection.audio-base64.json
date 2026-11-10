@@ -1,0 +1,20 @@
+{
+  "expect": "ContractViolation",
+  "why": "carries base64 audio samples",
+  "event": {
+    "schema_version": "1.0",
+    "event_id": "a0a74d86-74b8-4a0c-a2b7-0b0d880766a4",
+    "station_id": "station-01",
+    "observed_at": "2026-11-17T09:00:00Z",
+    "window_end": "2026-11-17T09:00:03Z",
+    "species": {
+      "scientific_name": "Turdus merula"
+    },
+    "confidence": 0.87,
+    "model": {
+      "name": "BirdNET",
+      "version": "example-not-validated"
+    },
+    "audio_b64": "UklGRiQAAABXQVZF"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "expect": "ContractViolation",
+  "why": "negative disk_free_bytes",
+  "event": {
+    "schema_version": "1.0",
+    "event_id": "72dbceac-c8c8-412b-81f7-15807ce149a3",
+    "station_id": "station-01",
+    "observed_at": "2026-11-17T09:00:00Z",
+    "cpu_percent": 24.0,
+    "memory_used_bytes": 600000000,
+    "cpu_temperature_c": 51.0,
+    "disk_free_bytes": -1,
+    "uptime_seconds": 3600,
+    "services": {
+      "capture": "healthy",
+      "inference": "healthy"
+    }
+  }
+}

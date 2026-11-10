@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://txori-kantua.invalid/contracts/mqtt/detection.schema.json",
+  "title": "Bird detection event v1",
+  "description": "Published on txori/v1/{station_id}/detections with QoS 1 and retain false. Consumed by ingest and by the LCD station. It NEVER carries audio: additionalProperties is false precisely so that a field with samples, base64 or a file path is rejected by the contract and not by a manual review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "station_id",
+    "observed_at",
+    "window_end",
+    "species",
+    "confidence",
+    "model"
+  ],
+  "properties": {
+    "schema_version": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "event_id": {
+      "$ref": "common.schema.json#/$defs/eventId"
+    },
+    "station_id": {
+      "$ref": "common.schema.json#/$defs/stationId"
+    },
+    "observed_at": {
+      "allOf": [{ "$ref": "common.schema.json#/$defs/timestampUtc" }],
+      "description": "Start of the analysed audio window. It is the observation instant, not the publication instant: a resend does NOT change it."
+    },
+    "window_end": {
+      "allOf": [{ "$ref": "common.schema.json#/$defs/timestampUtc" }],
+      "description": "End of the analysed window. It must be strictly later than observed_at; that comparison is applied by the validator, not by the schema."
+    },
+    "species": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scientific_name"],
+      "properties": {
+        "scientific_name": {
+          "type": "string",
+          "pattern": "^[A-Z][a-z]+(?: [a-z-]+){1,2}$",
+          "description": "Taxonomic identifier of the event. It is never replaced by a common name: ES, EU and EN names are resolved through a versioned catalogue in the consumer.",
+          "examples": ["Turdus merula"]
+        },
+        "taxon_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "PROVISIONAL. Stable key of the taxonomic catalogue. Optional until David confirms which key BirdNET exposes (see docs/interfaces.md). It will become required with schema_version 1.1 if confirmed."
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Model score between 0 and 1. It is NOT a calibrated probability nor a definitive identification, and must be presented as such on the LCD and dashboards."
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "examples": ["BirdNET"]
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "Exact version of the model that produced the score. Without it an old detection cannot be compared with a new one."
+        }
+      }
+    }
+  }
+}

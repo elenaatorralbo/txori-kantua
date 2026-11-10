@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "event_id": "d5f170c9-d35e-470c-83b6-932e6e3a60a3",
+  "station_id": "station-01",
+  "observed_at": "2026-11-17T09:00:00Z",
+  "readings": {
+    "temperature": {
+      "value": 17.4,
+      "unit": "degC",
+      "quality": "ok"
+    },
+    "humidity": {
+      "value": 68.0,
+      "unit": "percent",
+      "quality": "ok"
+    },
+    "pressure": {
+      "value": 1012.4,
+      "unit": "hPa",
+      "quality": "ok"
+    },
+    "light": {
+      "value": 320.5,
+      "unit": "lux",
+      "quality": "ok"
+    }
+  }
+}

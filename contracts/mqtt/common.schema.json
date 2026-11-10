@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://txori-kantua.invalid/contracts/mqtt/common.schema.json",
+  "title": "Common definitions of the Txori Kantua MQTT v1 contracts",
+  "description": "The txori-kantua.invalid domain is an identifier, not an address that can be downloaded. The .invalid TLD is reserved by RFC 2606 precisely so that no client tries to resolve it. The $ref are resolved locally from contracts/.",
+  "$defs": {
+    "schemaVersion": {
+      "title": "Contract version",
+      "description": "Major.minor version of the contract. The major matches the topic version (v1). A consumer rejects an unknown major and logs it, but does not stop.",
+      "type": "string",
+      "pattern": "^1\\.(0|[1-9][0-9]*)$",
+      "examples": ["1.0"]
+    },
+    "eventId": {
+      "title": "Logical observation identifier",
+      "description": "UUID generated ONCE per observation. It is kept identical on every retry: generating it again turns a resend into a false observation.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "examples": ["a0a74d86-74b8-4a0c-a2b7-0b0d880766a4"]
+    },
+    "stationId": {
+      "title": "Logical station identifier",
+      "description": "Stable, non-geographic name. It cannot contain coordinates or an address. It must match the station_id segment of the topic.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,31}$",
+      "examples": ["station-01"]
+    },
+    "timestampUtc": {
+      "title": "RFC 3339 timestamp in UTC",
+      "description": "Always with a Z suffix: offsets are not accepted, so that comparing two timestamps does not depend on interpreting a time zone. Up to nanoseconds are accepted, but storage truncates to milliseconds (ADR 0003). Second 60 is not accepted: an inserted leap second cannot be represented in Python date types and adds nothing to this system.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,9})?Z$",
+      "examples": ["2026-11-17T09:00:00Z", "2026-11-17T09:00:00.123Z"]
+    },
+    "serviceName": {
+      "title": "Service name",
+      "description": "Identifies a station process in the availability topics and in the health map.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{0,31}$",
+      "examples": ["capture", "inference", "ingest", "api", "station"]
+    },
+    "serviceStatus": {
+      "title": "Declared status of a service",
+      "type": "string",
+      "enum": ["healthy", "degraded", "failed"]
+    }
+  }
+}
