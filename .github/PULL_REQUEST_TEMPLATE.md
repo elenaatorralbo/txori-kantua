@@ -1,21 +1,21 @@
-## Problema y resultado
+## Problem and outcome
 
-Describe el comportamiento anterior y el resultado verificable de esta PR.
+Describe the previous behaviour and the verifiable outcome of this PR.
 
-## Issue y alcance
+## Issue and scope
 
-Refs #<!-- número -->
-<!-- Cambiar a Closes #N solo si se cumplen todos los criterios de esa issue. -->
+Refs #<!-- number -->
+<!-- Change to Closes #N only if all criteria of that issue are met. -->
 
-## Validación
+## Validation
 
-- Comandos, equipo/versiones y resultados:
-- Evidencia física, si procede:
-- Limitaciones o pruebas pendientes:
+- Commands, hardware/versions and results:
+- Physical evidence, if applicable:
+- Limitations or pending tests:
 
-## Revisión
+## Review
 
-- [ ] Criterios de la issue comprobados.
-- [ ] Documentación/contratos actualizados.
-- [ ] Sin credenciales, audio personal ni datos sensibles.
-- [ ] Revisado por otro miembro antes de integrar.
+- [ ] Issue criteria checked.
+- [ ] Documentation/contracts updated.
+- [ ] No credentials, personal audio or sensitive data.
+- [ ] Reviewed by another member before merging.

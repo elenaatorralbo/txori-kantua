@@ -1,10 +1,10 @@
-# Product Backlog inicial
+# Initial Product Backlog
 
-34 entregables creados el 05/11/2026. Todos abiertos y en Backlog al configurar el proyecto. Las issues y el Project son la fuente operativa; esta tabla es la línea base inicial, no un informe de progreso en vivo. Estimaciones propuestas, pendientes de planning.
+34 deliverables created on 05/11/2026. All open and in Backlog when the project was set up. The issues and the Project are the operational source; this table is the initial baseline, not a live progress report. Proposed estimates, pending planning.
 
 ## Sprint 1
 
-| Issue | Área | Prioridad | Responsable propuesto | Puntos | Dependencias |
+| Issue | Area | Priority | Proposed owner | Points | Dependencies |
 |---|---|---|---|---|---|
 | [#1 Verify hardware inventory and safe wiring](https://github.com/elenaatorralbo/txori-kantua/issues/1) | Hardware | Critical | Elena | 3 | — |
 | [#2 Provision Raspberry Pi OS and reproducible Python environment](https://github.com/elenaatorralbo/txori-kantua/issues/2) | DevOps | Critical | Javier | 5 | [#1](https://github.com/elenaatorralbo/txori-kantua/issues/1) |
@@ -21,7 +21,7 @@
 
 ## Sprint 2
 
-| Issue | Área | Prioridad | Responsable propuesto | Puntos | Dependencias |
+| Issue | Area | Priority | Proposed owner | Points | Dependencies |
 |---|---|---|---|---|---|
 | [#13 Configure Mosquitto with scoped access and health checks](https://github.com/elenaatorralbo/txori-kantua/issues/13) | Backend | Critical | Javier | 3 | [#2](https://github.com/elenaatorralbo/txori-kantua/issues/2), [#10](https://github.com/elenaatorralbo/txori-kantua/issues/10) |
 | [#14 Publish validated environmental readings over MQTT](https://github.com/elenaatorralbo/txori-kantua/issues/14) | Backend | Critical | Elena | 5 | [#4](https://github.com/elenaatorralbo/txori-kantua/issues/4), [#10](https://github.com/elenaatorralbo/txori-kantua/issues/10), [#13](https://github.com/elenaatorralbo/txori-kantua/issues/13) |
@@ -38,7 +38,7 @@
 
 ## Sprint 3
 
-| Issue | Área | Prioridad | Responsable propuesto | Puntos | Dependencias |
+| Issue | Area | Priority | Proposed owner | Points | Dependencies |
 |---|---|---|---|---|---|
 | [#25 Validate recognition quality and false positives](https://github.com/elenaatorralbo/txori-kantua/issues/25) | AI | High | David | 5 | [#17](https://github.com/elenaatorralbo/txori-kantua/issues/17), [#18](https://github.com/elenaatorralbo/txori-kantua/issues/18) |
 | [#26 Harden reconnection duplicate handling and degraded operation](https://github.com/elenaatorralbo/txori-kantua/issues/26) | Backend | High | Javier | 5 | [#18](https://github.com/elenaatorralbo/txori-kantua/issues/18), [#19](https://github.com/elenaatorralbo/txori-kantua/issues/19), [#20](https://github.com/elenaatorralbo/txori-kantua/issues/20), [#22](https://github.com/elenaatorralbo/txori-kantua/issues/22) |
@@ -49,24 +49,24 @@
 | [#31 Run MVP acceptance and rehearse the final demonstration](https://github.com/elenaatorralbo/txori-kantua/issues/31) | Testing | Critical | Elena | 5 | [#25](https://github.com/elenaatorralbo/txori-kantua/issues/25), [#27](https://github.com/elenaatorralbo/txori-kantua/issues/27), [#28](https://github.com/elenaatorralbo/txori-kantua/issues/28), [#29](https://github.com/elenaatorralbo/txori-kantua/issues/29), [#30](https://github.com/elenaatorralbo/txori-kantua/issues/30) |
 | [#32 Publish v1.0.0 only after verified MVP acceptance](https://github.com/elenaatorralbo/txori-kantua/issues/32) | DevOps | Critical | Javier | 3 | [#31](https://github.com/elenaatorralbo/txori-kantua/issues/31) |
 
-## Opcionales, fuera del MVP
+## Optional, outside the MVP
 
-| Issue | Área | Prioridad | Responsable propuesto | Puntos | Dependencias |
+| Issue | Area | Priority | Proposed owner | Points | Dependencies |
 |---|---|---|---|---|---|
 | [#33 Explore Euskalmet context and Leaflet nature maps](https://github.com/elenaatorralbo/txori-kantua/issues/33) | Frontend | Low | Erik | 3 | [#31](https://github.com/elenaatorralbo/txori-kantua/issues/31) |
 | [#34 Explore anomaly alerts dawn chorus and period comparisons](https://github.com/elenaatorralbo/txori-kantua/issues/34) | Data | Low | Erik | 3 | [#31](https://github.com/elenaatorralbo/txori-kantua/issues/31) |
 
-## Javier: cuenta y asignación confirmadas
+## Javier: account and assignment confirmed
 
-Cuenta verificada: [javiers2004](https://github.com/javiers2004). Responsabilidad prevista sobre #2, #9, #10, #13, #18, #19, #20, #26, #29 y #32. Tras aceptar la invitación, GitHub confirmó la asignación efectiva de las diez issues a javiers2004 el 06/11/2026, sin retirar otros responsables. Owner = Javier y la vista Javier conservan la misma planificación; My Tasks también muestra sus tareas al iniciar sesión con su cuenta.
+Verified account: [javiers2004](https://github.com/javiers2004). Planned responsibility for #2, #9, #10, #13, #18, #19, #20, #26, #29 and #32. After accepting the invitation, GitHub confirmed the effective assignment of the ten issues to javiers2004 on 06/11/2026, without removing other owners. Owner = Javier and the Javier view keep the same planning; My Tasks also shows his tasks when signed in with his account.
 
-## Carga propuesta para revisar
+## Proposed load to review
 
-| Responsable | Sprint 1 | Sprint 2 | Sprint 3 |
+| Owner | Sprint 1 | Sprint 2 | Sprint 3 |
 |---|---:|---:|---:|
 | David | 14 | 13 | 10 |
 | Javier | 13 | 16 | 13 |
 | Elena | 12 | 10 | 5 |
 | Erik | 5 | 11 | 6 |
 
-Los puntos no equivalen a horas y las habilidades no son intercambiables. Erik apoyará las pruebas y el registro de hardware durante Sprint 1, revisará consultas junto a Javier en Sprint 2 y ayudará en ensayo/documentación durante Sprint 3. David y Elena compartirán validación física; todos revisarán PR ajenas. Elena confirmó el grupo el 06/11/2026; aún debe confirmarse capacidad neta antes de convertir esta previsión en compromiso.
+Points are not equivalent to hours and skills are not interchangeable. Erik will support hardware testing and logging during Sprint 1, review queries together with Javier in Sprint 2 and help with rehearsal/documentation during Sprint 3. David and Elena will share physical validation; everyone will review other people's PRs. Elena confirmed the group on 06/11/2026; net capacity still has to be confirmed before turning this forecast into a commitment.

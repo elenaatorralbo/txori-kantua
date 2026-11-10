@@ -1,27 +1,27 @@
-# Privacidad de audio y datos
+# Audio and data privacy
 
-## Principio de diseño
+## Design principle
 
-Captura e inferencia locales en Raspberry Pi. **No se almacenan grabaciones de conversaciones ni se transmite audio bruto.** Esta es una restricción a implementar y comprobar, no una garantía ya validada de software inexistente. No se hace reconocimiento de hablantes ni transcripción.
+Local capture and inference on the Raspberry Pi. **Recordings of conversations are not stored and raw audio is not transmitted.** This is a constraint to be implemented and verified, not an already validated guarantee of non-existent software. There is no speaker recognition or transcription.
 
-## Flujo permitido
+## Allowed flow
 
-Micrófono → ventana limitada en RAM → inferencia → metadatos de especie/confianza/tiempo → eliminación de la referencia a la ventana. El búfer se reutiliza y se limita su tamaño; no se promete borrado físico seguro de memoria administrada. No habrá archivos WAV temporales, spool de audio, volcados ni logging de muestras.
+Microphone → bounded window in RAM → inference → species/confidence/time metadata → removal of the reference to the window. The buffer is reused and its size is bounded; secure physical erasure of managed memory is not promised. There will be no temporary WAV files, audio spool, dumps or sample logging.
 
-La prueba de provisión revisará swap y volcados para evitar que páginas con audio lleguen a disco: desactivar swap persistente y core dumps para captura/inferencia, verificar librerías y servicios externos, o demostrar una protección equivalente. No asumir que «usar RAM» basta. Las políticas se probarán con sonido sintético y sin grabar personas para verificar privacidad.
+The provisioning test will review swap and dumps to prevent pages containing audio from reaching disk: disable persistent swap and core dumps for capture/inference, check external libraries and services, or demonstrate equivalent protection. Do not assume that "using RAM" is enough. The policies will be tested with synthetic sound and without recording people in order to verify privacy.
 
-## Datos permitidos y minimización
+## Allowed data and minimisation
 
-Especie candidata, score, versión de modelo, tiempo de observación/recepción, estación lógica, valores ambientales y salud técnica. Ubicación aproximada para filtro puede permanecer en configuración local; no publicar coordenadas sensibles de fauna. No almacenar voces, transcripciones, identificadores de visitantes ni historiales personales de presencia. PIR/touch disparan interacción, no perfiles de personas.
+Candidate species, score, model version, observation/reception time, logical station, environmental values and technical health. An approximate location for filtering may remain in local configuration; do not publish sensitive wildlife coordinates. Do not store voices, transcriptions, visitor identifiers or personal presence histories. PIR/touch trigger interaction, not profiles of people.
 
-Retención propuesta en ADR 007, pendiente de capacidad y revisión del equipo. Purga y backup solo de metadatos necesarios. Credenciales fuera de Git, logs rotados, permisos mínimos y acceso local por defecto. Una señal visible de la estación explicará que analiza sonidos localmente para detectar aves y no guarda audio.
+Retention proposed in ADR 007, pending capacity and team review. Purge and backup only of the necessary metadata. Credentials outside Git, rotated logs, minimal permissions and local access by default. A visible notice at the station will explain that it analyses sounds locally to detect birds and does not keep audio.
 
-## Verificación obligatoria
+## Mandatory verification
 
-1. Inventariar todas las rutas de escritura, temporales, logs, cachés de librerías, swap y volcados.
-2. Ejecutar captura/inferencia con sonido sintético autorizado; revisar archivos creados y datos persistidos.
-3. Inspeccionar publicaciones MQTT y tráfico saliente en entorno de prueba: solo metadatos permitidos.
-4. Forzar desconexión, cola llena y fallo de inferencia; comprobar que no aparece un mecanismo de grabación de emergencia.
-5. Adjuntar resultados y configuración a la issue, sin audio personal. Repetir antes de aceptación del MVP.
+1. Inventory every write path, temporary file, log, library cache, swap and dump.
+2. Run capture/inference with authorised synthetic sound; review the files created and the data persisted.
+3. Inspect MQTT publications and outgoing traffic in a test environment: only allowed metadata.
+4. Force disconnection, a full queue and an inference failure; check that no emergency recording mechanism appears.
+5. Attach results and configuration to the issue, without personal audio. Repeat before MVP acceptance.
 
-Un corpus público autorizado sin voces puede utilizarse como fixture de evaluación externo, con origen y licencia registrados; no equivale a conservar audio capturado por la estación. Ante persistencia o transmisión accidental, detener captura, limitar acceso, eliminar los datos afectados según procedimiento del equipo, corregir y repetir pruebas antes de reiniciar.
+An authorised public corpus without voices can be used as an external evaluation fixture, with origin and licence recorded; this is not equivalent to keeping audio captured by the station. In case of accidental persistence or transmission, stop capture, limit access, delete the affected data according to the team procedure, fix and repeat the tests before restarting.

@@ -1,33 +1,33 @@
-# Roadmap oficial y alcance
+# Official roadmap and scope
 
-## Sprint 1 — Foundations · 3–17 noviembre
+## Sprint 1 — Foundations · 3–17 November
 
-12 entregables: inventario y cableado, Pi/Python, Grove Hat, sensores ambientales, PIR/touch, LCD, micrófono, viabilidad BirdNET, decisiones de arquitectura/datos, contratos, privacidad y revisión/equipo.
+12 deliverables: inventory and wiring, Pi/Python, Grove Hat, environmental sensors, PIR/touch, LCD, microphone, BirdNET feasibility, architecture/data decisions, contracts, privacy and review/team.
 
-Orden crítico: inventario → Pi → Hat → sensores/LCD; privacidad + micrófono → evaluación BirdNET. Arquitectura y contratos avanzan en paralelo sin depender de disponer de todos los componentes. Empezar por inventario, privacidad, decisiones arquitectónicas y provisión; después Grove y micrófono.
+Critical order: inventory → Pi → Hat → sensors/LCD; privacy + microphone → BirdNET evaluation. Architecture and contracts progress in parallel without depending on having every component. Start with inventory, privacy, architectural decisions and provisioning; then Grove and microphone.
 
-Salida verificable el 17/11: arquitectura revisada, Project y backlog priorizado, componentes probados en Pi con evidencias, riesgos conocidos y plan de implementación. Si un componente no está disponible, informar de incumplimiento y plan de recuperación: la ausencia no equivale a prueba superada.
+Verifiable output on 17/11: reviewed architecture, prioritised Project and backlog, components tested on the Pi with evidence, known risks and implementation plan. If a component is not available, report the non-fulfilment and a recovery plan: absence does not equal a passed test.
 
-## Sprint 2 — Working Pipeline · 17 noviembre–3 diciembre
+## Sprint 2 — Working Pipeline · 17 November–3 December
 
-12 entregables: broker, publicación ambiental, captura, inferencia, filtros, publicación de detecciones, persistencia, API, dashboard, estación LCD, demostración vertical y monitorización.
+12 deliverables: broker, environmental publishing, capture, inference, filters, detection publishing, persistence, API, dashboard, LCD station, vertical demonstration and monitoring.
 
-Prioridad de integración: contratos → broker + ingesta → sensor real → panel ambiental. Añadir aves y LCD sobre ese flujo sin posponer la primera demostración hasta acabar todos los módulos. API y reconocimiento pueden evolucionar en paralelo sobre fixtures que cumplan contrato. El dashboard completo incorpora después eventos de aves reales.
+Integration priority: contracts → broker + ingest → real sensor → environmental dashboard. Add birds and LCD on top of that flow without postponing the first demonstration until every module is finished. API and recognition can evolve in parallel on fixtures that meet the contract. The full dashboard later incorporates real bird events.
 
-Salida obligatoria el 03/12: **Sensor → Procesamiento → Almacenamiento → Visualización**, con identificador trazable y evidencia repetida. Objetivo adicional comprometido: integrar eventos de aves y estación para dejar el Sprint 3 centrado en calidad.
+Mandatory output on 03/12: **Sensor → Processing → Storage → Visualisation**, with a traceable identifier and repeated evidence. Additional committed goal: integrate bird events and the station so that Sprint 3 focuses on quality.
 
-## Sprint 3 — MVP Release · 3–11 diciembre
+## Sprint 3 — MVP Release · 3–11 December
 
-8 entregables: calidad de reconocimiento, resiliencia, regresión/CI, agregados diarios, systemd/reinicio, instalación reproducible, aceptación/demo y release condicionada.
+8 deliverables: recognition quality, resilience, regression/CI, daily aggregates, systemd/reboot, reproducible installation, acceptance/demo and conditional release.
 
-Es un sprint corto. Proponer congelación funcional el 08/12, aceptación el 10/12 y margen para correcciones/entrega el 11/12. Estas fechas intermedias son una política del equipo por confirmar; los festivos y disponibilidad real deben descontarse en planning. Los tests de cada módulo se escriben desde su implementación: la issue de CI en Sprint 3 consolida regresión, no retrasa toda la calidad.
+It is a short sprint. Proposal: feature freeze on 08/12, acceptance on 10/12 and margin for fixes/delivery on 11/12. These intermediate dates are a team policy to be confirmed; holidays and real availability must be deducted in planning. Each module's tests are written from its implementation: the CI issue in Sprint 3 consolidates regression, it does not delay all quality work.
 
-No crear `v1.0.0` por llegar una fecha: depende de aceptación, pruebas, revisión y documentación. Si falla el MVP, comunicar estado y limitaciones; no etiquetarlo como completado.
+Do not create `v1.0.0` because a date arrives: it depends on acceptance, tests, review and documentation. If the MVP fails, communicate status and limitations; do not label it as complete.
 
-## Fuera del MVP
+## Outside the MVP
 
-Dos investigaciones opcionales agrupan seis mejoras: Euskalmet y mapa Leaflet; anomalías, Telegram, coro del amanecer y comparativas entre periodos. Sin milestone ni iteración de los tres sprints. Solo se consideran tras aceptar MVP y sin retrasar entrega.
+Two optional investigations group six improvements: Euskalmet and a Leaflet map; anomalies, Telegram, dawn chorus and period comparisons. No milestone or iteration from the three sprints. They are only considered after accepting the MVP and without delaying delivery.
 
-## Dependencias y carga
+## Dependencies and load
 
-La tabla de [backlog](backlog.md) contiene dependencias reales y estimaciones. Se planifican entregables completos, no una issue por cada instrucción de código. Reparto funcional: David audio/AI, Javier comunicación/datos, Elena hardware/interacción y Erik paneles/monitorización; integración y revisiones son compartidas. El grupo y la identidad de Javier están confirmados por Elena y por el perfil/invitación de GitHub, respectivamente. Javier ya tiene sus diez issues asignadas; confirmar capacidad y reasignar explícitamente si fuera necesario antes de comprometer el Sprint 2.
+The [backlog](backlog.md) table contains real dependencies and estimates. Complete deliverables are planned, not one issue per coding instruction. Functional split: David audio/AI, Javier communication/data, Elena hardware/interaction and Erik dashboards/monitoring; integration and reviews are shared. The group and Javier's identity are confirmed by Elena and by the GitHub profile/invitation, respectively. Javier already has his ten issues assigned; confirm capacity and reassign explicitly if necessary before committing to Sprint 2.

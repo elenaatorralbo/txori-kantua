@@ -1,18 +1,18 @@
-# Evidencia de aceptación
+# Acceptance evidence
 
-Ninguna comprobación está superada por crear este documento. Enlazar resultados en las issues correspondientes y revisar con otro miembro.
+No check is passed by creating this document. Link results in the corresponding issues and review them with another member.
 
-| Puerta | Evidencia mínima | Bloquea |
+| Gate | Minimum evidence | Blocks |
 |---|---|---|
-| Fundamentos | Inventario real, Pi/Grove, sensores, LCD, USB; versiones y pruebas fechadas | Cierre de Sprint 1 |
-| Viabilidad AI | Corpus autorizado, p50/p95, RAM/CPU/temperatura y decisión | Compromiso de pipeline AI |
-| Pipeline | Tres cambios físicos trazados por ID desde sensor hasta panel, con persistencia | Revisión 03/12 |
-| Contratos | Ejemplos válidos e inválidos, unidades, versiones y duplicados | Integración |
-| Interacción | PIR/touch, ES/EU/EN, eventos caducados y apagado 20 ±1 s | Aceptación MVP |
-| Fiabilidad | Corte de broker 60 s, BD caída, sensor ausente y dos reinicios completos | Aceptación MVP |
-| Privacidad | Auditoría de disco/memoria persistente, payloads y tráfico sin audio | Toda captura y release |
-| Entrega | Ensayo 60 min, CI, instalación por otro miembro y PR revisadas | `v1.0.0` |
+| Foundations | Real inventory, Pi/Grove, sensors, LCD, USB; versions and dated tests | Sprint 1 closure |
+| AI feasibility | Authorised corpus, p50/p95, RAM/CPU/temperature and decision | Commitment to the AI pipeline |
+| Pipeline | Three physical changes traced by ID from sensor to dashboard, with persistence | 03/12 review |
+| Contracts | Valid and invalid examples, units, versions and duplicates | Integration |
+| Interaction | PIR/touch, ES/EU/EN, expired events and switch-off at 20 ±1 s | MVP acceptance |
+| Reliability | 60 s broker outage, DB down, missing sensor and two full reboots | MVP acceptance |
+| Privacy | Audit of disk/persistent memory, payloads and traffic without audio | All capture and release |
+| Delivery | 60 min rehearsal, CI, installation by another member and reviewed PRs | `v1.0.0` |
 
-Las pruebas de lógica usan pytest y dobles de hardware; las físicas son manuales reproducibles. Se conservarán solo tablas, logs sanitizados, métricas y fotografías/vídeo que no revelen personas ni información sensible. Toda evidencia indica fecha, commit, equipo, versiones, condiciones, resultado y límites.
+Logic tests use pytest and hardware doubles; physical tests are reproducible manual tests. Only tables, sanitised logs, metrics and photos/video that do not reveal people or sensitive information will be kept. All evidence states date, commit, hardware, versions, conditions, result and limits.
 
-Propuesta de guion (5–7 minutos): propósito/privacidad, cambio ambiental hasta dashboard, detección de ave con corpus autorizado claramente identificado si no hay aves presentes, interacción LCD, fallo/recuperación y límites. La contingencia no sustituye pruebas físicas ya exigidas. Cada integrante debe explicar una interfaz que no haya implementado personalmente.
+Proposed script (5–7 minutes): purpose/privacy, environmental change through to the dashboard, bird detection with a clearly identified authorised corpus if no birds are present, LCD interaction, failure/recovery and limits. The contingency does not replace physical tests already required. Each member must explain an interface they did not implement personally.
