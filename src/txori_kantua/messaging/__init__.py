@@ -4,6 +4,7 @@ Public interface for the other modules. Anything not exported here is an
 internal detail and may change without notice.
 """
 
+from .client import MqttConnection, MqttSettings, PublishResult
 from .contracts import (
     CURRENT_SCHEMA_VERSION,
     MAX_PAYLOAD_BYTES,
@@ -55,8 +56,11 @@ __all__ = [
     "POLICIES",
     "ContractViolation",
     "MessagingError",
+    "MqttConnection",
+    "MqttSettings",
     "ParsedTopic",
     "PayloadTooLarge",
+    "PublishResult",
     "TopicError",
     "TopicPolicy",
     "UnsupportedSchemaVersion",

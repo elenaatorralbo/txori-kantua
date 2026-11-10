@@ -60,7 +60,7 @@ There is no executable application, pinned dependencies, Docker images or instal
 - [MVP scope](docs/mvp-scope.md) · [Interface registry](docs/interfaces.md)
 - [Hardware and test evidence](docs/hardware.md) · [Raspberry Pi provisioning and Python environment](docs/provisioning.md)
 - [SCRUM and responsibilities](docs/scrum.md) · [Roadmap](docs/roadmap.md) · [Indexed backlog](docs/backlog.md)
-- [MQTT and JSON](docs/mqtt.md) · [REST API](docs/api.md)
+- [MQTT and JSON](docs/mqtt.md) · [Mosquitto broker](docs/broker.md) · [REST API](docs/api.md) · [Executable contracts](contracts/README.md)
 - [Privacy](docs/privacy.md) · [MVP validation](docs/acceptance.md)
 - [GitHub and Wiki configuration](docs/github-management.md)
 - [How to contribute](CONTRIBUTING.md)

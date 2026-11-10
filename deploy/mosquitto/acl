@@ -1,0 +1,38 @@
+# Txori Kantua ACL (issue #13). Installed in /etc/mosquitto/txori-kantua.acl
+#
+# General rule: the MQTT user name IS the service name, and each service can
+# only write to the topics it produces according to docs/interfaces.md.
+# Anything not allowed here is denied.
+#
+# No entries for anonymous clients: allow_anonymous is false.
+
+# Inference and detection publishing (David, #16; Javier, #18)
+user inference
+topic write txori/v1/+/detections
+
+# Environmental sensor reading (Elena, #14)
+user sensors
+topic write txori/v1/+/environment
+
+# Resource monitor (Erik, #24)
+user monitor
+topic write txori/v1/+/health
+topic read txori/v1/+/availability/+
+
+# Ingest and persistence (Javier, #19): reads everything, publishes no events.
+user ingest
+topic read txori/v1/#
+
+# LCD station (Elena, #22): reads detections and availability.
+user station
+topic read txori/v1/+/detections
+topic read txori/v1/+/availability/+
+
+# Broker health check: only its own availability.
+user healthcheck
+
+# Everyone: each service publishes ONLY its own availability (and its Last
+# Will). %u is the user name: "sensors" cannot declare "ingest" down.
+pattern write txori/v1/+/availability/%u
+# And can read it, to verify its own retained state.
+pattern read txori/v1/+/availability/%u
