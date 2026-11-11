@@ -56,7 +56,8 @@ There is no executable application, pinned dependencies, Docker images or instal
 
 ## Documentation
 
-- [Architecture and future structure](docs/architecture.md) · [Technical decisions](docs/decisions.md)
+- [Architecture and future structure](docs/architecture.md) · [Technical decisions](docs/decisions.md) · [ADR](docs/adr/README.md)
+- [MVP scope](docs/mvp-scope.md) · [Interface registry](docs/interfaces.md)
 - [Hardware and test evidence](docs/hardware.md)
 - [SCRUM and responsibilities](docs/scrum.md) · [Roadmap](docs/roadmap.md) · [Indexed backlog](docs/backlog.md)
 - [MQTT and JSON](docs/mqtt.md) · [REST API](docs/api.md)

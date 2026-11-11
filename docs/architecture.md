@@ -34,9 +34,9 @@ flowchart TB
 
 ## Data and source of truth
 
-Proposal to be validated: SQLite for detections and already-processed identifiers; InfluxDB for environment, health and bird-count projections that Grafana can query. Each datum will have a single authoritative source; projections must be rebuildable. A simpler alternative is SQLite with compatible visualisation; another is InfluxDB for everything if sufficient idempotency is demonstrated. Dual writes will not be introduced without a recovery strategy. The decision is closed in [decisions](decisions.md) before implementing persistence.
+Decision proposed in [ADR 0003](adr/0003-persistence.md), pending team approval: **SQLite is the single source of truth** for detections, environment, health and availability, with a single writer process —ingest— and every other consumer read-only. InfluxDB is not deployed in the MVP, so there are no dual writes and no reconciliation to design. The ADR records the source-of-truth table per datum, the estimated volume, the discarded alternatives and the thresholds that would force the decision to be reopened. Projections, such as daily aggregates, can be rebuilt from the base tables.
 
-Grafana reads the approved data source. Flask allows clients to consume the same data; there is no obligation to build an additional web frontend for the MVP. Common names are resolved through a versioned catalogue, never by changing the taxonomic identifier of the event.
+Grafana reads the approved data source; the concrete path and its alternative are set in [ADR 0004](adr/0004-visualization.md). Flask allows clients to consume the same data; there is no obligation to build an additional web frontend for the MVP. Common names are resolved through a versioned catalogue, never by changing the taxonomic identifier of the event.
 
 ## Reliability and resources
 
