@@ -1,5 +1,8 @@
 # Hardware: inventory and validation plan
 
+Use the [Sprint 1 session guide](sprint1-hardware-session.md) and its blank
+report templates to record inventory, Grove, PIR/touch and LCD checks.
+
 **Nothing is considered available, connected or tested because it appears here.** Documentation review date: 05/11/2026. Before wiring, record the exact part number, manufacturer datasheet, voltage, interface and compatibility with the Pi 5. Do not use a generic pinout from another model.
 
 | Planned component | Function | Connection to verify | Status | Required evidence |
