@@ -4,6 +4,9 @@ Partial implementation for [issue #6](https://github.com/elenaatorralbo/txori-ka
 The text formatter runs without a Raspberry Pi, wiring information or hardware
 libraries. Physical display validation remains pending.
 
+See the [detection contract review](lcd-contract-review.md) for desktop
+compatibility checks and the remaining station interface decisions.
+
 ## Text policy
 
 - Each page contains two rows of exactly 16 characters, padded with spaces to
