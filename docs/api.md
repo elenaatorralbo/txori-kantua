@@ -1,6 +1,6 @@
 # Initial REST API
 
-Read-only design, **not implemented**. Planned base `/api/v1`; Flask and the OpenAPI document will be implemented and verified during Sprint 2. The initial specification here must be converted into `contracts/openapi.yaml` together with schemas and tests, without publishing non-existent endpoints as available.
+Read-only design, **not implemented**. Planned base `/api/v1`; Flask and the OpenAPI document will be implemented and verified during Sprint 2. The specification is in [`contracts/openapi.yaml`](../contracts/openapi.yaml) ([#10](https://github.com/elenaatorralbo/txori-kantua/issues/10)), with consistency tests in `tests/contracts`; if this document and the OpenAPI disagree, the OpenAPI wins. The endpoints remain **unimplemented** until [#20](https://github.com/elenaatorralbo/txori-kantua/issues/20). Clarifications in the OpenAPI: an out-of-range `limit` is a 400 and is not silently clamped; detections also accept `min_confidence`; and daily aggregates are requested with `from_date`/`to_date` (local days, maximum 92).
 
 | Method and route | Use | Proposed response |
 |---|---|---|

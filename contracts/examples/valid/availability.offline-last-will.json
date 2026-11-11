@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "station_id": "station-01",
+  "service": "capture",
+  "status": "offline",
+  "observed_at": "2026-11-17T09:00:00Z"
+}

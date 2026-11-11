@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://txori-kantua.invalid/contracts/mqtt/availability.schema.json",
+  "title": "Service availability state v1",
+  "description": "Published on txori/v1/{station_id}/availability/{service} with QoS 1 and retain true. The offline message is registered as Last Will when connecting, so that the broker publishes it if the service dies without saying goodbye. It carries NO event_id: the Last Will is built BEFORE the failure happens, so it cannot carry a new identifier nor the real time of the outage. The identity of a transition is (station_id, service, status, observed_at).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "station_id", "service", "status", "observed_at"],
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schemaVersion" },
+    "station_id": { "$ref": "common.schema.json#/$defs/stationId" },
+    "service": { "$ref": "common.schema.json#/$defs/serviceName" },
+    "status": {
+      "type": "string",
+      "enum": ["online", "offline"],
+      "description": "online is published by the service itself when connecting. offline is published by the broker from the Last Will, or by the service when it shuts down cleanly."
+    },
+    "observed_at": {
+      "allOf": [{ "$ref": "common.schema.json#/$defs/timestampUtc" }],
+      "description": "In an online message it is the connection instant. In an offline message coming from the Last Will it is the instant the message was BUILT, that is, the last connection, NOT the moment of the failure. The consumer must use its own received_at and the heartbeat to estimate when the service was lost."
+    }
+  }
+}

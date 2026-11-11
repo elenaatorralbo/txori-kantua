@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "txori-kantua"
+version = "0.1.0.dev0"
+description = "IoT station for local recognition of bird songs"
+readme = "README.md"
+requires-python = ">=3.11"
+# Runtime dependencies of the modules that ALREADY exist. Each new module adds
+# its own in its own PR. The ranges are the ones tested in development; the
+# exact versions verified on the Raspberry Pi 5 are pinned in issue #2.
+dependencies = [
+    "jsonschema>=4.18",
+    "referencing>=0.30",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "PyYAML>=6",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra --strict-markers"
+markers = [
+    "hardware: requires a Raspberry Pi and real peripherals; not run in CI",
+    "broker: requires a reachable real MQTT broker",
+]
