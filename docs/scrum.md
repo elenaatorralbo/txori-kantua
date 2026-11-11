@@ -1,54 +1,54 @@
-# SCRUM y colaboración
+# SCRUM and collaboration
 
-## Marco académico
+## Academic framework
 
-El proyecto supone el 65 % de la asignatura. Se utiliza exclusivamente el calendario oficial de **tres sprints**. Inicio administrativo: 03/11/2026; esta preparación comienza el 05/11, por lo que no se atribuye trabajo completado a los días anteriores.
+The project accounts for 65 % of the course. Only the official **three-sprint** schedule is used. Administrative start: 03/11/2026; this preparation begins on 05/11, so no completed work is attributed to the previous days.
 
-| Sprint | Intervalo | Revisión / entrega | Sprint Goal |
+| Sprint | Interval | Review / delivery | Sprint Goal |
 |---|---|---|---|
-| 1 — Foundations | 03/11–17/11 | 17/11 | Reducir riesgos de hardware, fijar contratos y preparar integración |
-| 2 — Working Pipeline | 17/11–03/12 | 03/12 | Mostrar un sensor físico hasta un dashboard con datos persistidos |
-| 3 — MVP Release | 03/12–11/12 | Entrega 11/12 | Integrar aves, interacción, datos y recuperación con evidencia |
+| 1 — Foundations | 03/11–17/11 | 17/11 | Reduce hardware risks, fix contracts and prepare integration |
+| 2 — Working Pipeline | 17/11–03/12 | 03/12 | Show a physical sensor through to a dashboard with persisted data |
+| 3 — MVP Release | 03/12–11/12 | Delivery 11/12 | Integrate birds, interaction, data and recovery with evidence |
 
-Las fechas compartidas son días de revisión y transición, no dos jornadas de capacidad. En Projects las iteraciones se modelan [inicio, siguiente inicio); el cierre de revisión se conserva en milestones y Target date. Demostración final durante la semana del 14/12, sin tratar esa semana como plazo adicional de desarrollo.
+Shared dates are review and transition days, not two days of capacity. In Projects, iterations are modelled as [start, next start); the review closure is kept in milestones and Target date. Final demonstration during the week of 14/12, without treating that week as additional development time.
 
-## Equipo y cuentas
+## Team and accounts
 
-| Persona | Responsabilidad propuesta | Cuenta comprobada | Asignación inicial |
+| Person | Proposed responsibility | Verified account | Initial assignment |
 |---|---|---|---|
-| David Fernández | Scrum Master; audio y BirdNET; apoyo calidad | `DavidFernandezUD`, perfil David Fernández Fernández y acceso write | Audio, AI, coordinación y pruebas |
-| Javier Santamaría | Product Owner; MQTT, API y datos; provisión | `javiers2004`, perfil Javier Santamaría Pascual; acceso verificado | Diez issues asignadas a javiers2004; Owner = Javier |
-| Elena Torralbo | Sensores de interacción, LCD y experiencia | `elenaatorralbo`, perfil Elena Torralbo y admin | Hardware, estación y documentación |
-| Erik Eguskiza | Dashboard, open data y monitorización | `eeguskiza`, perfil Erik Eguskiza Aranda y write | Sensores ambientales, dashboard, observabilidad y reproducción |
+| David Fernández | Scrum Master; audio and BirdNET; quality support | `DavidFernandezUD`, profile David Fernández Fernández and write access | Audio, AI, coordination and testing |
+| Javier Santamaría | Product Owner; MQTT, API and data; provisioning | `javiers2004`, profile Javier Santamaría Pascual; access verified | Ten issues assigned to javiers2004; Owner = Javier |
+| Elena Torralbo | Interaction sensors, LCD and experience | `elenaatorralbo`, profile Elena Torralbo and admin | Hardware, station and documentation |
+| Erik Eguskiza | Dashboard, open data and monitoring | `eeguskiza`, profile Erik Eguskiza Aranda and write | Environmental sensors, dashboard, observability and reproduction |
 
-Verificación inicial mediante perfiles y colaboradores el 05/11/2026; Javier se verificó mediante su perfil e invitación el 06/11/2026. `dieguich` no es la cuenta identificada de Javier: no se le asignan tareas ni se cambian sus permisos. Las responsabilidades son propuestas, no compromisos de disponibilidad confirmados.
+Initial verification through profiles and collaborators on 05/11/2026; Javier was verified through his profile and invitation on 06/11/2026. `dieguich` is not Javier's identified account: no tasks are assigned to it and its permissions are not changed. Responsibilities are proposals, not confirmed availability commitments.
 
-**Grupo confirmado por Elena el 06/11/2026:** se mantiene el equipo de cuatro. El requisito de 2–3 del enunciado se conserva como antecedente; la confirmación registrada procede del equipo, sin inventar un acta o una respuesta del profesor. Falta confirmar capacidad neta por persona en planning.
+**Group confirmed by Elena on 06/11/2026:** the team of four is kept. The 2–3 requirement of the brief is kept as background; the recorded confirmation comes from the team, without inventing minutes or a reply from the lecturer. Net capacity per person still has to be confirmed in planning.
 
-## Ritmo de trabajo
+## Working rhythm
 
-- Planning al inicio: confirmar capacidad neta, dependencias y criterios; seleccionar un compromiso realista.
-- Daily breve (10 minutos, síncrono o escrito): avance, siguiente paso y bloqueo. Escalar bloqueos de hardware el mismo día.
-- Refinement dos veces por semana: priorizar por valor/riesgo, aclarar criterios y actualizar estimaciones.
-- Review el 17/11 y 03/12; aceptación final 11/12: mostrar comportamiento y evidencia, no solo diapositivas.
-- Retrospectiva tras cada revisión: una mejora concreta, responsable y seguimiento.
+- Planning at the start: confirm net capacity, dependencies and criteria; select a realistic commitment.
+- Short daily (10 minutes, synchronous or written): progress, next step and blocker. Escalate hardware blockers the same day.
+- Refinement twice a week: prioritise by value/risk, clarify criteria and update estimates.
+- Review on 17/11 and 03/12; final acceptance on 11/12: show behaviour and evidence, not just slides.
+- Retrospective after each review: one concrete improvement, an owner and follow-up.
 
-Estimaciones iniciales de 3 o 5 puntos son relativas y deben revisarse, no son horas ni una velocidad histórica. Dividir una issue solo si el entregable resulta inabarcable; mantener criterios y dependencias al dividir. El dashboard y la persistencia pueden iniciarse con fixtures claramente marcados, pero solo datos físicos cumplen la revisión del Sprint 2.
+Initial estimates of 3 or 5 points are relative and must be reviewed; they are not hours or a historical velocity. Split an issue only if the deliverable turns out to be unmanageable; keep criteria and dependencies when splitting. The dashboard and persistence can start with clearly labelled fixtures, but only physical data meets the Sprint 2 review.
 
-## Tablero y políticas
+## Board and policies
 
 `Backlog → To do → In progress → Review → Done`.
 
-- Backlog: trabajo identificado, sin compromiso de ejecución inmediata.
-- To do: seleccionado en planning, dependencias y material disponibles.
-- In progress: una issue activa por persona como objetivo; colaboración puntual permitida.
-- Review: PR abierta con pruebas y criterios cumplidos, revisión por otro miembro.
-- Done: criterios comprobados, documentación actualizada y PR integrada. Cerrar issue solo con evidencia.
+- Backlog: identified work, with no commitment to immediate execution.
+- To do: selected in planning, dependencies and material available.
+- In progress: one active issue per person as a target; occasional collaboration allowed.
+- Review: PR open with tests and criteria met, review by another member.
+- Done: criteria verified, documentation up to date and PR merged. Close an issue only with evidence.
 
-Las 34 issues nuevas se crean en **Backlog**. El campo **Owner** identifica al responsable planificado incluso si su acceso está pendiente; **Assignees** conserva la asignación efectiva de GitHub. La vista Javier filtra `owner:Javier` y muestra sus diez tareas. El milestone y la iteración indican previsión, no estado de ejecución. Los bloqueos se anotan con causa, dependencia y siguiente acción; no se marca Done para mejorar métricas.
+The 34 new issues are created in **Backlog**. The **Owner** field identifies the planned owner even if their access is pending; **Assignees** keeps the effective GitHub assignment. The Javier view filters `owner:Javier` and shows his ten tasks. Milestone and iteration indicate forecast, not execution status. Blockers are recorded with cause, dependency and next action; Done is not marked to improve metrics.
 
 ## Definition of Ready / Done
 
-Ready: finalidad, responsable propuesto, criterios verificables, contratos necesarios, dependencias y estimación discutida. Done: alcance funcional (o decisión documentada en tareas de investigación), revisión de otro miembro, pruebas con evidencia, documentación al día y PR integrada. La infraestructura física requiere evidencia de hardware; tests simulados no la sustituyen.
+Ready: purpose, proposed owner, verifiable criteria, necessary contracts, dependencies and discussed estimate. Done: functional scope (or a documented decision for research tasks), review by another member, tests with evidence, up-to-date documentation and merged PR. Physical infrastructure requires hardware evidence; simulated tests do not replace it.
 
-Seguimiento: avance por criterios y objetivos, trabajo bloqueado, tiempo en Review y riesgos. No comparar productividad personal por número de commits o puntos. Cada integrante utiliza su propia cuenta y comprende la arquitectura completa.
+Tracking: progress by criteria and goals, blocked work, time in Review and risks. Do not compare personal productivity by number of commits or points. Each member uses their own account and understands the whole architecture.

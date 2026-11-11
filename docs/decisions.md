@@ -1,15 +1,15 @@
-# Registro inicial de decisiones técnicas
+# Initial technical decision record
 
-Todos los ADR de esta tabla están **propuestos**, pendientes de revisión en Sprint 1. Una opción propuesta no acredita instalación ni pruebas.
+All ADRs in this table are **proposed**, pending review in Sprint 1. A proposed option does not certify installation or tests.
 
-| ADR | Propuesta y motivo | Alternativas | Evidencia necesaria para aceptar |
+| ADR | Proposal and reason | Alternatives | Evidence needed to accept |
 |---|---|---|---|
-| 001 — Edge AI | BirdNET local para reconocimiento sin enviar audio | Otro runtime/modelo compatible; captura menos frecuente | Licencia, instalación ARM64, p95 de inferencia y memoria medidas en Pi 5 |
-| 002 — Eventos | Mosquitto, JSON versionado y QoS 1 | Comunicación directa entre procesos, HTTP | Consumidores independientes, validación y prueba de duplicados/desconexión |
-| 003 — Persistencia | SQLite para detecciones/idempotencia e InfluxDB para series/proyecciones | Solo SQLite; solo InfluxDB | Complejidad de operación, idempotencia, consultas y fuente de datos Grafana verificadas |
-| 004 — Visualización | Grafana como dashboard principal; Flask como API independiente | Frontend propio sobre Flask | Dashboard importable, consultas coherentes y consumo de recursos |
-| 005 — Despliegue | systemd para procesos que acceden al hardware | Contenedores para servicios auxiliares o toda la pila | Acceso a USB/Grove y recuperación tras dos reinicios; imágenes ARM64 probadas si se usan |
-| 006 — Privacidad | Solo audio transitorio en RAM; persistir metadatos mínimos | No se acepta almacenamiento de conversaciones ni envío de audio | Inspección de temporales, swap, volcados, logs y tráfico |
-| 007 — Retención | Propuesta: 30 días de ambiente/salud, 90 de detecciones, agregados durante el curso | Retención menor según capacidad | Presupuesto de disco y aprobación del equipo; purga y copia/restauración verificadas |
+| 001 — Edge AI | Local BirdNET for recognition without sending audio | Another compatible runtime/model; less frequent capture | Licence, ARM64 installation, inference p95 and memory measured on the Pi 5 |
+| 002 — Events | Mosquitto, versioned JSON and QoS 1 | Direct inter-process communication, HTTP | Independent consumers, validation and duplicate/disconnection tests |
+| 003 — Persistence | SQLite for detections/idempotency and InfluxDB for series/projections | SQLite only; InfluxDB only | Operational complexity, idempotency, queries and Grafana data source verified |
+| 004 — Visualisation | Grafana as the main dashboard; Flask as an independent API | Own frontend on Flask | Importable dashboard, consistent queries and resource consumption |
+| 005 — Deployment | systemd for processes that access hardware | Containers for auxiliary services or the whole stack | USB/Grove access and recovery after two reboots; ARM64 images tested if used |
+| 006 — Privacy | Only transient audio in RAM; persist minimal metadata | Storing conversations or sending audio is not accepted | Inspection of temporary files, swap, dumps, logs and traffic |
+| 007 — Retention | Proposal: 30 days of environment/health, 90 of detections, aggregates for the duration of the course | Shorter retention depending on capacity | Disk budget and team approval; purge and backup/restore verified |
 
-Cada ADR aceptado añadirá fecha, participantes, versiones, decisión, consecuencias, alternativas descartadas y enlaces a pruebas. Un cambio incompatible requiere nuevo ADR y versión de contrato. Las cifras de retención son una propuesta operativa, no un requisito legal.
+Each accepted ADR will add date, participants, versions, decision, consequences, discarded alternatives and links to tests. An incompatible change requires a new ADR and a new contract version. The retention figures are an operational proposal, not a legal requirement.

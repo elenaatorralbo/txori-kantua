@@ -1,22 +1,22 @@
-# Contribuir a Txori Kantua
+# Contributing to Txori Kantua
 
-`main` es la rama estable. Crear `feature/...`, `fix/...` o `docs/...` desde una copia actualizada de main, enlazar una issue y mantener PR pequeñas con un resultado coherente. Usar commits descriptivos; cada integrante utiliza su propia cuenta.
+`main` is the stable branch. Create `feature/...`, `fix/...` or `docs/...` from an up-to-date copy of main, link an issue and keep PRs small with a coherent result. Use descriptive commits; each member uses their own account.
 
-1. Revisar criterios, dependencias y estado del hardware. Seleccionar trabajo en planning y actualizar Project.
-2. Implementar con pruebas de lógica/contrato y evidencia física donde corresponda; documentar versiones y límites.
-3. Abrir PR con contexto, validación y referencias. Usar `Closes #N` únicamente cuando la PR complete todos los criterios; para avances parciales, `Refs #N`.
-4. Solicitar revisión a otro miembro. Resolver observaciones antes de fusionar; no autoaprobar ni marcar Done con pruebas pendientes.
-5. Tras integración, comprobar estado real y cerrar la issue si la evidencia satisface el alcance. Actualizar documentación y Project.
+1. Review criteria, dependencies and hardware status. Select work in planning and update the Project.
+2. Implement with logic/contract tests and physical evidence where applicable; document versions and limits.
+3. Open a PR with context, validation and references. Use `Closes #N` only when the PR completes all criteria; for partial progress, `Refs #N`.
+4. Request review from another member. Resolve comments before merging; do not self-approve or mark Done with pending tests.
+5. After integration, check the actual status and close the issue if the evidence satisfies the scope. Update documentation and the Project.
 
-Evitar commits directos a main cuando exista una alternativa razonable. No se activan reglas que requieran checks inexistentes. Desde el 06/11/2026, main requiere una aprobación de otro miembro y conversaciones resueltas; nuevos cambios invalidan aprobaciones anteriores. No se permiten force-push ni borrado de main. No hay checks de CI obligatorios todavía. La administradora conserva capacidad de excepción para recuperación, aunque debe seguir el flujo de PR y revisión en el trabajo normal.
+Avoid direct commits to main when a reasonable alternative exists. No rules requiring non-existent checks are enabled. Since 06/11/2026, main requires one approval from another member and resolved conversations; new changes invalidate previous approvals. Force-push and deletion of main are not allowed. There are no mandatory CI checks yet. The administrator keeps the ability to make exceptions for recovery, but must follow the PR and review flow for normal work.
 
-## Configuración, datos y calidad
+## Configuration, data and quality
 
-- Nunca subir `.env` reales, tokens, claves, copias de BD ni grabaciones. Una futura `.env.example` incluirá únicamente nombres y valores ficticios.
-- No instalar paquetes globalmente ni asumir versiones: usar entorno virtual y fijar dependencias que se hayan probado en Pi 5.
-- Separar adaptadores físicos de lógica; validar JSON en los límites y manejar fallos de red/periféricos.
-- Logs estructurados con identificadores y sin audio, credenciales o datos personales.
-- Un cambio de contrato incompatible exige versión nueva y plan de migración; acordarlo con todos los consumidores.
-- No inventar resultados de tests. Documentar qué se ejecutó, dónde, con qué commit y qué falta.
+- Never commit real `.env` files, tokens, keys, database copies or recordings. A future `.env.example` will contain only names and dummy values.
+- Do not install packages globally or assume versions: use a virtual environment and pin dependencies that have been tested on the Pi 5.
+- Separate physical adapters from logic; validate JSON at the boundaries and handle network/peripheral failures.
+- Structured logs with identifiers and without audio, credentials or personal data.
+- An incompatible contract change requires a new version and a migration plan; agree it with all consumers.
+- Do not invent test results. Document what was run, where, with which commit and what is missing.
 
-Todavía no hay suite de software ni comando oficial de pruebas. Cada PR que añada código introducirá su verificación reproducible; la issue de CI consolidará la automatización. No añadir archivos Python vacíos para aparentar implementación.
+There is no software suite or official test command yet. Each PR that adds code will introduce its reproducible verification; the CI issue will consolidate automation. Do not add empty Python files to give the appearance of implementation.

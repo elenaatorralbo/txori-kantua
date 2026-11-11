@@ -1,17 +1,17 @@
-# API REST inicial
+# Initial REST API
 
-Diseño de lectura, **no implementado**. Base prevista `/api/v1`; Flask y documento OpenAPI se implementarán y verificarán durante Sprint 2. La especificación inicial aquí debe convertirse a `contracts/openapi.yaml` junto con schemas y pruebas, sin publicar endpoints inexistentes como disponibles.
+Read-only design, **not implemented**. Planned base `/api/v1`; Flask and the OpenAPI document will be implemented and verified during Sprint 2. The initial specification here must be converted into `contracts/openapi.yaml` together with schemas and tests, without publishing non-existent endpoints as available.
 
-| Método y ruta | Uso | Respuesta propuesta |
+| Method and route | Use | Proposed response |
 |---|---|---|
-| `GET /api/v1/health` | Liveness/readiness sin secretos | 200 saludable; 503 dependencia necesaria no disponible |
-| `GET /api/v1/detections` | Detecciones por intervalo, estación y especie | 200, lista paginada |
-| `GET /api/v1/environment` | Lecturas por intervalo y estación | 200, lista paginada con unidades/calidad |
-| `GET /api/v1/summaries/daily` | Agregados diarios | 200, conteos y cobertura; implementación final Sprint 3 |
+| `GET /api/v1/health` | Liveness/readiness without secrets | 200 healthy; 503 required dependency unavailable |
+| `GET /api/v1/detections` | Detections by interval, station and species | 200, paginated list |
+| `GET /api/v1/environment` | Readings by interval and station | 200, paginated list with units/quality |
+| `GET /api/v1/summaries/daily` | Daily aggregates | 200, counts and coverage; final implementation in Sprint 3 |
 
-Parámetros de listas: `from`, `to` (UTC RFC 3339, intervalo `[from,to)`), `station_id`, `limit` (predeterminado 100, máximo 500), `cursor` opaco; detecciones admite `species` científico. Propuesta: máximo 31 días por consulta de datos crudos, ajustable tras medir. Orden estable por `(observed_at,event_id)`; cursor no cambia filtros. Para agregados, día local Europe/Madrid con inicio/fin UTC explícitos, incluidos cambios horarios.
+List parameters: `from`, `to` (UTC RFC 3339, interval `[from,to)`), `station_id`, `limit` (default 100, maximum 500), opaque `cursor`; detections also accept a scientific `species`. Proposal: maximum 31 days per raw-data query, adjustable after measuring. Stable ordering by `(observed_at,event_id)`; a cursor does not change filters. For aggregates, Europe/Madrid local day with explicit UTC start/end, including clock changes.
 
-Ejemplo sintético de respuesta:
+Synthetic response example:
 
 ```json
 {
@@ -27,12 +27,12 @@ Ejemplo sintético de respuesta:
 }
 ```
 
-Consulta vacía: 200 con `items: []`. Parámetros inválidos: 400, sin convertir silenciosamente fechas incorrectas. Ruta inexistente: 404. Almacenamiento no disponible: 503, sin devolver una lista vacía que parezca ausencia de aves.
+Empty query: 200 with `items: []`. Invalid parameters: 400, without silently converting incorrect dates. Non-existent route: 404. Storage unavailable: 503, without returning an empty list that looks like an absence of birds.
 
 ```json
 {"error":{"code":"INVALID_RANGE","message":"from must precede to","request_id":"example-request-01"}}
 ```
 
-No hay endpoint de audio, escritura de sensores ni ejecución remota. Despliegue inicial en red local con acceso restringido; autenticación/TLS y límites se decidirán antes de cualquier exposición externa. No incluir secretos en OpenAPI, logs ni ejemplos. Health público, si se habilita, solo expone estado mínimo.
+There is no audio endpoint, sensor write or remote execution. Initial deployment on the local network with restricted access; authentication/TLS and limits will be decided before any external exposure. Do not include secrets in OpenAPI, logs or examples. A public health endpoint, if enabled, only exposes minimal status.
 
-OpenAPI deberá documentar todos los parámetros, schemas, errores, paginación, unidades y requisitos de seguridad. Las pruebas de contrato cubrirán datos vacíos, límites, intervalos inválidos, deduplicación visible, indisponibilidad y equivalencia con las consultas del dashboard. No se presupone que Grafana use esta API como fuente directa.
+OpenAPI must document all parameters, schemas, errors, pagination, units and security requirements. Contract tests will cover empty data, limits, invalid intervals, visible deduplication, unavailability and equivalence with the dashboard queries. It is not assumed that Grafana uses this API as a direct source.

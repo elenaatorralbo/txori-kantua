@@ -1,69 +1,69 @@
-# Configuración de GitHub y pendientes
+# GitHub configuration and pending items
 
-## Auditoría inicial · 05/11/2026
+## Initial audit · 05/11/2026
 
-Repositorio público existente: [elenaatorralbo/txori-kantua](https://github.com/elenaatorralbo/txori-kantua). Rama única `main`, commit inicial `be33ac6`, README con título; sin issues, milestones, PR, releases ni reglas de protección. Se conservaron las etiquetas predeterminadas y los colaboradores. La carpeta local `.idea/` no se modificó y queda ignorada.
+Existing public repository: [elenaatorralbo/txori-kantua](https://github.com/elenaatorralbo/txori-kantua). Single `main` branch, initial commit `be33ac6`, README with a title; no issues, milestones, PRs, releases or protection rules. The default labels and the collaborators were kept. The local `.idea/` folder was not modified and is ignored.
 
-Había un Project personal sin título, número 1, sin vincular a este repositorio; se dejó intacto. No se creó ningún repositorio adicional.
+There was an untitled personal Project, number 1, not linked to this repository; it was left untouched. No additional repository was created.
 
-## Gestión creada
+## Management created
 
-[Txori Kantua — IoT Development](https://github.com/users/elenaatorralbo/projects/2), público y vinculado al repositorio.
+[Txori Kantua — IoT Development](https://github.com/users/elenaatorralbo/projects/2), public and linked to the repository.
 
 - Status: Backlog, To do, In progress, Review, Done.
-- Priority: Critical, High, Medium, Low, en ese orden.
-- Sprint: campo Iteration, tres periodos oficiales (14, 16 y 8 días; fechas de revisión también en milestones).
+- Priority: Critical, High, Medium, Low, in that order.
+- Sprint: Iteration field, three official periods (14, 16 and 8 days; review dates also in milestones).
 - Area: Hardware, AI, Backend, Frontend, Data, DevOps, Documentation, Testing.
-- Assignees: campo nativo; solo cuentas verificadas y admitidas por GitHub. Owner: responsable planificado (David, Javier, Elena, Erik), completado para las 34 issues. Start date y Target date completados para 32 issues del MVP.
-- 34 issues abiertas, sin duplicados por título ni entregable; 32 en milestones y 2 opcionales sin compromiso de sprint. Todas se incorporan en Backlog.
-- 13 etiquetas añadidas: cuatro `priority:*`, ocho `area:*` y `optional`; etiquetas existentes conservadas.
+- Assignees: native field; only verified accounts accepted by GitHub. Owner: planned owner (David, Javier, Elena, Erik), filled in for the 34 issues. Start date and Target date filled in for the 32 MVP issues.
+- 34 open issues, with no duplicates by title or deliverable; 32 in milestones and 2 optional ones without a sprint commitment. All are added to Backlog.
+- 13 labels added: four `priority:*`, eight `area:*` and `optional`; existing labels kept.
 
-| Vista | Configuración |
+| View | Configuration |
 |---|---|
-| Product Backlog | Tabla, todas las issues, Priority ascendente según orden de opciones |
-| Kanban | Board, columnas Status |
-| Sprint 1 | Board, `sprint:"Sprint 1"`, columnas Status |
-| Sprint 2 | Board, `sprint:"Sprint 2"`, columnas Status |
-| Sprint 3 | Board, `sprint:"Sprint 3"`, columnas Status |
-| My Tasks | Tabla, `assignee:@me` |
-| Javier | Tabla, `owner:Javier`; diez tareas, también asignadas a javiers2004 |
-| Roadmap | Timeline, excluye `label:optional`; fechas en los items |
+| Product Backlog | Table, all issues, Priority ascending according to option order |
+| Kanban | Board, Status columns |
+| Sprint 1 | Board, `sprint:"Sprint 1"`, Status columns |
+| Sprint 2 | Board, `sprint:"Sprint 2"`, Status columns |
+| Sprint 3 | Board, `sprint:"Sprint 3"`, Status columns |
+| My Tasks | Table, `assignee:@me` |
+| Javier | Table, `owner:Javier`; ten tasks, also assigned to javiers2004 |
+| Roadmap | Timeline, excludes `label:optional`; dates on the items |
 
-Milestones: [Foundations](https://github.com/elenaatorralbo/txori-kantua/milestone/1), 17/11/2026; [Working Pipeline](https://github.com/elenaatorralbo/txori-kantua/milestone/2), 03/12/2026; [MVP Release](https://github.com/elenaatorralbo/txori-kantua/milestone/3), 11/12/2026. La API registra 22:59:59 UTC, equivalente al final del día en Europe/Madrid para estas fechas.
+Milestones: [Foundations](https://github.com/elenaatorralbo/txori-kantua/milestone/1), 17/11/2026; [Working Pipeline](https://github.com/elenaatorralbo/txori-kantua/milestone/2), 03/12/2026; [MVP Release](https://github.com/elenaatorralbo/txori-kantua/milestone/3), 11/12/2026. The API records 22:59:59 UTC, equivalent to the end of the day in Europe/Madrid for these dates.
 
-## Permisos y límites
+## Permissions and limits
 
-El primer acceso a Projects falló por ausencia de `read:project`/`project` en el token. Después de actualizar la autorización, se pudo crear y configurar el proyecto. No se guardaron tokens en archivos ni se alteraron permisos de colaboradores.
+The first access to Projects failed because the token lacked `read:project`/`project`. After updating the authorisation, the project could be created and configured. No tokens were stored in files and collaborator permissions were not changed.
 
-La ordenación persistente se configuró mediante el endpoint REST de creación de vistas, porque la entrada GraphQL de configuración de vistas solo exponía campos visibles. Referencia: [API oficial de vistas de GitHub](https://docs.github.com/en/rest/projects/views). Se sustituyó únicamente la vista inicial creada durante esta sesión, conservando una sola Product Backlog.
+Persistent sorting was configured through the REST view-creation endpoint, because the GraphQL view-configuration input only exposed visible fields. Reference: [official GitHub views API](https://docs.github.com/en/rest/projects/views). Only the initial view created during this session was replaced, keeping a single Product Backlog.
 
-**Ajuste visual pendiente:** abrir Roadmap → View options → Date fields y confirmar `Start date` / `Target date` (o el campo Sprint si se prefiere representar iteraciones). La API utilizada crea el layout y carga las fechas de los items, pero no expone ni permite verificar el par de campos elegido por la interfaz. No se afirma que las barras estén ya configuradas visualmente.
+**Pending visual adjustment:** open Roadmap → View options → Date fields and confirm `Start date` / `Target date` (or the Sprint field if iterations are preferred). The API used creates the layout and loads the item dates, but does not expose or allow verifying the pair of fields chosen in the interface. It is not claimed that the bars are already configured visually.
 
-Actualización 06/11/2026: main tiene protección con una aprobación obligatoria, invalidación de revisiones tras cambios y resolución de conversaciones. Force-push y borrado están deshabilitados; no se exigen checks de CI inexistentes ni CODEOWNERS. La administradora conserva excepción de recuperación (`enforce_admins=false`), manteniendo la norma de PR revisada. La API aceptó y devolvió la configuración. No hay release ni tag anticipado.
+Update 06/11/2026: main is protected with one mandatory approval, invalidation of reviews after changes and resolution of conversations. Force-push and deletion are disabled; non-existent CI checks and CODEOWNERS are not required. The administrator keeps a recovery exception (`enforce_admins=false`), maintaining the reviewed-PR rule. The API accepted and returned the configuration. There is no early release or tag.
 
-Un Project personal no hereda automáticamente todos los permisos de escritura del repositorio. No se han añadido colaboradores al Project, para respetar la instrucción de no modificar permisos sin necesidad. La propietaria puede gestionar los campos; verificar con el equipo si requiere acceso de edición antes de invitar las cuentas confirmadas en Project → Settings → Manage access. Ver y asignar issues en el repo no equivale a poder editar campos del Project.
+A personal Project does not automatically inherit all repository write permissions. No collaborators have been added to the Project, to respect the instruction not to modify permissions unnecessarily. The owner can manage the fields; check with the team whether edit access is required before inviting the confirmed accounts in Project → Settings → Manage access. Viewing and assigning issues in the repo is not the same as being able to edit Project fields.
 
 ## Wiki
 
-`has_wiki` está activo, pero `git ls-remote https://github.com/elenaatorralbo/txori-kantua.wiki.git` devolvió «Repository not found». No se ha creado ni publicado ninguna página. La documentación canónica se conserva en la PR del repositorio para evitar dos copias divergentes.
+`has_wiki` is enabled, but `git ls-remote https://github.com/elenaatorralbo/txori-kantua.wiki.git` returned "Repository not found". No page has been created or published. The canonical documentation is kept in the repository PR to avoid two diverging copies.
 
-Si se quiere habilitar una portada de Wiki:
+If a Wiki front page is wanted:
 
-1. Abrir [Wiki](https://github.com/elenaatorralbo/txori-kantua/wiki) con cuenta con escritura y seleccionar **Create the first page**.
-2. Crear `Home` con título Txori Kantua y enlaces a README, arquitectura, hardware, SCRUM, roadmap, MQTT, API y privacidad de `main`, una vez fusionada la PR.
-3. Añadir navegación `_Sidebar` con esos mismos enlaces y un enlace al Project.
-4. Mantener las páginas como índice; los cambios de contenido técnico se revisan por PR en `docs/`.
+1. Open the [Wiki](https://github.com/elenaatorralbo/txori-kantua/wiki) with an account with write access and select **Create the first page**.
+2. Create `Home` titled Txori Kantua with links to the README, architecture, hardware, SCRUM, roadmap, MQTT, API and privacy on `main`, once the PR is merged.
+3. Add a `_Sidebar` navigation with those same links and a link to the Project.
+4. Keep the pages as an index; technical content changes are reviewed through PRs in `docs/`.
 
-## Seguimiento del 06/11/2026
+## Follow-up of 06/11/2026
 
-La PR #35 está fusionada (commit `aac6515`). Elena confirmó el grupo de cuatro; se registra como confirmación del equipo. Javier corresponde al perfil `javiers2004` (Javier Santamaría Pascual). Tras aceptar la invitación, la comprobación de asignabilidad tuvo éxito y las diez issues #2, #9, #10, #13, #18, #19, #20, #26, #29 y #32 quedaron asignadas nativamente a su cuenta el 06/11/2026. Owner = Javier coincide con esa responsabilidad.
+PR #35 is merged (commit `aac6515`). Elena confirmed the group of four; it is recorded as a team confirmation. Javier corresponds to the `javiers2004` profile (Javier Santamaría Pascual). After accepting the invitation, the assignability check succeeded and the ten issues #2, #9, #10, #13, #18, #19, #20, #26, #29 and #32 were natively assigned to his account on 06/11/2026. Owner = Javier matches that responsibility.
 
-Se intentó configurar Roadmap desde Dia. La sesión no permite ejecutar JavaScript de automatización; los controles de accesibilidad no produjeron cambios y la captura de pantalla falló. Elena indicó que habilitar el acceso requeriría reiniciar la terminal. Por ello, las fechas de items sí están cargadas, pero la selección visual de campos sigue pendiente. No se alteraron las opciones del navegador ni se reinició la sesión.
+An attempt was made to configure Roadmap from Dia. The session does not allow running automation JavaScript; the accessibility controls produced no changes and the screenshot failed. Elena indicated that enabling access would require restarting the terminal. Therefore, the item dates are loaded, but the visual selection of fields is still pending. Browser options were not altered and the session was not restarted.
 
-## Pendientes reales
+## Real pending items
 
-- Revisar la PR de seguimiento documental; la PR inicial #35 ya está fusionada.
-- Comprobar campos de fecha de Roadmap en la interfaz.
-- Confirmar disponibilidad/capacidad del equipo y material; ninguna prueba física se ha ejecutado.
-- Inicializar Wiki solo si aporta valor; no bloquea el proyecto.
-- Revisar acceso de edición al Project si el equipo va a mover tarjetas directamente.
+- Review the documentation follow-up PR; the initial PR #35 is already merged.
+- Check the Roadmap date fields in the interface.
+- Confirm team availability/capacity and material; no physical test has been run.
+- Initialise the Wiki only if it adds value; it does not block the project.
+- Review edit access to the Project if the team is going to move cards directly.

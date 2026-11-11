@@ -1,17 +1,17 @@
-# Contrato MQTT inicial (propuesto)
+# Initial MQTT contract (proposed)
 
-Versión de diseño `v1`, pendiente de aprobación y JSON Schema ejecutable en la issue de contratos. Todos los ejemplos son sintéticos. No son muestras de un sistema funcionando.
+Design version `v1`, pending approval and an executable JSON Schema in the contracts issue. All examples are synthetic. They are not samples from a working system.
 
-| Topic | Productor → consumidor | QoS / retain propuestos |
+| Topic | Producer → consumer | Proposed QoS / retain |
 |---|---|---|
-| `txori/v1/{station_id}/detections` | Inferencia/publicador → ingesta y LCD | 1 / false |
-| `txori/v1/{station_id}/environment` | Sensores → ingesta | 1 / false |
-| `txori/v1/{station_id}/health` | Monitor → ingesta/dashboard | 1 / true, con timestamp y caducidad |
-| `txori/v1/{station_id}/availability/{service}` | Servicio/Last Will → monitor | 1 / true |
+| `txori/v1/{station_id}/detections` | Inference/publisher → ingest and LCD | 1 / false |
+| `txori/v1/{station_id}/environment` | Sensors → ingest | 1 / false |
+| `txori/v1/{station_id}/health` | Monitor → ingest/dashboard | 1 / true, with timestamp and expiry |
+| `txori/v1/{station_id}/availability/{service}` | Service/Last Will → monitor | 1 / true |
 
-`station_id` es un identificador lógico estable, sin coordenadas. ACL limita productores a sus topics. LCD consume detecciones y conserva en RAM la última válida; no se necesita retener todo evento. Si se añade un topic de estado «última detección», llevará antigüedad y semántica separadas, acordadas antes de su uso.
+`station_id` is a stable logical identifier, without coordinates. ACLs limit producers to their topics. The LCD consumes detections and keeps the latest valid one in RAM; there is no need to retain every event. If a "latest detection" state topic is added, it will carry age and separate semantics, agreed before it is used.
 
-## Detección
+## Detection
 
 ```json
 {
@@ -26,9 +26,9 @@ Versión de diseño `v1`, pendiente de aprobación y JSON Schema ejecutable en l
 }
 ```
 
-Ventana de 3 segundos solo ilustrativa: se confirmará según modelo. Score entre 0 y 1, no probabilidad garantizada ni identificación definitiva. Clave taxonómica/catálogo por acordar. Nombres de presentación ES/EU/EN separados del identificador científico.
+The 3-second window is only illustrative: it will be confirmed according to the model. Score between 0 and 1, not a guaranteed probability nor a definitive identification. Taxonomic key/catalogue to be agreed. ES/EU/EN display names kept separate from the scientific identifier.
 
-## Ambiente
+## Environment
 
 ```json
 {
@@ -45,9 +45,9 @@ Ventana de 3 segundos solo ilustrativa: se confirmará según modelo. Score entr
 }
 ```
 
-Lux únicamente si el modelo y la conversión se han validado; de lo contrario unidad `raw` con rango del sensor documentado. Una lectura ausente es `null` y calidad `unavailable`/`error`, nunca un cero inventado. Propuesta inicial: lectura ambiental cada 30 segundos, a validar por sensor y recursos.
+Lux only if the model and the conversion have been validated; otherwise unit `raw` with the documented sensor range. A missing reading is `null` with quality `unavailable`/`error`, never an invented zero. Initial proposal: an environmental reading every 30 seconds, to be validated per sensor and resources.
 
-## Salud y disponibilidad
+## Health and availability
 
 ```json
 {
@@ -64,16 +64,16 @@ Lux únicamente si el modelo y la conversión se han validado; de lo contrario u
 }
 ```
 
-Disponibilidad: `{"schema_version":"1.0","station_id":"station-01","service":"capture","status":"online","observed_at":"2026-11-17T09:00:00Z"}`. Last Will usa `offline`; su timestamp puede ser el de conexión, no la hora exacta del fallo. El consumidor añade `received_at` y usa heartbeat para caducidad.
+Availability: `{"schema_version":"1.0","station_id":"station-01","service":"capture","status":"online","observed_at":"2026-11-17T09:00:00Z"}`. The Last Will uses `offline`; its timestamp may be the connection time, not the exact time of the failure. The consumer adds `received_at` and uses a heartbeat for expiry.
 
-## Validación, orden y recuperación
+## Validation, ordering and recovery
 
-- UTC RFC 3339; ingesta añade `received_at`. No sustituye tiempo de observación al reenviar.
-- UUID por observación, mismo ID en cada reintento. Deduplicar en persistencia y evitar efectos LCD repetidos.
-- Validar versión, tamaño (propuesta máxima 16 KiB), tipo, unidad, rango y timestamps; rechazar versiones incompatibles sin detener el consumidor.
-- No suponer orden global entre topics. Evento antiguo no reemplaza una detección más reciente en LCD.
-- QoS 1, colas acotadas y backoff con jitter; definir pérdida aceptable y métricas. Nada de audio en cola persistente.
-- Eventos sin retain; estado retenido siempre sujeto a caducidad. Propuesta inicial LCD: detección reciente ≤5 minutos, configurable y revisada con experiencia de usuario.
-- Prohibidos muestras/base64 de audio, transcripciones, credenciales, rutas personales y coordenadas precisas.
+- UTC RFC 3339; ingest adds `received_at`. It does not replace the observation time when resending.
+- UUID per observation, same ID on every retry. Deduplicate in persistence and avoid repeated LCD effects.
+- Validate version, size (proposed maximum 16 KiB), type, unit, range and timestamps; reject incompatible versions without stopping the consumer.
+- Do not assume global ordering between topics. An old event does not replace a more recent detection on the LCD.
+- QoS 1, bounded queues and backoff with jitter; define acceptable loss and metrics. No audio in a persistent queue.
+- Events without retain; retained state always subject to expiry. Initial LCD proposal: recent detection ≤5 minutes, configurable and reviewed with user experience.
+- Forbidden: audio samples/base64, transcriptions, credentials, personal paths and precise coordinates.
 
-La issue de contratos creará schemas, fixtures positivos/negativos y pruebas de compatibilidad antes de integrar productores y consumidores.
+The contracts issue will create schemas, positive/negative fixtures and compatibility tests before integrating producers and consumers.

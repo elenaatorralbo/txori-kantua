@@ -1,67 +1,67 @@
 # Txori Kantua
 
-Estación IoT para acercar la naturaleza a las personas mediante el reconocimiento local de cantos de aves y una experiencia interactiva. Proyecto universitario con Raspberry Pi 5; el trabajo representa el **65 % de la asignatura**.
+IoT station that brings nature closer to people through local recognition of bird songs and an interactive experience. University project on a Raspberry Pi 5; the work accounts for **65 % of the course grade**.
 
-## Estado real
+## Actual status
 
-**Fase de planificación y fundamentos, 5 de noviembre de 2026.** Este repositorio contiene la base documental y el backlog. No existe todavía una implementación del sistema, ni evidencia de disponibilidad, conexión o prueba del hardware. BirdNET, MQTT, Flask, InfluxDB y Grafana son tecnologías propuestas pendientes de validación. No hay release del MVP.
+**Planning and foundations phase, 5 November 2026.** This repository contains the documentation baseline and the backlog. There is no implementation of the system yet, nor any evidence of hardware availability, connection or testing. BirdNET, MQTT, Flask, InfluxDB and Grafana are proposed technologies pending validation. There is no MVP release.
 
-- [Tablero de desarrollo](https://github.com/users/elenaatorralbo/projects/2)
+- [Development board](https://github.com/users/elenaatorralbo/projects/2)
 - [Product Backlog](https://github.com/elenaatorralbo/txori-kantua/issues)
-- [Milestones oficiales](https://github.com/elenaatorralbo/txori-kantua/milestones)
+- [Official milestones](https://github.com/elenaatorralbo/txori-kantua/milestones)
 
-## MVP previsto
+## Planned MVP
 
-- Capturar ventanas cortas de audio en memoria y reconocer aves localmente con BirdNET.
-- Publicar eventos de detección y lecturas de temperatura, humedad, presión e iluminación.
-- Almacenar observaciones y visualizar especies, tendencias y estado de la Raspberry Pi.
-- Activar una pantalla LCD con PIR o touch, mostrar información ES/EU/EN y apagarla tras 20 segundos de inactividad.
-- Recuperarse de reinicios y fallos de conexión con comportamiento documentado.
+- Capture short audio windows in memory and recognise birds locally with BirdNET.
+- Publish detection events and temperature, humidity, pressure and light readings.
+- Store observations and display species, trends and Raspberry Pi status.
+- Turn on an LCD screen with PIR or touch, show information in ES/EU/EN and switch it off after 20 seconds of inactivity.
+- Recover from reboots and connection failures with documented behaviour.
 
-**Privacidad:** no almacenar conversaciones ni transmitir audio bruto. El sistema solo persiste metadatos de detección y observaciones ambientales. Véase [privacidad](docs/privacy.md).
+**Privacy:** do not store conversations or transmit raw audio. The system only persists detection metadata and environmental observations. See [privacy](docs/privacy.md).
 
 ```mermaid
 flowchart LR
-  Mic[Micrófono USB] --> Audio[Audio en RAM]
-  Audio --> AI[BirdNET local]
+  Mic[USB microphone] --> Audio[Audio in RAM]
+  Audio --> AI[Local BirdNET]
   AI --> MQ[MQTT]
-  Sensors[Sensores Grove] --> MQ
-  MQ --> Store[Almacenamiento]
-  Store --> API[API Flask]
+  Sensors[Grove sensors] --> MQ
+  MQ --> Store[Storage]
+  Store --> API[Flask API]
   Store --> Dash[Grafana]
-  API --> Clients[Clientes REST]
-  MQ --> LCD[Control LCD]
-  Input[PIR y touch] --> LCD
+  API --> Clients[REST clients]
+  MQ --> LCD[LCD control]
+  Input[PIR and touch] --> LCD
 ```
 
-Grafana consultará el almacenamiento mediante su fuente de datos; la API ofrece otra interfaz de lectura. No se presupone que Grafana consuma directamente Flask. La elección final se registra en un ADR.
+Grafana will query storage through its data source; the API offers another read interface. It is not assumed that Grafana consumes Flask directly. The final choice is recorded in an ADR.
 
-## Calendario oficial
+## Official schedule
 
-| Sprint | Fechas de 2026 | Resultado esperado |
+| Sprint | 2026 dates | Expected outcome |
 |---|---|---|
-| 1 — Foundations | 3–17 noviembre | Backlog, arquitectura y pruebas reales de sensores/actuadores |
-| 2 — Working Pipeline | 17 noviembre–3 diciembre | Demostración sensor → procesamiento → almacenamiento → visualización |
-| 3 — MVP Release | 3–11 diciembre | MVP integrado, probado, documentado y entregado |
+| 1 — Foundations | 3–17 November | Backlog, architecture and real sensor/actuator tests |
+| 2 — Working Pipeline | 17 November–3 December | Demonstration sensor → processing → storage → visualisation |
+| 3 — MVP Release | 3–11 December | Integrated, tested, documented and delivered MVP |
 
-Demostración final: semana del 14 de diciembre. El calendario anterior de cinco sprints queda sustituido por estos tres. La release `v1.0.0` solo se publicará tras aceptación verificable del MVP.
+Final demonstration: week of 14 December. The earlier five-sprint schedule is replaced by these three. Release `v1.0.0` will only be published after verifiable acceptance of the MVP.
 
-## Tecnologías y decisiones
+## Technologies and decisions
 
-Python y Raspberry Pi OS como base propuesta; BirdNET para inferencia; Mosquitto/MQTT y JSON para eventos; Flask/OpenAPI para lectura; InfluxDB y Grafana para series y paneles. SQLite se evaluará para eventos e idempotencia. Docker se utilizará únicamente donde simplifique despliegue y se valide en ARM64. Euskalmet y las demás ampliaciones quedan fuera del MVP.
+Python and Raspberry Pi OS as the proposed base; BirdNET for inference; Mosquitto/MQTT and JSON for events; Flask/OpenAPI for reads; InfluxDB and Grafana for series and dashboards. SQLite will be evaluated for events and idempotency. Docker will only be used where it simplifies deployment and is validated on ARM64. Euskalmet and the other extensions are outside the MVP.
 
-## Instalación prevista
+## Planned installation
 
-Todavía no hay aplicación ejecutable, dependencias fijadas, imágenes Docker ni servicios instalables. No se ofrecen comandos ficticios de arranque. El orden de preparación es inventariar hardware, validar privacidad de captura, preparar Raspberry Pi OS y Python, probar buses/periféricos y decidir versiones mediante mediciones. Las instrucciones reproducibles se incorporarán en las issues de provisión y despliegue.
+There is no executable application, pinned dependencies, Docker images or installable services yet. No fictitious start commands are offered. The preparation order is: inventory hardware, validate capture privacy, prepare Raspberry Pi OS and Python, test buses/peripherals and decide versions through measurements. Reproducible instructions will be added in the provisioning and deployment issues.
 
-## Documentación
+## Documentation
 
-- [Arquitectura y estructura futura](docs/architecture.md) · [Decisiones técnicas](docs/decisions.md)
-- [Hardware y evidencia de pruebas](docs/hardware.md)
-- [SCRUM y responsabilidades](docs/scrum.md) · [Roadmap](docs/roadmap.md) · [Backlog indexado](docs/backlog.md)
-- [MQTT y JSON](docs/mqtt.md) · [API REST](docs/api.md)
-- [Privacidad](docs/privacy.md) · [Validación del MVP](docs/acceptance.md)
-- [Configuración de GitHub y Wiki](docs/github-management.md)
-- [Cómo contribuir](CONTRIBUTING.md)
+- [Architecture and future structure](docs/architecture.md) · [Technical decisions](docs/decisions.md)
+- [Hardware and test evidence](docs/hardware.md)
+- [SCRUM and responsibilities](docs/scrum.md) · [Roadmap](docs/roadmap.md) · [Indexed backlog](docs/backlog.md)
+- [MQTT and JSON](docs/mqtt.md) · [REST API](docs/api.md)
+- [Privacy](docs/privacy.md) · [MVP validation](docs/acceptance.md)
+- [GitHub and Wiki configuration](docs/github-management.md)
+- [How to contribute](CONTRIBUTING.md)
 
-El equipo original incluye a David Fernández, Javier Santamaría, Elena Torralbo y Erik Eguskiza. **Elena confirmó el grupo de cuatro el 06/11/2026.** Se conserva esta confirmación del equipo; no se atribuye una aprobación documental al profesor. Javier está identificado como `javiers2004`, con acceso y asignación de sus diez issues verificados el 06/11/2026.
+The original team includes David Fernández, Javier Santamaría, Elena Torralbo and Erik Eguskiza. **Elena confirmed the group of four on 06/11/2026.** This team confirmation is kept; no documentary approval is attributed to the lecturer. Javier is identified as `javiers2004`, with access and assignment of his ten issues verified on 06/11/2026.
