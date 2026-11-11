@@ -36,6 +36,6 @@ Tests cover bounce, holds, startup, unavailable input and ten simulated cycles.
 
 Confirm model, wiring, active level and stabilisation time; connect an adapter
 that supplies logical booleans; tune the interval; record ten real touch cycles,
-false triggers and disconnect behaviour. PIR validation is also still pending
-within #5; this handler makes no assumptions about PIR timing. Desktop tests
+false triggers and disconnect behaviour. [PIR logic](pir.md) is implemented
+separately; physical PIR validation is still pending within #5. Desktop tests
 do not satisfy the physical acceptance criteria or close the issue.
