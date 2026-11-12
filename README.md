@@ -66,3 +66,8 @@ There is no executable application, pinned dependencies, Docker images or instal
 - [How to contribute](CONTRIBUTING.md)
 
 The original team includes David Fernández, Javier Santamaría, Elena Torralbo and Erik Eguskiza. **Elena confirmed the group of four on 06/11/2026.** This team confirmation is kept; no documentary approval is attributed to the lecturer. Javier is identified as `javiers2004`, with access and assignment of his ten issues verified on 06/11/2026.
+
+## Raspberry Pi recovery
+
+For the bounded sensor/LCD service, delayed startup and emergency disable
+procedure, see [Raspberry Pi recovery](docs/raspberry-recovery.md).

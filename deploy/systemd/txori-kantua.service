@@ -1,0 +1,53 @@
+[Unit]
+Description=Txori Kantua sensor and LCD (isolated, bounded recovery)
+After=ssh.service
+ConditionPathExists=!/boot/firmware/TXORI_DISABLED
+StartLimitIntervalSec=300
+StartLimitBurst=3
+StartLimitAction=none
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=txori
+Group=txori
+SupplementaryGroups=i2c gpio
+WorkingDirectory=/run/txori-kantua
+RuntimeDirectory=txori-kantua
+Environment=PYTHONPATH=/opt/txori-kantua/src:/opt/txori-kantua/grove.py
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=TXORI_DHT_PIN=5
+ExecStart=/usr/bin/python3 -m txori_kantua.station
+Restart=on-failure
+RestartSec=30
+TimeoutStartSec=20
+TimeoutStopSec=10
+WatchdogSec=30
+WatchdogSignal=SIGKILL
+KillMode=control-group
+MemoryHigh=96M
+MemoryMax=128M
+MemorySwapMax=0
+CPUQuota=25%
+TasksMax=8
+LimitNPROC=8
+LimitAS=192M
+Nice=10
+OOMPolicy=stop
+LimitCORE=0
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+DevicePolicy=closed
+DeviceAllow=/dev/i2c-1 rw
+DeviceAllow=/dev/gpiochip0 rw
+LogRateLimitIntervalSec=30
+LogRateLimitBurst=10
