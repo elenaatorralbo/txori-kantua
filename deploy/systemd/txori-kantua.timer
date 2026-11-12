@@ -1,0 +1,10 @@
+[Unit]
+Description=Start Txori once, 90 seconds after boot
+
+[Timer]
+OnBootSec=90
+AccuracySec=1
+Unit=txori-kantua.service
+
+[Install]
+WantedBy=timers.target

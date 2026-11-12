@@ -45,3 +45,6 @@ backups/
 data/local/
 core
 core.*
+
+# Local pre-reinstallation archive (contains nested Git metadata)
+respaldo-raspy/
