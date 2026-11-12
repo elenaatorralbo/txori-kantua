@@ -8,6 +8,9 @@ Available subpackages:
 
 ``messaging``
     MQTT v1 contracts, validation, topic names and event construction.
+
+``lcd``
+    Hardware-independent text formatting and pagination for a 16x2 LCD.
 """
 
 __all__ = ["__version__"]
