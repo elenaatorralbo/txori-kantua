@@ -49,3 +49,13 @@ def test_failed_write_is_retried_before_ack(tmp_path,monkeypatch):
         assert consumer.stats['storage_errors']==1
     finally:
         stop.set(); worker.join(timeout=2)
+
+
+def test_deep_json_and_nonfinite_numbers_do_not_stop_consumer(tmp_path):
+    c=Client(); consumer=Ingestor(tmp_path/'db')
+    for payload in [b'['*1500+b'0'+b']'*1500, b'{"confidence":NaN}']:
+        msg=message(); msg.payload=payload
+        consumer.receive(c,None,msg)
+    consumer.receive(c,None,message(3))
+    assert consumer.stats['invalid']==2
+    assert consumer.pending.qsize()==1 and len(c.acks)==2

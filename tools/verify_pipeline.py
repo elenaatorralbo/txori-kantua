@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import secrets
+import shutil
 import socket
 import subprocess
 import tempfile
@@ -43,7 +44,8 @@ def main():
         for i,(name,password) in enumerate(passwords.items()):
             subprocess.run([args.passwd,*(['-c'] if i==0 else []),'-b',str(root/'passwords'),name,password],check=True)
             (root/'mqtt'/f'{name}.env').write_text(f'TXORI_MQTT_USERNAME={name}\nTXORI_MQTT_PASSWORD={password}\n')
-        acl=Path(__file__).resolve().parents[1]/'deploy/mosquitto/acl'
+        acl=root/'acl'
+        shutil.copyfile(Path(__file__).resolve().parents[1]/'deploy/mosquitto/acl',acl)
         (root/'broker.conf').write_text(f'''listener {port} 127.0.0.1
 allow_anonymous false
 password_file {root}/passwords
