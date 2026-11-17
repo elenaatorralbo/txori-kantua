@@ -24,6 +24,10 @@ birdnet = [
     "numpy>=1.26",
     "ai-edge-litert>=2.0",
 ]
+# Environmental sensors (issue #4). On the Pi, python3-smbus2 from apt also works.
+sensors = [
+    "smbus2>=0.4",
+]
 dev = [
     "pytest>=8",
     "PyYAML>=6",
