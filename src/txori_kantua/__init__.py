@@ -12,6 +12,9 @@ Available subpackages:
 ``lcd``
     Hardware-independent text formatting and pagination for a 16x2 LCD.
 
+``audio``
+    USB microphone discovery and capture of windows into RAM (issue #7).
+
 ``privacy``
     Audio privacy safeguards and the read-only privacy audit (issue #11).
 """

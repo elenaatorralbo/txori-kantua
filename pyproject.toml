@@ -29,6 +29,9 @@ where = ["src"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-ra --strict-markers"
+# Tests write synthetic tones to tmp_path; keeping them would pollute the
+# privacy audit of /tmp on the Pi (issue #11). Kept only to debug a failure.
+tmp_path_retention_policy = "failed"
 markers = [
     "hardware: requires a Raspberry Pi and real peripherals; not run in CI",
     "broker: requires a reachable real MQTT broker",
