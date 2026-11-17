@@ -40,6 +40,7 @@ from .capture import (
 from .devices import PROC_ASOUND, Card, choose_device, usb_capture_cards
 
 StreamFactory = Callable[[CaptureConfig], ArecordStream]
+MTIME_MARGIN_S = 1.0
 LOG = logging.getLogger("txori_kantua.mic_check")
 
 
@@ -189,7 +190,7 @@ def _os_name() -> str:
     return "not available"
 
 
-def header(issue: str) -> str:
+def header(issue: str, module: str = "txori_kantua.audio.mic_check") -> str:
     repo = Path(__file__).resolve().parents[3]
     commit = _probe("git", "-C", str(repo), "rev-parse", "--short", "HEAD")
     dirty = _probe("git", "-C", str(repo), "status", "--porcelain", "--untracked-files=no")
@@ -204,7 +205,7 @@ def header(issue: str) -> str:
         f"- **Hardware:** {_read('/proc/device-tree/model')}; {_os_name()}; {platform.machine()}",
         f"- **Relevant versions:** Python {platform.python_version()}; kernel {platform.release()}; "
         f"{_probe('arecord', '--version')}",
-        f"- **Procedure:** `python -m txori_kantua.audio.mic_check {' '.join(sys.argv[1:])}`",
+        f"- **Procedure:** `python -m {module} {' '.join(sys.argv[1:])}`",
     ])
 
 
@@ -372,7 +373,10 @@ def main(argv: Sequence[str] | None = None, *, factory: StreamFactory = ArecordS
                  f"- Stall timeout: {config.stall_timeout_s:g} s", ""]
 
     checks: list[tuple[str, bool]] = []
-    since = time.time()
+    # File mtimes come from the kernel's coarse clock, which can lag time.time()
+    # by a few milliseconds: without a margin, a file written right after the
+    # start would look older than the run and escape the check.
+    since = time.time() - MTIME_MARGIN_S
     if args.disconnect_test:
         result = run_disconnect(factory, config, max_wait_s=args.max_wait,
                                 reconnect_wait_s=args.reconnect_wait,
