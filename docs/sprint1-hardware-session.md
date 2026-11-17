@@ -4,6 +4,9 @@ Preparation for Elena's issues [#1](https://github.com/elenaatorralbo/txori-kant
 This is a procedure, not evidence that tests ran. Elena reports that the sensors
 work; the session records the exact setup and checks the outstanding criteria.
 
+Executable capture and display helpers: [validation tools](hardware-validation-tools.md).
+These still require physical observations and do not certify acceptance.
+
 ## Before the session
 
 Prepare the Pi, its current storage, power supply, cooling, Grove components,
