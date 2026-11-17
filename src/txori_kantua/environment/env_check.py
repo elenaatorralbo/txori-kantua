@@ -11,8 +11,8 @@ start). A failed read is kept as a row with ``value`` empty and quality
 ``unavailable``/``error``, never as 0.
 
 Phases are consecutive runs under different conditions (light covered/lit,
-breath on the sensors, sensor unplugged). Between phases the operator is
-prompted on stderr; the command waits for Enter on a terminal, or
+breath on the sensors, sensor unplugged). With more than one phase the
+operator is prompted on stderr before each phase, the first included; the command waits for Enter on a terminal, or
 ``--phase-wait`` seconds otherwise (over a non-interactive SSH session).
 
 The report goes to stdout as Markdown with the evidence header. Exit code 0

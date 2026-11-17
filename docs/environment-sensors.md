@@ -71,8 +71,10 @@ parts. Name each output following the evidence convention.
    ```
 
 2. **Two conditions per sensor.** Each phase takes 30 rounds every 2 s. The
-   command prompts between phases on stderr and waits for Enter (or
-   `--phase-wait` seconds when there is no terminal).
+   command prompts on stderr **before each phase, the first included**, and
+   waits for Enter (or `--phase-wait` seconds when there is no terminal), so
+   the first condition can also be set up. Account for that wait when a
+   script changes the condition on a timer.
 
    ```sh
    # Light: cover the sensor completely, then light it with a phone torch at ~10 cm.
