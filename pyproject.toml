@@ -17,13 +17,24 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# BirdNET inference (issue #8). ai-edge-litert publishes aarch64 wheels for
+# Python 3.13 (Raspberry Pi OS Trixie); tflite-runtime stops at 3.11. Exact
+# versions are pinned after the measurement on the Pi.
+birdnet = [
+    "numpy>=1.26",
+    "ai-edge-litert>=2.0",
+]
 dev = [
     "pytest>=8",
     "PyYAML>=6",
+    "numpy>=1.26",
 ]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"txori_kantua.audio" = ["corpus.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -35,4 +46,5 @@ tmp_path_retention_policy = "failed"
 markers = [
     "hardware: requires a Raspberry Pi and real peripherals; not run in CI",
     "broker: requires a reachable real MQTT broker",
+    "model: requires the BirdNET model files (TXORI_BIRDNET_MODEL_DIR)",
 ]

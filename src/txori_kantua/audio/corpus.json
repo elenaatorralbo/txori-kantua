@@ -1,0 +1,78 @@
+{
+  "name": "txori-kantua-birdnet-eval",
+  "version": 1,
+  "description": "Authorised public evaluation corpus for the BirdNET feasibility benchmark (issue #8). Five Xeno-canto recordings of common Basque Country species, mirrored on Wikimedia Commons. Not station audio and never committed to Git: downloaded on demand and verified by SHA-256 (docs/birdnet-feasibility.md). Licences require attribution to each author.",
+  "created": "2026-11-17",
+  "recordings": [
+    {
+      "id": "XC442745",
+      "species": "Turdus merula",
+      "file": "Turdus merula - Common Blackbird XC442745.mp3",
+      "download_url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Turdus_merula_-_Common_Blackbird_XC442745.mp3",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Turdus_merula_-_Common_Blackbird_XC442745.mp3",
+      "author": "James Ray",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bytes": 1374341,
+      "sha1": "07ca461bbd691de88301efce067c67eff55aca7c",
+      "sha256": "15c21ed8bec2891de9ac88556ad291803d9ab07ba38513968b41b778494b5f92",
+      "xeno_canto_url": "https://xeno-canto.org/442745"
+    },
+    {
+      "id": "XC507922",
+      "species": "Erithacus rubecula",
+      "file": "Erithacus rubecula - European Robin XC507922.mp3",
+      "download_url": "https://upload.wikimedia.org/wikipedia/commons/3/35/Erithacus_rubecula_-_European_Robin_XC507922.mp3",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Erithacus_rubecula_-_European_Robin_XC507922.mp3",
+      "author": "Marie-Lan Taÿ Pamart",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bytes": 1739706,
+      "sha1": "3f560ded73ce36408c5d33087acd02406dc8bba6",
+      "sha256": "53ba89b26763112cf68f4a87fef53b66295d695edec4eb8b270e29ed17bcb017",
+      "xeno_canto_url": "https://xeno-canto.org/507922"
+    },
+    {
+      "id": "XC405790",
+      "species": "Parus major",
+      "file": "Parus major - Great Tit XC405790.mp3",
+      "download_url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Parus_major_-_Great_Tit_XC405790.mp3",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Parus_major_-_Great_Tit_XC405790.mp3",
+      "author": "Dimitǎr Boevski",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bytes": 1375123,
+      "sha1": "c36bf3c8d0f1a6606366afcb238d916ebf37aeec",
+      "sha256": "2c075a04940000bbf6f09e450fc4ec53c876a6f6d530522813a2d32fe87f291f",
+      "xeno_canto_url": "https://xeno-canto.org/405790"
+    },
+    {
+      "id": "XC405787",
+      "species": "Fringilla coelebs",
+      "file": "Fringilla coelebs - Common Chaffinch XC405787.mp3",
+      "download_url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Fringilla_coelebs_-_Common_Chaffinch_XC405787.mp3",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Fringilla_coelebs_-_Common_Chaffinch_XC405787.mp3",
+      "author": "Dimitǎr Boevski",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bytes": 1121664,
+      "sha1": "eca7bbbfd73b095dbe551d683b823a64ef4b8139",
+      "sha256": "accc8e92e62f3a7bfee21520d696f6b4d65563e42b8320db366ca8a029bf10aa",
+      "xeno_canto_url": "https://xeno-canto.org/405787"
+    },
+    {
+      "id": "XC269087",
+      "species": "Troglodytes troglodytes",
+      "file": "Troglodytes troglodytes - Eurasian Wren XC269087.mp3",
+      "download_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Troglodytes_troglodytes_-_Eurasian_Wren_XC269087.mp3",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Troglodytes_troglodytes_-_Eurasian_Wren_XC269087.mp3",
+      "author": "Alexander Kurthy",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "bytes": 1126294,
+      "sha1": "27bf18bf6bc3322799a40451e80899377cdd5570",
+      "sha256": "5d1115cf0cb505556d0bc63f948db798270f789be67c3dc4bcb909f74fa997c7",
+      "xeno_canto_url": "https://xeno-canto.org/269087"
+    }
+  ]
+}

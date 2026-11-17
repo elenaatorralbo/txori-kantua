@@ -10,7 +10,7 @@ until the evidence issue replaces them with real measurements on the Pi 5.
 
 | ADR | Proposed decision | Status | Owner | Missing evidence |
 |---|---|---|---|---|
-| 001 — Edge AI | Local BirdNET to recognise birds without sending audio | Not yet written | David | Licence, ARM64 installation, inference p95 and memory measured on the Pi 5 ([#8](https://github.com/elenaatorralbo/txori-kantua/issues/8)) |
+| [001 — Edge AI](adr/0001-edge-ai-birdnet.md) | Local BirdNET V2.4 (TFLite via ai-edge-litert) if the Pi meets p95 ≤ 1 s, RSS ≤ 512 MB, no throttling | Proposed | David | Inference p95, memory and temperature measured on the Pi 5; live run with the microphone ([#8](https://github.com/elenaatorralbo/txori-kantua/issues/8)) |
 | [002 — Events](adr/0002-event-transport.md) | MQTT with versioned JSON and QoS 1; deduplicate in the consumer | Proposed | Javier | Independent consumers, validation and duplicate and disconnection tests ([#10](https://github.com/elenaatorralbo/txori-kantua/issues/10), [#13](https://github.com/elenaatorralbo/txori-kantua/issues/13)) |
 | [003 — Persistence](adr/0003-persistence.md) | **SQLite as the single source of truth**; InfluxDB is not deployed | Proposed | Javier | Triple resend, range query, restart and restore; real size and latencies ([#19](https://github.com/elenaatorralbo/txori-kantua/issues/19)) |
 | [004 — Visualisation](adr/0004-visualization.md) | Grafana reads SQLite read-only; the REST API is the planned alternative | Proposed | Javier, reviewed by Erik | Plugin installed on ARM64, importable dashboard and API–dashboard equivalence ([#20](https://github.com/elenaatorralbo/txori-kantua/issues/20), [#21](https://github.com/elenaatorralbo/txori-kantua/issues/21)) |
