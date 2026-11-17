@@ -21,7 +21,7 @@ with real measurements on the Raspberry Pi 5.
 
 | ADR | Title | Status | Owner | Evidence issue |
 |---|---|---|---|---|
-| 0001 | Local inference with BirdNET | Not yet written | David | [#8](https://github.com/elenaatorralbo/txori-kantua/issues/8) |
+| [0001](0001-edge-ai-birdnet.md) | Recognise birds locally with BirdNET V2.4 on LiteRT | Proposed | David | [#8](https://github.com/elenaatorralbo/txori-kantua/issues/8) |
 | [0002](0002-event-transport.md) | Event transport over MQTT and versioned JSON | Proposed | Javier | [#10](https://github.com/elenaatorralbo/txori-kantua/issues/10), [#13](https://github.com/elenaatorralbo/txori-kantua/issues/13) |
 | [0003](0003-persistence.md) | SQLite as the single source of truth | Proposed | Javier | [#19](https://github.com/elenaatorralbo/txori-kantua/issues/19) |
 | [0004](0004-visualization.md) | Grafana data source and role of the API | Proposed | Javier, reviewed by Erik | [#20](https://github.com/elenaatorralbo/txori-kantua/issues/20), [#21](https://github.com/elenaatorralbo/txori-kantua/issues/21) |
