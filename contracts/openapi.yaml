@@ -142,9 +142,12 @@ paths:
         day**; `start_utc` and `end_utc` make its limits explicit, including
         the 23- and 25-hour days of clock changes.
 
-        **Provisional:** the shape of `environment` and `species` is settled
-        with Erik in issue #28. Until then the server computes the aggregates
-        on the fly over the raw data within retention.
+        Only days with at least one event of the station are returned. A
+        missing day means **no data**; a returned day with
+        `detections_total: 0` means the station was running and detected no
+        birds. `coverage` says how much of the day had data. Duplicated
+        events count once and environmental statistics use only readings
+        with quality ok (issue #28, `txori_kantua.aggregates`).
       parameters:
         - name: from_date
           in: query
@@ -180,6 +183,7 @@ paths:
                           - { scientific_name: Erithacus rubecula, count: 1, max_confidence: 0.61 }
                         environment:
                           temperature: { unit: degC, count: 2880, min: 9.1, max: 17.4, mean: 13.2 }
+                        coverage: { minutes_with_data: 1438, minutes_in_day: 1440 }
                 empty:
                   value: { items: [] }
         "400": { $ref: "#/components/responses/BadRequest" }
@@ -374,7 +378,7 @@ components:
     DailySummary:
       type: object
       additionalProperties: false
-      required: [date, timezone, start_utc, end_utc, station_id, detections_total, species, environment]
+      required: [date, timezone, start_utc, end_utc, station_id, detections_total, species, environment, coverage]
       properties:
         date: { type: string, format: date }
         timezone: { type: string, const: Europe/Madrid }
@@ -389,6 +393,19 @@ components:
           type: object
           propertyNames: { enum: [temperature, humidity, pressure, light] }
           additionalProperties: { $ref: "#/components/schemas/MetricSummary" }
+        coverage: { $ref: "#/components/schemas/DayCoverage" }
+
+    DayCoverage:
+      type: object
+      additionalProperties: false
+      required: [minutes_with_data, minutes_in_day]
+      description: |
+        Minutes of the local day with at least one event of the station
+        (detection, environment, health). `minutes_in_day` is 1380 or 1500
+        on clock-change days. It tells a quiet day from a station that was off.
+      properties:
+        minutes_with_data: { type: integer, minimum: 1 }
+        minutes_in_day: { type: integer, enum: [1380, 1440, 1500] }
 
     DailySummaryList:
       type: object

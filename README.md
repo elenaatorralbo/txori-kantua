@@ -60,7 +60,7 @@ There is no executable application, pinned dependencies, Docker images or instal
 - [MVP scope](docs/mvp-scope.md) · [Interface registry](docs/interfaces.md)
 - [Hardware and test evidence](docs/hardware.md) · [Raspberry Pi provisioning and Python environment](docs/provisioning.md) · [USB microphone capture](docs/audio-capture.md) · [Environmental sensors](docs/environment-sensors.md) · [BirdNET feasibility](docs/birdnet-feasibility.md)
 - [SCRUM and responsibilities](docs/scrum.md) · [Roadmap](docs/roadmap.md) · [Indexed backlog](docs/backlog.md) · [Sprint 1 review](docs/sprint1-review.md)
-- [MQTT and JSON](docs/mqtt.md) · [Mosquitto broker](docs/broker.md) · [REST API](docs/api.md) · [Executable contracts](contracts/README.md)
+- [MQTT and JSON](docs/mqtt.md) · [Mosquitto broker](docs/broker.md) · [REST API](docs/api.md) · [Executable contracts](contracts/README.md) · [Daily aggregates](docs/daily-aggregates.md)
 - [Privacy](docs/privacy.md) · [MVP validation](docs/acceptance.md)
 - [GitHub and Wiki configuration](docs/github-management.md)
 - [How to contribute](CONTRIBUTING.md)
