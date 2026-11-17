@@ -1,0 +1,45 @@
+[Unit]
+Description=Txori Kantua health monitor (resources and service status, issue #24)
+After=ssh.service
+ConditionPathExists=!/boot/firmware/TXORI_DISABLED
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+# Install (after deploy/provision/install_app.sh has put the code in /opt):
+#   sudo install -m 0644 deploy/systemd/txori-health.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now txori-health.service
+# Events: journalctl -u txori-health -o cat | grep '"schema_version"'
+
+[Service]
+Type=simple
+DynamicUser=yes
+WorkingDirectory=/opt/txori-kantua/app
+Environment=TXORI_CONTRACTS_DIR=/opt/txori-kantua/app/contracts/mqtt
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/txori-kantua/venv/bin/python -m txori_kantua.health.monitor --interval 30
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=10
+MemoryMax=64M
+CPUQuota=5%
+TasksMax=4
+Nice=15
+LimitCORE=0
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+# systemctl show talks to systemd over the D-Bus Unix socket; nothing else.
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+LogRateLimitIntervalSec=30
+LogRateLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target

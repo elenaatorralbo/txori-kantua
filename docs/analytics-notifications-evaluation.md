@@ -5,20 +5,21 @@ that will not exist on 11/12, and Telegram adds a credential and an external
 service). This document gives each proposal a hypothesis, the minimum data,
 an estimate and a decision. Nothing here is implemented.
 
-All four proposals rest on one rule from the daily aggregates of
+All four proposals require a distinction beyond the telemetry aggregates of
 [#28](https://github.com/elenaatorralbo/txori-kantua/issues/28):
 **absence of observations is not an ecological change.** A drop in detections
 means something only when the station was listening. Every statistic below
-is therefore computed **per covered minute** and only over periods with enough
-coverage.
+is therefore computed **per verified analyzed-audio minute** for bird rates. This denominator
+is not supplied by current telemetry coverage and remains a missing prerequisite.
+Environmental statistics instead require valid readings of the metric evaluated.
 
 ## Common data requirements
 
 | Requirement | Value (proposal) | Why |
 |---|---|---|
-| Coverage of a day | ≥ 80 % of its minutes (`coverage` of #28) | Below that, a quiet day and a station that was off look the same |
+| Verified analyzed audio in a day | ≥ 80 % of its minutes; currently unknown, not telemetry coverage of #28 | Below that, a quiet day and a station that was off look the same |
 | Detection quality | Confidence ≥ the threshold set in #17, after the location/season filter | The #8 desktop run showed a blackbird never identified and an Australian lorikeet as top-1: unfiltered counts would produce false trends |
-| Rate, not count | Detections per covered hour | Compares periods with different listening time |
+| Rate, not count | Detections per verified analyzed-audio hour | Compares periods with different listening time |
 | Model version | Same `model.version` in both periods | A model change is not a change in the birds |
 
 ## 1. Environmental anomaly alerts
@@ -30,7 +31,7 @@ coverage.
   7 days at the same hour, using only quality `ok` readings. A reading is
   anomalous when it is more than 4 MAD away for 3 consecutive readings. A
   pressure drop counts when it exceeds 3 hPa in 3 h (a common weather rule).
-- **Minimum data:** 7 days with ≥ 80 % coverage before the first alert. No
+- **Minimum data:** 7 days with ≥ 80 % valid expected readings of the specific metric before the first alert. No
   alert while the window is incomplete.
 - **False alerts:** sensor faults look like anomalies. #4 showed the DHT11
   drifting 4–5 degC above the BME280. Before any notification, compare
@@ -67,33 +68,35 @@ coverage.
 
 - **Hypothesis:** song activity peaks around sunrise, and the peak shifts
   with the season. It is a visible, explainable pattern for the demonstration.
-- **Method:** detection rate per covered 10-minute bin, relative to
+- **Method:** detection rate per verified analyzed-audio 10-minute bin, relative to
   **local sunrise** computed for a generalised location (municipality,
   never the exact station, see #33), from −60 to +180 min. Show the median
   over days and its spread, not one day.
-- **Minimum data:** ≥ 14 days, each with ≥ 80 % coverage **in the dawn
+- **Minimum data:** ≥ 14 days, each with ≥ 80 % verified analyzed-audio coverage **in the dawn
   window** specifically; enough detections per bin to show a shape (a
-  proposal: 20 or more). Bins without coverage are gaps, never zeros.
+  proposal: 20 or more). Bins without verified analyzed audio are gaps, never zeros.
 - **Pitfalls:** traffic or wind at dawn changes detectability, not birds.
   The clock change moves clock time, not sunrise-relative time, which is why
   sunrise-relative bins are used.
 - **Estimate:** 3 points.
 - **Decision:** the most promising one. Revisit after two weeks of real
-  data with the #17 filter in place.
+  data with the #17 filter in place **and** a completed-window
+  analyzed-audio coverage contract (missing prerequisite; `analyzed_audio_minutes`
+  is null today).
 
 ## 4. Period comparisons
 
 - **Hypothesis:** comparing weeks or months shows seasonal changes in
   species and activity.
-- **Method:** per species, detections per covered hour in each period, with
+- **Method:** per species, detections per verified analyzed-audio hour in each period, with
   a confidence interval (Poisson rate). Report "no difference shown" when the
   intervals overlap. Never report a percentage change from tiny counts.
-- **Minimum data:** both periods with ≥ 80 % mean coverage, the same model
+- **Minimum data:** both periods with ≥ 80 % verified analyzed-audio coverage, the same model
   version and filter settings, and ≥ 10 detections of the species in the
   larger period.
 - **Pitfalls:** this is where "absence of observations" turns into false
   ecology. A week with the station off for three days reads as a drop if
-  raw counts are used. The coverage normalisation and the minimum coverage
+  raw counts are used. Normalisation by verified analyzed audio and its minimum
   are therefore mandatory, not refinements.
 - **Estimate:** 2 points, on top of #28's aggregates.
 - **Decision:** postpone. With the course's data volume, most comparisons
@@ -103,10 +106,10 @@ coverage.
 
 | Proposal | Hypothesis | Minimum data | Estimate | Decision |
 |---|---|---|---|---|
-| Anomaly alerts | Unusual readings matter | 7 days ≥ 80 % coverage | 3 | Postpone; start with a sensor-fault check |
+| Anomaly alerts | Unusual readings matter | 7 days ≥ 80 % valid readings of the evaluated metric | 3 | Postpone; start with a sensor-fault check |
 | Telegram | Summaries keep volunteers engaged | #17 filter in place | 2–3 | Postpone; off by default, opt-in |
-| Dawn chorus | Activity peaks around sunrise | 14 days, dawn coverage ≥ 80 % | 3 | Most promising; revisit after real data |
-| Period comparisons | Seasons change species and activity | Both periods ≥ 80 %, same model | 2 | Postpone |
+| Dawn chorus | Activity peaks around sunrise | Missing prerequisite: analyzed-audio coverage contract; then 14 days, dawn window ≥ 80 % verified analyzed audio | 3 | Most promising; revisit after real data |
+| Period comparisons | Seasons change species and activity | Missing prerequisite: analyzed-audio coverage contract; then both periods ≥ 80 % verified analyzed audio, same model | 2 | Postpone |
 
 ## Acceptance criteria
 
@@ -114,4 +117,12 @@ coverage.
 |---|---|
 | Each proposal has hypothesis, minimum data, estimate and decision | Sections 1–4 and summary |
 | Telegram is not activated and publishes no credentials without explicit configuration | Section 2, design rules |
-| The design separates absence of observations from real ecological changes | Common requirements (rate per covered hour, minimum coverage), sections 3–4 |
+| The design separates absence of observations from real ecological changes | Common requirements (rate per verified analyzed-audio hour, never telemetry minutes; environmental coverage from valid readings of the metric), sections 1, 3–4 and review correction |
+
+## Review correction
+
+Telemetry minutes from environmental or health events, including failed capture
+or inference, never establish listening coverage. Until an explicit completed-
+window coverage contract is implemented, bird rates and ecological comparisons
+remain disabled. Service availability alone is also insufficient. This addresses
+the coverage prerequisite raised in PR #56; no notification is activated.

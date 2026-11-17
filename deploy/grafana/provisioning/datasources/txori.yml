@@ -1,0 +1,10 @@
+apiVersion: 1
+datasources:
+  - name: Txori SQLite
+    uid: txori-sqlite
+    type: frser-sqlite-datasource
+    access: proxy
+    isDefault: true
+    editable: false
+    jsonData:
+      path: /var/lib/txori-kantua/events.sqlite

@@ -4,7 +4,13 @@ IoT station that brings nature closer to people through local recognition of bir
 
 ## Actual status
 
-**Planning and foundations phase, 5 November 2026.** This repository contains the documentation baseline and the backlog. There is no implementation of the system yet, nor any evidence of hardware availability, connection or testing. BirdNET, MQTT, Flask, InfluxDB and Grafana are proposed technologies pending validation. There is no MVP release.
+**Implementation and integration in progress, 17 November 2026.** Capture,
+BirdNET adapters, environmental drivers, MQTT contracts/transport, SQLite ingest,
+read API, daily aggregates and display logic are implemented. Tests distinguish
+synthetic metadata from physical observations. An isolated Mosquitto/SQLite/API
+pipeline has been verified on the Pi; the complete station is not yet deployed
+or accepted. Hardware gaps, model measurements and review still block the MVP.
+See [integration status and evidence](docs/pipeline-integration.md).
 
 - [Development board](https://github.com/users/elenaatorralbo/projects/2)
 - [Product Backlog](https://github.com/elenaatorralbo/txori-kantua/issues)
@@ -52,15 +58,21 @@ Python and Raspberry Pi OS as the proposed base; BirdNET for inference; Mosquitt
 
 ## Planned installation
 
-There is no executable application, pinned dependencies, Docker images or installable services yet. No fictitious start commands are offered. The preparation order is: inventory hardware, validate capture privacy, prepare Raspberry Pi OS and Python, test buses/peripherals and decide versions through measurements. Reproducible instructions will be added in the provisioning and deployment issues.
+Use a Python virtual environment and install `python -m pip install -e '.[dev]'`
+from this checkout. Run `python -m pytest` for the software suite. Tests requiring
+a real broker or BirdNET model are skipped unless explicitly configured.
+[Pipeline instructions](docs/pipeline-integration.md) cover MQTT ingest, sensor
+publication and the read-only API. Existing bounded sensor/LCD recovery remains
+in [the recovery guide](docs/raspberry-recovery.md). Neither procedure establishes
+full MVP acceptance.
 
 ## Documentation
 
 - [Architecture and future structure](docs/architecture.md) · [Technical decisions](docs/decisions.md) · [ADR](docs/adr/README.md)
 - [MVP scope](docs/mvp-scope.md) · [Interface registry](docs/interfaces.md)
-- [Hardware and test evidence](docs/hardware.md) · [Raspberry Pi provisioning and Python environment](docs/provisioning.md) · [USB microphone capture](docs/audio-capture.md) · [BirdNET feasibility](docs/birdnet-feasibility.md)
+- [Hardware and test evidence](docs/hardware.md) · [Raspberry Pi provisioning and Python environment](docs/provisioning.md) · [USB microphone capture](docs/audio-capture.md) · [Environmental sensors](docs/environment-sensors.md) · [BirdNET feasibility](docs/birdnet-feasibility.md) · [Health monitoring](docs/health-monitoring.md)
 - [SCRUM and responsibilities](docs/scrum.md) · [Roadmap](docs/roadmap.md) · [Indexed backlog](docs/backlog.md) · [Sprint 1 review](docs/sprint1-review.md)
-- [MQTT and JSON](docs/mqtt.md) · [REST API](docs/api.md)
+- [MQTT and JSON](docs/mqtt.md) · [Mosquitto broker](docs/broker.md) · [REST API](docs/api.md) · [Executable contracts](contracts/README.md) · [Daily aggregates](docs/daily-aggregates.md)
 - [Privacy](docs/privacy.md) · [MVP validation](docs/acceptance.md)
 - [GitHub and Wiki configuration](docs/github-management.md)
 - [How to contribute](CONTRIBUTING.md)

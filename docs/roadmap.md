@@ -26,7 +26,7 @@ Do not create `v1.0.0` because a date arrives: it depends on acceptance, tests, 
 
 ## Outside the MVP
 
-Two optional investigations group six improvements: Euskalmet and a Leaflet map; anomalies, Telegram, dawn chorus and period comparisons. No milestone or iteration from the three sprints. They are only considered after accepting the MVP and without delaying delivery. Evaluation of the second: [analytics and notifications](analytics-notifications-evaluation.md).
+Two optional investigations group six improvements: Euskalmet and a Leaflet map; anomalies, Telegram, dawn chorus and period comparisons. No milestone or iteration from the three sprints. They are only considered after accepting the MVP and without delaying delivery. Evaluations: [Euskalmet and Leaflet](euskalmet-leaflet-evaluation.md) and [analytics and notifications](analytics-notifications-evaluation.md).
 
 ## Dependencies and load
 

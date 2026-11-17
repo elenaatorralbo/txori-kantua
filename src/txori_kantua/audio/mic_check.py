@@ -173,6 +173,8 @@ def _probe(*command: str) -> str:
         out = subprocess.run(command, capture_output=True, text=True, timeout=5)
     except (OSError, subprocess.TimeoutExpired):
         return "not available"
+    if out.returncode != 0:  # e.g. git outside a checkout: its error is not a commit
+        return "not available"
     return (out.stdout or out.stderr).strip().splitlines()[0] if (out.stdout or out.stderr) else "not available"
 
 
