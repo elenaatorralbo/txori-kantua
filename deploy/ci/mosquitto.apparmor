@@ -1,0 +1,6 @@
+# Hosted CI only: isolated verifier files, not a production policy change.
+/tmp/txori-mqtt-*/broker.conf r,
+/tmp/txori-mqtt-*/passwords r,
+/tmp/txori-mqtt-*/acl r,
+/tmp/txori-mqtt-*/mosquitto.db rwk,
+/tmp/txori-mqtt-*/mosquitto.db.new rwk,

@@ -52,7 +52,7 @@ class FakeInterpreter:
         self.received = value.copy()
 
     def invoke(self):
-        pass
+        self.invoked_with = self.received.copy()
 
     def get_tensor(self, index):
         return self.logits[None]
@@ -100,10 +100,11 @@ def test_precision_from_file_name(name, precision):
 def test_short_window_is_zero_padded_and_input_buffer_cleared():
     m = model()
     m.predict(np.ones(1000, dtype=np.float32))
-    received = m._interpreter.received
+    received = m._interpreter.invoked_with
     assert received.shape == (1, WINDOW_SAMPLES)
     assert received[0, :1000].sum() == 1000 and received[0, 1000:].sum() == 0
     assert not m._window.any()  # nothing of the window is kept after inference
+    assert not m._interpreter.received.any()
 
 
 def test_long_window_is_rejected():
@@ -153,3 +154,14 @@ def test_real_model_loads_and_scores_a_tone(model_file):
     scores = birdnet.predict((0.1 * np.sin(2 * np.pi * 3000 * t)).astype(np.float32))
     assert scores.shape == (len(labels),) and 0 <= scores.min() and scores.max() <= 1
     assert len(birdnet.version()) <= 64
+
+
+def test_failed_inference_clears_both_input_buffers():
+    m = model()
+    def fail():
+        raise RuntimeError("model invocation failed")
+    m._interpreter.invoke = fail
+    with pytest.raises(RuntimeError, match="invocation"):
+        m.predict(np.ones(1000, dtype=np.float32))
+    assert not m._window.any()
+    assert not m._interpreter.received.any()

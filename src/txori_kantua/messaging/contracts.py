@@ -195,8 +195,11 @@ def decode(topic: str, payload: bytes | bytearray | str) -> tuple[str, dict[str,
     if len(raw) > MAX_PAYLOAD_BYTES:
         raise PayloadTooLarge(len(raw), MAX_PAYLOAD_BYTES)
     try:
-        event = json.loads(raw.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise ContractViolation(parsed.kind, [f"not valid UTF-8 JSON: {exc}"]) from exc
+        def reject_nonfinite(value: str) -> None:
+            raise ValueError("non-finite numbers are not JSON")
+        event = json.loads(raw.decode("utf-8"), parse_constant=reject_nonfinite)
+    except (UnicodeDecodeError, ValueError, RecursionError) as exc:
+        # Do not include parser content: malformed input can contain private data.
+        raise ContractViolation(parsed.kind, ["not valid bounded UTF-8 JSON"]) from exc
     validate(parsed.kind, event, topic=topic)
     return parsed.kind, event

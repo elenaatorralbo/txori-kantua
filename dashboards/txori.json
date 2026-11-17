@@ -1,0 +1,273 @@
+{
+  "uid": "txori-kantua",
+  "title": "Txori Kantua",
+  "schemaVersion": 39,
+  "version": 1,
+  "timezone": "Europe/Madrid",
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "temperature",
+      "description": "Null means a missing/failed reading. Light is raw, not lux.",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "txori-sqlite"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='temperature' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "rawQueryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='temperature' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "queryType": "sql",
+          "timeColumns": [
+            "time"
+          ],
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "humidity",
+      "description": "Null means a missing/failed reading. Light is raw, not lux.",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "txori-sqlite"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='humidity' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "rawQueryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='humidity' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "queryType": "sql",
+          "timeColumns": [
+            "time"
+          ],
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "pressure",
+      "description": "Null means a missing/failed reading. Light is raw, not lux.",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "txori-sqlite"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='pressure' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "rawQueryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='pressure' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "queryType": "sql",
+          "timeColumns": [
+            "time"
+          ],
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "light",
+      "description": "Null means a missing/failed reading. Light is raw, not lux.",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "txori-sqlite"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='light' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "rawQueryText": "SELECT observed_at_ms / 1000 AS time, value FROM environment_readings WHERE metric='light' AND observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms",
+          "queryType": "sql",
+          "timeColumns": [
+            "time"
+          ],
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 5,
+      "type": "table",
+      "title": "Bird observations \u2014 not individual birds",
+      "description": "",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "txori-sqlite"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryText": "SELECT observed_at_ms / 1000 AS time, scientific_name, confidence FROM detections WHERE observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms DESC LIMIT 500",
+          "rawQueryText": "SELECT observed_at_ms / 1000 AS time, scientific_name, confidence FROM detections WHERE observed_at_ms BETWEEN $__from AND $__to ORDER BY observed_at_ms DESC LIMIT 500",
+          "queryType": "sql",
+          "timeColumns": [
+            "time"
+          ],
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 6,
+      "type": "table",
+      "title": "Latest health and freshness",
+      "description": "Age > 120 seconds means stale; missing rows mean no health observations.",
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "txori-sqlite"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryText": "SELECT station_id, max(observed_at_ms) / 1000 AS time, (strftime('%s','now') * 1000 - max(observed_at_ms)) / 1000 AS age_seconds, json_extract(payload,'$.services') AS services FROM health_events GROUP BY station_id",
+          "rawQueryText": "SELECT station_id, max(observed_at_ms) / 1000 AS time, (strftime('%s','now') * 1000 - max(observed_at_ms)) / 1000 AS age_seconds, json_extract(payload,'$.services') AS services FROM health_events GROUP BY station_id",
+          "queryType": "sql",
+          "timeColumns": [
+            "time"
+          ],
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 7,
+      "type": "table",
+      "title": "Daily archive with observed coverage",
+      "description": "Archive is materialized before retention purge. Use the daily API for current days. Coverage is any station event, not proven audio coverage.",
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "txori-sqlite"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryText": "SELECT day, station_id, json_extract(payload,'$.detections_total') AS detections, json_extract(payload,'$.coverage.minutes_with_data') AS observed_minutes, json_extract(payload,'$.coverage.minutes_in_day') AS day_minutes FROM daily_summaries ORDER BY day DESC LIMIT 500",
+          "rawQueryText": "SELECT day, station_id, json_extract(payload,'$.detections_total') AS detections, json_extract(payload,'$.coverage.minutes_with_data') AS observed_minutes, json_extract(payload,'$.coverage.minutes_in_day') AS day_minutes FROM daily_summaries ORDER BY day DESC LIMIT 500",
+          "queryType": "sql",
+          "timeColumns": [
+            "time"
+          ],
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    }
+  ]
+}

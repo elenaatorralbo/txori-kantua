@@ -69,7 +69,12 @@ def test_agreed_endpoints_and_read_only():
 
 
 def test_there_is_no_audio_endpoint():
-    assert "audio" not in json.dumps(SPEC["paths"]).lower()
+    # Descriptions and duration metadata may discuss audio privacy; no raw-audio route.
+    assert all("audio" not in path.lower() for path in SPEC["paths"])
+    for _, _, operation in _operations():
+        assert "requestBody" not in operation
+        for response in operation.get("responses", {}).values():
+            assert not any(media.startswith("audio/") for media in response.get("content", {}))
 
 
 @pytest.mark.parametrize("path, method, operation", list(_operations()),
