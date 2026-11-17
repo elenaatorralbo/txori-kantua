@@ -8,7 +8,7 @@ report templates to record inventory, Grove, PIR/touch and LCD checks.
 | Planned component | Function | Connection to verify | Status | Required evidence |
 |---|---|---|---|---|
 | Raspberry Pi 5 | Capture, inference and control | Power supply, cooling and storage suited to the model | Not verified | OS, power and thermal test |
-| Omnidirectional USB microphone | Local audio | USB, format, channels and identifier | Not verified | Ten windows in RAM and disconnection test |
+| Omnidirectional USB microphone | Local audio | USB, format, channels and identifier | Not verified; tool ready ([procedure](audio-capture.md)) | Ten windows in RAM and disconnection test |
 | Grove Base Hat | Peripheral interface | Header, buses and compatible drivers | Not verified | Buses/addresses and real reading |
 | Temperature and humidity | Environment | Port and bus depending on the model | Not verified | 30 readings per channel, units and range |
 | Barometer | Pressure | Bus, address and unit depending on the model | Not verified | 30 readings and comparison against a reference |
