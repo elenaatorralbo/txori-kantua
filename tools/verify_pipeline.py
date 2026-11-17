@@ -61,7 +61,9 @@ max_inflight_messages 20
             nonlocal broker
             broker=subprocess.Popen([args.mosquitto,'-c',str(root/'broker.conf')],stdout=log,stderr=log)
             def ready():
-                if broker.poll() is not None: raise AssertionError('broker failed to start')
+                if broker.poll() is not None:
+                    log.flush()
+                    raise AssertionError('broker failed to start: '+(root/'broker.log').read_text()[-3000:])
                 try:
                     with socket.create_connection(('127.0.0.1',port),timeout=.2): return True
                 except OSError: return False

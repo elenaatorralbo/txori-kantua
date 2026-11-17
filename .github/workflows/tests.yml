@@ -8,6 +8,7 @@ permissions:
 jobs:
   unit:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       matrix:
         python: ['3.11', '3.13']
@@ -20,6 +21,7 @@ jobs:
       - run: python -m pytest -m 'not hardware and not broker and not model'
   integration:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
