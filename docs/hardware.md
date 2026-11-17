@@ -10,9 +10,9 @@ report templates to record inventory, Grove, PIR/touch and LCD checks.
 | Raspberry Pi 5 | Capture, inference and control | Power supply, cooling and storage suited to the model | Not verified | OS, power and thermal test |
 | Omnidirectional USB microphone | Local audio | USB, format, channels and identifier | Not verified; tool ready ([procedure](audio-capture.md)) | Ten windows in RAM and disconnection test |
 | Grove Base Hat | Peripheral interface | Header, buses and compatible drivers | Not verified | Buses/addresses and real reading |
-| Temperature and humidity | Environment | Port and bus depending on the model | Not verified | 30 readings per channel, units and range |
-| Barometer | Pressure | Bus, address and unit depending on the model | Not verified | 30 readings and comparison against a reference |
-| Light (added to the design) | Illumination | Analogue/digital depending on the model | Not verified | Response in two conditions; lux only with a validated conversion |
+| Temperature and humidity | Environment | DHT11 on GPIO 5; BME280 as cross-check | Not verified; tool ready ([procedure](environment-sensors.md)) | 30 readings per channel, units and range |
+| Barometer | Pressure | Grove BME280, I2C 0x76/0x77 | Not verified; tool ready ([procedure](environment-sensors.md)) | 30 readings and comparison against a reference |
+| Light (added to the design) | Illumination | Grove light sensor (analogue) on a Base Hat port, raw units | Not verified; tool ready ([procedure](environment-sensors.md)) | Response in two conditions; lux only with a validated conversion |
 | PIR | Presence | GPIO/port, level and stabilisation | Not verified | Ten cycles and false triggers |
 | Touch | Interaction | GPIO/port and debounce | Not verified | Ten presses without duplication |
 | Grove RGB LCD 16×2 | Bird information | Bus, address, power and characters | Not verified | Two lines, colours, switch-off and restart |
