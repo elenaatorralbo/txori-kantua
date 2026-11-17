@@ -13,8 +13,9 @@ Rules:
 - Environmental statistics use only readings with quality ``ok``: a gap is
   never averaged as a zero.
 - ``coverage`` separates "zero detections" from "no data": a day with
-  ``detections_total == 0`` and ``minutes_with_data > 0`` had a running
-  station and no birds; a day without any event has no item at all.
+  ``detections_total == 0`` and ``minutes_with_data > 0`` had telemetry,
+  not necessarily analyzed audio. Audio coverage is unknown (None).
+  A day without any event has no item at all.
 
 Pure functions: the API (#20) and the dashboard queries (#21) reuse them or
 reproduce them in SQL, and the projection can be rebuilt from base tables.
@@ -128,7 +129,10 @@ def daily_summaries(
         for metric, reading in event["readings"].items():
             if metric not in METRICS or reading.get("quality") != "ok" or reading.get("value") is None:
                 continue
-            bucket.metrics.setdefault(metric, _Metric(reading["unit"])).add(float(reading["value"]))
+            aggregate = bucket.metrics.setdefault(metric, _Metric(reading["unit"]))
+            if aggregate.unit != reading["unit"]:
+                raise ValueError("cannot aggregate different units for one metric and day")
+            aggregate.add(float(reading["value"]))
 
     for event in other_events:
         place(event)
@@ -151,6 +155,7 @@ def daily_summaries(
             "detections_total": sum(s["count"] for s in species),
             "species": species,
             "environment": {m: bucket.metrics[m].summary() for m in METRICS if m in bucket.metrics},
-            "coverage": {"minutes_with_data": len(bucket.minutes), "minutes_in_day": minutes_in_day(day)},
+            "coverage": {"minutes_with_data": len(bucket.minutes), "minutes_in_day": minutes_in_day(day),
+                         "analyzed_audio_minutes": None},
         })
     return summaries

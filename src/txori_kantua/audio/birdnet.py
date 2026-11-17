@@ -176,11 +176,17 @@ class BirdNet:
             raise ValueError(f"window has {samples.size} samples; at most {WINDOW_SAMPLES}")
         self._window[0, : samples.size] = samples
         self._window[0, samples.size:] = 0.0
-        self._interpreter.set_tensor(self._input, self._window)
-        self._interpreter.invoke()
-        logits = self._interpreter.get_tensor(self._output)[0]
-        self._window.fill(0.0)  # do not keep the last window around (ADR 0006)
-        return flat_sigmoid(logits, self.sensitivity)
+        try:
+            self._interpreter.set_tensor(self._input, self._window)
+            self._interpreter.invoke()
+            logits = self._interpreter.get_tensor(self._output)[0]
+            if not np.isfinite(logits).all():
+                raise ValueError("model returned non-finite scores")
+            return flat_sigmoid(logits, self.sensitivity)
+        finally:
+            self._window.fill(0.0)
+            # Clear the interpreter input even when invocation failed.
+            self._interpreter.set_tensor(self._input, self._window)
 
     def top(self, scores: np.ndarray, *, k: int = 5, min_confidence: float = 0.0,
             species_only: bool = True) -> list[Candidate]:

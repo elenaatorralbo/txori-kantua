@@ -144,8 +144,9 @@ paths:
 
         Only days with at least one event of the station are returned. A
         missing day means **no data**; a returned day with
-        `detections_total: 0` means the station was running and detected no
-        birds. `coverage` says how much of the day had data. Duplicated
+        `detections_total: 0` means no detection was recorded; it does not prove
+        listening or absence of birds. Coverage reports telemetry and marks
+        analyzed audio duration unknown until explicitly measured. Duplicated
         events count once and environmental statistics use only readings
         with quality ok (issue #28, `txori_kantua.aggregates`).
       parameters:
@@ -183,7 +184,7 @@ paths:
                           - { scientific_name: Erithacus rubecula, count: 1, max_confidence: 0.61 }
                         environment:
                           temperature: { unit: degC, count: 2880, min: 9.1, max: 17.4, mean: 13.2 }
-                        coverage: { minutes_with_data: 1438, minutes_in_day: 1440 }
+                        coverage: { minutes_with_data: 1438, minutes_in_day: 1440, analyzed_audio_minutes: null }
                 empty:
                   value: { items: [] }
         "400": { $ref: "#/components/responses/BadRequest" }
@@ -398,12 +399,14 @@ components:
     DayCoverage:
       type: object
       additionalProperties: false
-      required: [minutes_with_data, minutes_in_day]
+      required: [minutes_with_data, minutes_in_day, analyzed_audio_minutes]
       description: |
         Minutes of the local day with at least one event of the station
         (detection, environment, health). `minutes_in_day` is 1380 or 1500
-        on clock-change days. It tells a quiet day from a station that was off.
+        on clock-change days. Telemetry is not listening time. Audio coverage is
+        null (unknown) until completed analyzed windows are measured explicitly.
       properties:
+        analyzed_audio_minutes: { type: [number, "null"], minimum: 0, maximum: 1500 }
         minutes_with_data: { type: integer, minimum: 1 }
         minutes_in_day: { type: integer, enum: [1380, 1440, 1500] }
 

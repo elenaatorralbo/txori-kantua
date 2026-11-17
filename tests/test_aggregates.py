@@ -116,8 +116,8 @@ def test_environment_statistics_ignore_failed_readings():
 def test_zero_detections_is_distinguished_from_no_data():
     health = new_health(station_id=STATION, services={"station": "healthy"}, observed_at="2026-11-18T12:00:00Z")
     days = summarize(environment=[environment("2026-11-17T10:00:00")], other_events=[health])
-    assert days["2026-11-17"]["detections_total"] == 0          # running, no birds
-    assert days["2026-11-17"]["coverage"] == {"minutes_with_data": 1, "minutes_in_day": 1440}
+    assert days["2026-11-17"]["detections_total"] == 0          # telemetry present; audio coverage unknown
+    assert days["2026-11-17"]["coverage"] == {"minutes_with_data": 1, "minutes_in_day": 1440, "analyzed_audio_minutes": None}
     assert days["2026-11-18"]["environment"] == {}               # only health: still a day with data
     assert "2026-11-16" not in days                               # no event at all: no data
 
@@ -138,3 +138,14 @@ def test_range_is_validated():
 def test_local_date_helper():
     assert local_date("2026-07-01T22:30:00Z") == date(2026, 7, 2)  # CEST = UTC+2
     assert local_date(datetime(2026, 1, 1, 22, 30, tzinfo=timezone.utc)) == date(2026, 1, 1)
+
+
+def test_failed_audio_with_live_telemetry_has_unknown_listening_coverage():
+    from txori_kantua.messaging.events import new_health
+    health = new_health(station_id='station-01',observed_at='2026-11-17T10:00:00Z',
+                        services={'capture':'failed','inference':'failed'})
+    rows=daily_summaries(station_id='station-01',from_date=date(2026,11,17),
+                         to_date=date(2026,11,18),other_events=[health])
+    assert rows[0]['detections_total']==0
+    assert rows[0]['coverage']['minutes_with_data']==1
+    assert rows[0]['coverage']['analyzed_audio_minutes'] is None

@@ -17,14 +17,14 @@ of ADR 0003 is a projection that can be rebuilt from the base tables.
 | Duplicates (same `event_id`) count once | QoS 1 can redeliver; ingest also deduplicates (#19) |
 | Environmental statistics only over quality `ok` | A failed reading is a gap, not a 0 (environment contract) |
 | A day with no station event is **not returned** | Missing day = no data |
-| `detections_total: 0` with `coverage.minutes_with_data > 0` | Station running, no birds |
-| `coverage.minutes_with_data / minutes_in_day` | Partial days (station off for hours) are visible, not read as quiet days |
+| `detections_total: 0` with `coverage.minutes_with_data > 0` | No detections recorded; listening duration is unknown |
+| `coverage.minutes_with_data / minutes_in_day` | Telemetry coverage only; not a denominator for bird rates |
 
 ## For the dashboard (#21)
 
 - Show a day absent from the result as a gap ("no data"), not as a 0 bar.
-- Show coverage next to daily counts; flag days below a coverage threshold
-  agreed with the team (proposal: 80 %).
+- Show telemetry coverage next to counts and audio coverage as unknown.
+  Never use telemetry minutes as the denominator of bird rates.
 - Group by `date(observed_at, '+1 hour')` is **wrong** for half of the year:
   use the local day bounds, or let the API compute them.
 
@@ -32,5 +32,8 @@ of ADR 0003 is a projection that can be rebuilt from the base tables.
 
 Coverage counts minutes with any event of the station (detection,
 environment, health). It shows that the station was alive, not that capture
-and inference were running. When those services publish availability (#13),
-coverage can be restricted to minutes in which both were `healthy`.
+and inference were running. `analyzed_audio_minutes` is null until completed
+analyzed windows are measured, including windows without detections and gaps.
+Availability/healthy status alone does not prove completed analysis.
+Environmental coverage must use valid samples of the specific metric, not any
+event. Mixed units within a day are rejected instead of silently averaged.

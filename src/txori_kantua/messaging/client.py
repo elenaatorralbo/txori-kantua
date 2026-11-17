@@ -61,6 +61,15 @@ class MqttSettings:
     reconnect_min_seconds: int = 1
     reconnect_max_seconds: int = 60
 
+    def __post_init__(self) -> None:
+        availability_topic(self.station_id,self.service)
+        if not 1 <= self.port <= 65535 or not 1 <= self.keepalive <= 65535:
+            raise ValueError("invalid MQTT port or keepalive")
+        if not 1 <= self.max_queued_messages <= 10000:
+            raise ValueError("MQTT queue must contain 1..10000 messages")
+        if not 1 <= self.reconnect_min_seconds <= self.reconnect_max_seconds <= 300:
+            raise ValueError("invalid reconnection bounds")
+
     @classmethod
     def from_env(cls, *, service: str, station_id: str | None = None) -> "MqttSettings":
         """Read ``TXORI_MQTT_*`` and ``TXORI_STATION_ID`` from the environment.
@@ -303,7 +312,7 @@ class MqttConnection:
             self.stats["invalid"] += 1
             # Size and reason are logged, never the content: an invalid message
             # may contain exactly what the contract forbids.
-            log.warning("invalid message topic=%s bytes=%d reason=%s", topic, len(payload), exc)
+            log.warning("invalid message bytes=%d reason=%s", len(payload), type(exc).__name__)
             if self._on_invalid is not None:
                 try:
                     self._on_invalid(topic, payload, exc)

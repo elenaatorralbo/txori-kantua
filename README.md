@@ -4,7 +4,13 @@ IoT station that brings nature closer to people through local recognition of bir
 
 ## Actual status
 
-**Planning and foundations phase, 5 November 2026.** This repository contains the documentation baseline and the backlog. There is no implementation of the system yet, nor any evidence of hardware availability, connection or testing. BirdNET, MQTT, Flask, InfluxDB and Grafana are proposed technologies pending validation. There is no MVP release.
+**Implementation and integration in progress, 17 November 2026.** Capture,
+BirdNET adapters, environmental drivers, MQTT contracts/transport, SQLite ingest,
+read API, daily aggregates and display logic are implemented. Tests distinguish
+synthetic metadata from physical observations. An isolated Mosquitto/SQLite/API
+pipeline has been verified on the Pi; the complete station is not yet deployed
+or accepted. Hardware gaps, model measurements and review still block the MVP.
+See [integration status and evidence](docs/pipeline-integration.md).
 
 - [Development board](https://github.com/users/elenaatorralbo/projects/2)
 - [Product Backlog](https://github.com/elenaatorralbo/txori-kantua/issues)
@@ -52,7 +58,13 @@ Python and Raspberry Pi OS as the proposed base; BirdNET for inference; Mosquitt
 
 ## Planned installation
 
-There is no executable application, pinned dependencies, Docker images or installable services yet. No fictitious start commands are offered. The preparation order is: inventory hardware, validate capture privacy, prepare Raspberry Pi OS and Python, test buses/peripherals and decide versions through measurements. Reproducible instructions will be added in the provisioning and deployment issues.
+Use a Python virtual environment and install `python -m pip install -e '.[dev]'`
+from this checkout. Run `python -m pytest` for the software suite. Tests requiring
+a real broker or BirdNET model are skipped unless explicitly configured.
+[Pipeline instructions](docs/pipeline-integration.md) cover MQTT ingest, sensor
+publication and the read-only API. Existing bounded sensor/LCD recovery remains
+in [the recovery guide](docs/raspberry-recovery.md). Neither procedure establishes
+full MVP acceptance.
 
 ## Documentation
 

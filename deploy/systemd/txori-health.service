@@ -13,10 +13,11 @@ StartLimitBurst=3
 [Service]
 Type=simple
 DynamicUser=yes
-Environment=PYTHONPATH=/opt/txori-kantua/src
+WorkingDirectory=/opt/txori-kantua/app
+Environment=TXORI_CONTRACTS_DIR=/opt/txori-kantua/app/contracts/mqtt
 Environment=PYTHONUNBUFFERED=1
 Environment=PYTHONDONTWRITEBYTECODE=1
-ExecStart=/usr/bin/python3 -m txori_kantua.health.monitor --interval 30
+ExecStart=/opt/txori-kantua/venv/bin/python -m txori_kantua.health.monitor --interval 30
 Restart=on-failure
 RestartSec=30
 TimeoutStopSec=10
