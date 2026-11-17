@@ -200,6 +200,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--bus", type=int, default=DEFAULT_BUS, help="I2C bus number")
     p.add_argument("--dht-pin", type=int, default=5, help="DHT11 GPIO (BCM numbering)")
     p.add_argument("--light-channel", type=int, default=0, help="Base Hat analogue port (A0 -> 0)")
+    p.add_argument("--bme280-address", type=lambda v: int(v, 0), action="append",
+                   help="I2C address to probe (repeatable; default 0x76 and 0x77)")
     p.add_argument("--no-dht", action="store_true")
     p.add_argument("--no-bme280", action="store_true")
     p.add_argument("--no-light", action="store_true")
@@ -213,7 +215,7 @@ def build_sources(args: argparse.Namespace) -> list[Source]:
     if not (args.no_bme280 and args.no_light):
         bus = open_bus(args.bus)
         if not args.no_bme280:
-            sources.append(Bme280Source(bus))
+            sources.append(Bme280Source(bus, tuple(args.bme280_address or (0x76, 0x77))))
         if not args.no_light:
             sources.append(LightSource(bus, args.light_channel))
     return sources
@@ -227,7 +229,8 @@ def setup_section(args: argparse.Namespace, sources: Sequence[Source]) -> str:
             lines.append(f"- DHT11 on GPIO {source.pin} (BCM), driver `txori_kantua.dht11` (lgpio)")
         elif isinstance(source, Bme280Source):
             found = f"found at `{source.address:#04x}`" if source.address is not None else "**not found**"
-            lines.append(f"- BME280 on I2C bus {args.bus}, {found} (probed 0x76, 0x77); forced mode, "
+            probed = ", ".join(f"{a:#04x}" for a in source.addresses)
+            lines.append(f"- BME280 on I2C bus {args.bus}, {found} (probed {probed}); forced mode, "
                          "oversampling x1, filter off")
         elif isinstance(source, LightSource):
             found = source.product or "**ADC not found**"
