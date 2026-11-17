@@ -74,13 +74,15 @@ Environmental statistics instead require valid readings of the metric evaluated.
   over days and its spread, not one day.
 - **Minimum data:** ≥ 14 days, each with ≥ 80 % verified analyzed-audio coverage **in the dawn
   window** specifically; enough detections per bin to show a shape (a
-  proposal: 20 or more). Bins without coverage are gaps, never zeros.
+  proposal: 20 or more). Bins without verified analyzed audio are gaps, never zeros.
 - **Pitfalls:** traffic or wind at dawn changes detectability, not birds.
   The clock change moves clock time, not sunrise-relative time, which is why
   sunrise-relative bins are used.
 - **Estimate:** 3 points.
 - **Decision:** the most promising one. Revisit after two weeks of real
-  data with the #17 filter in place.
+  data with the #17 filter in place **and** a completed-window
+  analyzed-audio coverage contract (missing prerequisite; `analyzed_audio_minutes`
+  is null today).
 
 ## 4. Period comparisons
 
@@ -94,7 +96,7 @@ Environmental statistics instead require valid readings of the metric evaluated.
   larger period.
 - **Pitfalls:** this is where "absence of observations" turns into false
   ecology. A week with the station off for three days reads as a drop if
-  raw counts are used. The coverage normalisation and the minimum coverage
+  raw counts are used. Normalisation by verified analyzed audio and its minimum
   are therefore mandatory, not refinements.
 - **Estimate:** 2 points, on top of #28's aggregates.
 - **Decision:** postpone. With the course's data volume, most comparisons
@@ -104,10 +106,10 @@ Environmental statistics instead require valid readings of the metric evaluated.
 
 | Proposal | Hypothesis | Minimum data | Estimate | Decision |
 |---|---|---|---|---|
-| Anomaly alerts | Unusual readings matter | 7 days ≥ 80 % coverage | 3 | Postpone; start with a sensor-fault check |
+| Anomaly alerts | Unusual readings matter | 7 days ≥ 80 % valid readings of the evaluated metric | 3 | Postpone; start with a sensor-fault check |
 | Telegram | Summaries keep volunteers engaged | #17 filter in place | 2–3 | Postpone; off by default, opt-in |
-| Dawn chorus | Activity peaks around sunrise | 14 days, dawn coverage ≥ 80 % | 3 | Most promising; revisit after real data |
-| Period comparisons | Seasons change species and activity | Both periods ≥ 80 %, same model | 2 | Postpone |
+| Dawn chorus | Activity peaks around sunrise | Missing prerequisite: analyzed-audio coverage contract; then 14 days, dawn window ≥ 80 % verified analyzed audio | 3 | Most promising; revisit after real data |
+| Period comparisons | Seasons change species and activity | Missing prerequisite: analyzed-audio coverage contract; then both periods ≥ 80 % verified analyzed audio, same model | 2 | Postpone |
 
 ## Acceptance criteria
 
@@ -115,7 +117,7 @@ Environmental statistics instead require valid readings of the metric evaluated.
 |---|---|
 | Each proposal has hypothesis, minimum data, estimate and decision | Sections 1–4 and summary |
 | Telegram is not activated and publishes no credentials without explicit configuration | Section 2, design rules |
-| The design separates absence of observations from real ecological changes | Common requirements (rate per covered hour, minimum coverage), sections 3–4 |
+| The design separates absence of observations from real ecological changes | Common requirements (rate per verified analyzed-audio hour, never telemetry minutes; environmental coverage from valid readings of the metric), sections 1, 3–4 and review correction |
 
 ## Review correction
 
