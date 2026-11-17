@@ -11,6 +11,9 @@ Available subpackages:
 
 ``lcd``
     Hardware-independent text formatting and pagination for a 16x2 LCD.
+
+``privacy``
+    Audio privacy safeguards and the read-only privacy audit (issue #11).
 """
 
 __all__ = ["__version__"]

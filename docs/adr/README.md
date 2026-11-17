@@ -26,7 +26,7 @@ with real measurements on the Raspberry Pi 5.
 | [0003](0003-persistence.md) | SQLite as the single source of truth | Proposed | Javier | [#19](https://github.com/elenaatorralbo/txori-kantua/issues/19) |
 | [0004](0004-visualization.md) | Grafana data source and role of the API | Proposed | Javier, reviewed by Erik | [#20](https://github.com/elenaatorralbo/txori-kantua/issues/20), [#21](https://github.com/elenaatorralbo/txori-kantua/issues/21) |
 | 0005 | systemd as the deployment mechanism | Not yet written | Javier | [#29](https://github.com/elenaatorralbo/txori-kantua/issues/29) |
-| 0006 | Transient audio in RAM | Not yet written | David | [#11](https://github.com/elenaatorralbo/txori-kantua/issues/11) |
+| [0006](0006-transient-audio.md) | Keep audio transient and in RAM only | Proposed | David | [#11](https://github.com/elenaatorralbo/txori-kantua/issues/11) |
 | [0007](0007-retention.md) | Retention and resource budget | Proposed | Javier | [#19](https://github.com/elenaatorralbo/txori-kantua/issues/19), [#28](https://github.com/elenaatorralbo/txori-kantua/issues/28) |
 
 ADRs marked "Not yet written" have no file yet: they are created in the
