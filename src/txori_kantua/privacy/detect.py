@@ -52,6 +52,10 @@ _DATA_URI_RE = re.compile(r"^data:(audio|video)/", re.IGNORECASE)
 
 #: Directories never walked: virtual filesystems with no persistent content.
 _SKIP_ROOTS = ("/proc", "/sys", "/dev/pts")
+#: Installed Python packages ship data such as NumPy's ``.npy`` test fixtures.
+#: They are library files, not runtime output, and audio services cannot write
+#: there (ProtectSystem=strict), so walking them only adds false positives.
+_SKIP_DIRS = frozenset({"site-packages", "dist-packages", "__pycache__", ".git"})
 
 
 @dataclass(frozen=True)
@@ -182,6 +186,7 @@ def _walk(root: Path, result: TreeScan) -> Iterator[Path]:
         if directory.startswith(_SKIP_ROOTS):
             dirnames.clear()
             continue
+        dirnames[:] = [d for d in dirnames if d not in _SKIP_DIRS]
         for name in filenames:
             path = Path(directory, name)
             try:

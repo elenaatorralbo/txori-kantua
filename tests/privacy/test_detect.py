@@ -91,6 +91,13 @@ def test_allowed_corpus_is_not_reported(tmp_path):
     assert scan_tree([tmp_path], allowed_sha256=allowed).findings == []
 
 
+def test_installed_packages_are_not_walked(tmp_path):
+    data = tmp_path / "venv/lib/python3.13/site-packages/numpy/lib/tests/data"
+    data.mkdir(parents=True)
+    (data / "python3.npy").write_bytes(b"\x93NUMPY\x01\x00v\x00")
+    assert scan_tree([tmp_path]).findings == []
+
+
 def test_missing_root_is_ignored(tmp_path):
     assert scan_tree([tmp_path / "missing"]).files_checked == 0
 
