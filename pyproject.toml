@@ -16,7 +16,14 @@ dependencies = [
     "referencing>=0.30",
     "Flask>=3.1,<4",
     "paho-mqtt>=2.0",
+    # Production WSGI server for txori-api; Flask's own server is for development only.
+    "waitress>=3.0",
 ]
+
+[project.scripts]
+txori-ingest = "txori_kantua.ingest:main"
+txori-api = "txori_kantua.api:main"
+txori-storage = "txori_kantua.maintenance:main"
 
 [project.optional-dependencies]
 # BirdNET inference (issue #8). ai-edge-litert publishes aarch64 wheels for
