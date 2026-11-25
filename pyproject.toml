@@ -21,6 +21,8 @@ dependencies = [
 ]
 
 [project.scripts]
+txori-sensors = "txori_kantua.environment.publisher:main"
+txori-lcd = "txori_kantua.lcd_station:main"
 txori-ingest = "txori_kantua.ingest:main"
 txori-api = "txori_kantua.api:main"
 txori-storage = "txori_kantua.maintenance:main"
@@ -47,6 +49,7 @@ dev = [
 where = ["src"]
 
 [tool.setuptools.package-data]
+"txori_kantua" = ["bird_names.json"]
 "txori_kantua.audio" = ["corpus.json"]
 
 [tool.pytest.ini_options]
