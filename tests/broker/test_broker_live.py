@@ -88,6 +88,27 @@ def test_authorised_publisher_publishes_and_authorised_consumer_receives():
         sensors.close(); ingest.close()
 
 
+def test_detection_reaches_ingest_and_station():
+    """Issue #18: a valid event reaches two independent consumers."""
+    from datetime import datetime, timedelta, timezone
+
+    a, b = Inbox(), Inbox()
+    ingest, station, inference = _connect("ingest"), _connect("station"), _connect("inference")
+    try:
+        assert all(c.wait_connected(WAIT) for c in (ingest, station, inference))
+        ingest.subscribe("detection", a)
+        station.subscribe("detection", b)
+        time.sleep(0.5)
+        start = datetime.now(timezone.utc).replace(microsecond=0)
+        event = m.DetectionPublisher(inference).publish(m.InferenceResult(
+            scientific_name="Turdus merula", confidence=0.87, window_start=start,
+            window_end=start + timedelta(seconds=3), model_name="broker-test", model_version="0"))
+        assert a.wait() and b.wait()
+        assert a.events[0][1] == event and b.events[0][1] == event
+    finally:
+        inference.close(); station.close(); ingest.close()
+
+
 # Criterion 2 ----------------------------------------------------------------
 
 def test_anonymous_client_is_rejected():

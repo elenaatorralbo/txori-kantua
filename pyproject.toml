@@ -44,7 +44,7 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["src", "tests"]
 addopts = "-ra --strict-markers"
 # Tests write synthetic tones to tmp_path; keeping them would pollute the
 # privacy audit of /tmp on the Pi (issue #11). Kept only to debug a failure.

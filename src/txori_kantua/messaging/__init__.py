@@ -14,6 +14,7 @@ from .contracts import (
     load_schema,
     validate,
 )
+from .detections import DetectionPublisher, InferenceResult
 from .errors import (
     ContractViolation,
     MessagingError,
@@ -55,6 +56,8 @@ __all__ = [
     "KINDS",
     "POLICIES",
     "ContractViolation",
+    "DetectionPublisher",
+    "InferenceResult",
     "MessagingError",
     "MqttConnection",
     "MqttSettings",
