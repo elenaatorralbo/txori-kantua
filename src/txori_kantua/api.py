@@ -5,13 +5,14 @@ import base64
 import hashlib
 import json
 import math
+import os
 import re
 import sqlite3
 import uuid
 from contextlib import closing
 from datetime import date, timedelta
 
-from flask import Flask, jsonify, request
+from flask import Flask, g, jsonify, request
 from .aggregates import daily_summaries, day_bounds
 from .messaging.errors import MessagingError
 from .messaging.timestamps import now_timestamp, to_epoch_ms
@@ -27,11 +28,38 @@ def fail(message, code='INVALID_PARAMETER'):
     raise BadQuery(code,message)
 
 
+#: Query parameters accepted per route. Anything else is a 400, so a typo such
+#: as ``limt=5`` is not silently ignored.
+ALLOWED_PARAMS = {
+    '/api/v1/health': set(),
+    '/api/v1/detections': {'from','to','station_id','limit','cursor','species','min_confidence'},
+    '/api/v1/environment': {'from','to','station_id','limit','cursor'},
+    '/api/v1/summaries/daily': {'from_date','to_date','station_id'},
+}
+
+
 def create_app(database):
     app = Flask(__name__)
 
+    @app.before_request
+    def assign_request_id():
+        # One identifier per request: the error body, the header and the log agree.
+        g.request_id = str(uuid.uuid4())
+        allowed = ALLOWED_PARAMS.get(request.path)
+        if allowed is not None:
+            unknown = sorted(set(request.args) - allowed)
+            if unknown:
+                fail('unknown parameter: '+', '.join(unknown))
+
+    @app.after_request
+    def finish(response):
+        response.headers['X-Request-Id'] = g.get('request_id','')
+        # Data changes continuously: no cache may serve it.
+        response.headers['Cache-Control'] = 'no-store'
+        return response
+
     def error(code,message,status):
-        return jsonify(error={'code':code,'message':message,'request_id':str(uuid.uuid4())}),status
+        return jsonify(error={'code':code,'message':message,'request_id':g.get('request_id') or str(uuid.uuid4())}),status
 
     @app.errorhandler(BadQuery)
     def bad_query(exc):
@@ -52,7 +80,7 @@ def create_app(database):
     @app.errorhandler(Exception)
     def internal_error(exc):
         # Exception text may include SQL, paths or rejected input.
-        request_id=str(uuid.uuid4())
+        request_id=g.get('request_id') or str(uuid.uuid4())
         app.logger.error('request failed request_id=%s class=%s',request_id,type(exc).__name__)
         return jsonify(error={'code':'INTERNAL_ERROR','message':'request could not be completed',
                               'request_id':request_id}),500
@@ -179,3 +207,17 @@ def create_app(database):
         return jsonify(items=sorted(result,key=lambda x:(x['date'],x['station_id'])))
 
     return app
+
+
+def main():
+    """Production server (waitress), loopback only by default. Entry point ``txori-api``."""
+    import logging
+    from waitress import serve
+    logging.basicConfig(level=os.environ.get('TXORI_LOG_LEVEL','INFO'))
+    database=os.environ.get('TXORI_DATABASE','/var/lib/txori-kantua/events.sqlite')
+    host=os.environ.get('TXORI_API_HOST','127.0.0.1')
+    port=int(os.environ.get('TXORI_API_PORT','8080'))
+    serve(create_app(database),host=host,port=port,threads=4,ident=None)
+
+
+if __name__=='__main__': main()

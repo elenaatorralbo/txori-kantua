@@ -68,12 +68,38 @@ TXORI_STATION_ID=station-01 python -m txori_kantua.environment.publisher
 # Local development API (Flask's server is not the production deployment):
 flask --app 'txori_kantua.api:create_app("/var/lib/txori-kantua/events.sqlite")' \
   run --host 127.0.0.1 --port 5000
+# Production API: waitress, loopback only unless TXORI_API_HOST says otherwise:
+TXORI_DATABASE=/var/lib/txori-kantua/events.sqlite txori-api   # port TXORI_API_PORT, default 8080
 ```
 
-Use `Store(path).backup(destination)` from the sole writer process for a
-consistent metadata copy. The tests reopen that copy and run `integrity_check`.
-No restore test should overwrite a live database. Stop writers before an
-operational restore; validate a restored copy separately first.
+The API rejects unknown query parameters with a 400 instead of ignoring them,
+returns the error `request_id` also in the `X-Request-Id` header and the log,
+and sends `Cache-Control: no-store`.
+
+### Backup and restore
+
+`txori-storage` works on `TXORI_DATABASE` (or `--db`):
+
+```bash
+txori-storage backup --dir /var/lib/txori-kantua/backups --keep 7   # safe while ingest runs
+txori-storage verify /var/lib/txori-kantua/backups/txori-YYYYMMDDTHHMMSSZ.sqlite
+txori-storage stats
+# Ingest and API STOPPED:
+txori-storage restore /var/lib/txori-kantua/backups/txori-YYYYMMDDTHHMMSSZ.sqlite --force
+```
+
+- `backup` takes a `VACUUM INTO` snapshot through its own read-only connection,
+  runs `integrity_check` on it and only then rotates the oldest copies, so a
+  faulty backup never replaces a good one.
+- `verify` checks integrity and that the file is an event database, and prints
+  its row counts.
+- `restore` verifies the backup first, moves the live database aside as
+  `events.sqlite.before-restore` instead of deleting it, drops the old `-wal`
+  and `-shm` files and checks that the restored row counts match the backup.
+  Without `--force` it refuses to replace an existing database.
+
+Backups stay on the same card as the database: they protect against corruption
+or deletion, not against losing the card.
 
 ## Retention and failure behaviour
 
