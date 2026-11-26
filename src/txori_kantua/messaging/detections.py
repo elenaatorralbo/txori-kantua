@@ -31,6 +31,7 @@ Guarantees:
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from collections import Counter, OrderedDict
 from dataclasses import dataclass
 from datetime import datetime
@@ -38,6 +39,8 @@ from typing import Any
 
 from . import events
 from .client import MqttConnection
+from .contracts import encode, validate
+from .topics import topic_for
 from .timestamps import format_timestamp, parse_timestamp
 
 __all__ = ["InferenceResult", "DetectionPublisher"]
@@ -115,10 +118,22 @@ class DetectionPublisher:
             example, a confidence outside 0–1). It is a producer defect and is
             not silenced.
         """
+        return self.publish_event(self.build_event(result))
+
+    def publish_event(self, event: dict[str, Any]) -> dict[str, Any]:
+        """Publish an inference event unchanged, retaining an independent snapshot.
+
+        Use this for pipeline events that already have an identity. Validation
+        happens before flushing, so invalid input causes no outgoing traffic.
+        Call this and flush from the same worker thread.
+        """
+        snapshot = deepcopy(event)
+        validate('detection', snapshot,
+                 topic=topic_for('detection', self._connection.settings.station_id))
+        encode('detection', snapshot)  # include serialized size/JSON validation
         self.flush()
-        event = self.build_event(result)
-        self._send(event, retry=False)
-        return event
+        self._send(snapshot, retry=False)
+        return deepcopy(snapshot)
 
     def flush(self) -> int:
         """Retry pending events, in order. Returns how many are still pending.

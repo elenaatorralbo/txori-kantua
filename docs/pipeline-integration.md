@@ -145,7 +145,7 @@ as one unit without a documented migration.
 
 | Issues | Current result / outstanding criterion |
 |---|---|
-| #13, #18 | Real isolated broker ACL/delivery/restart verified; production installation, review and integration pending |
+| #13, #18 | Inference events now feed MQTT without rebuilding identity; local real-broker harness covers SQLite/API and LCD logic. Raspberry installation and real-model/hardware validation remain pending |
 | #19, #20 | Storage/API implemented and contract, restart, backup and error tests pass; review/integration pending |
 | #14 | Four-channel publisher implemented; real 30-minute publication run pending |
 | #15–17 | Queue, inference normalization and deterministic context filters implemented; real corpus, budgets and 30-minute privacy run pending |
