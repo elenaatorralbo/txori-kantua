@@ -6,16 +6,41 @@ and [#17](https://github.com/elenaatorralbo/txori-kantua/issues/17)) and the
 consumers: persistence ([#19](https://github.com/elenaatorralbo/txori-kantua/issues/19))
 and LCD station ([#22](https://github.com/elenaatorralbo/txori-kantua/issues/22)).
 
-> **Status.** The publisher is implemented and tested against an in-memory
-> simulated broker (`pytest tests/messaging/test_detection_publisher.py`). It
-> is **not integrated with real inference**, which does not exist yet, nor
-> tested against Mosquitto: that test is in `tests/broker` and runs on the Pi.
-> The acceptance criteria of #18 are met only in simulation.
+The audio `PublishingPipeline` connects the existing `Inference` output to MQTT
+without rebuilding its events. Tests cover synthetic inference, broker outages,
+SQLite deduplication and the LCD consumer. This does not establish recognition
+quality or microphone/hardware acceptance on the Raspberry Pi.
+
+## Existing audio pipeline
+
+```python
+from txori_kantua.audio.pipeline import Inference, PublishingPipeline, WindowQueue
+from txori_kantua.messaging import DetectionPublisher, MqttConnection, MqttSettings
+
+windows = WindowQueue(capacity=2)
+inference = Inference(model, detection_filter, station_id)
+with MqttConnection(MqttSettings.from_env(service="inference")) as connection:
+    pipeline = PublishingPipeline(windows, inference, DetectionPublisher(connection))
+    pipeline.run(stop)
+```
+
+The capture producer supplies `Window` objects to `windows` from another thread;
+`model`, `detection_filter`, `station_id` and the stop event are supplied by the
+application. Stop capture before shutting down the worker. `run` wipes queued
+PCM on exit; inference wipes each processed buffer even on conversion/model
+failure. Model failures propagate to the caller for supervision.
+
+`step()` handles one queued window and returns its original metadata events.
+The worker also calls `flush()` on idle ticks, so recovery needs no new bird.
+`publish_event(event)` validates the contract, station and payload size before
+sending, and keeps a private copy for retries. Caller mutations cannot alter
+pending events. Use the publisher from one worker thread. Queue acceptance is
+not proof of broker acknowledgement; pending metadata is lost on process exit.
 
 ## For whoever produces detections (David)
 
-All inference has to do is hand over one `InferenceResult` for each species
-that passes its filter:
+External adapters that do not already build v1 events can still hand over one
+`InferenceResult` per accepted species:
 
 ```python
 from txori_kantua import messaging as m
@@ -52,8 +77,14 @@ publisher.flush()
 
 ## Identity and retries
 
-`event_id` is deterministic: it is derived from the station, the window start
-and end and the scientific name. Consequences:
+For pipeline events, `publish_event` preserves `event_id`, `observed_at`, model
+version and all other fields exactly. The existing inference ID uses station,
+window timestamp, scientific name and model version. Do not convert these events
+to `InferenceResult`, which would generate a different ID.
+
+The legacy `publish(InferenceResult)` API retains its existing identity rule
+(station, normalized window start/end and scientific name) for compatibility.
+For that API:
 
 | Situation | Result |
 |---|---|
@@ -61,10 +92,10 @@ and end and the scientific name. Consequences:
 | Inference restarts and analyses the same window again | Same `event_id` |
 | The same instant arrives as a `datetime` and as a string | Same `event_id` (normalised to milliseconds) |
 | Two species in the same window | Two events, two `event_id` |
-| Same window and species with another confidence | Same `event_id`: it is the same observation. Persistence keeps the first one received |
+| Same window and species with another confidence | Same `event_id`; storage rejects a conflicting payload and retains the original |
 
-The last row is a decision: if David prefers a reanalysis with another
-confidence to replace the previous one, it has to be agreed before #19.
+A changed payload under an existing ID is a conflict, not a retry. Neither
+publishing API silently updates a stored observation.
 
 ## What happens without a connection
 
@@ -94,6 +125,37 @@ Until then nothing retained is published with detections.
 
 | Criterion of #18 | Test | Status |
 |---|---|---|
-| A valid event reaches two independent consumers | `test_an_event_reaches_two_independent_consumers`; with a real broker, `test_detection_reaches_ingest_and_station` | In simulation; pending on the Pi |
-| A retry keeps the identifier and does not change `observed_at` | `test_retry_keeps_identifier_observed_at_and_bytes`, `test_broker_down_delivers_on_return_without_changing_the_event` | In simulation |
+| A valid event reaches two independent consumers | `test_an_event_reaches_two_independent_consumers`; with a real broker, `test_detection_reaches_ingest_and_station` | Simulation and local Mosquitto; Raspberry deployment pending |
+| A retry keeps the identifier and does not change `observed_at` | `test_retry_keeps_identifier_observed_at_and_bytes`, `test_broker_down_delivers_on_return_without_changing_the_event` | Simulation and local Mosquitto restart |
 | No message carries samples, audio paths or precise coordinates | `test_no_published_message_carries_audio_paths_or_coordinates`, `test_inference_result_has_no_fields_for_audio_or_location`, plus the negative contract examples | Verified by contract; the real traffic audit belongs to #11 |
+
+## Reproduce with local Mosquitto, without a Raspberry Pi
+
+From the repository root, with Docker running:
+
+```sh
+docker build -f deploy/ci/broker.Dockerfile -t txori-local-broker-test .
+docker run --rm --network none txori-local-broker-test
+```
+
+The build needs internet access for dependencies. The test container runs as an
+unprivileged user, has no external network or published ports, and uses generated
+temporary credentials with the repository ACL. The build context excludes Git
+metadata, local environments and credentials. Versions are resolved during the
+build; this is a repeatable procedure, not a locked production image.
+
+The harness runs real-broker authentication/ACL/Last Will checks, then sends
+synthetic PCM through inference/filtering, MQTT, SQLite/API and the LCD controller.
+It verifies duplicate suppression and recovery after a 60-second broker outage.
+The standalone restart pytest is skipped because the harness owns the broker
+process and performs that restart itself. No microphone, real BirdNET weights,
+physical LCD or Raspberry system services are tested.
+
+Validation on 26 November 2026: macOS suite **595 passed, 10 skipped**
+(4.80 s). In the local Linux ARM64 container (Python 3.13, Mosquitto 2.0.21,
+paho-mqtt 2.2.0), **8 broker tests passed**, with the standalone restart test
+skipped in favour of the harness restart. The harness returned `PASS` at
+`2026-11-26T10:13:48.054Z`: outage 60 seconds, four LCD-consumer deliveries,
+one stored detection, and `inference_to_lcd`/`broker_restart` both `PASS`.
+These are synthetic input/model results against real Mosquitto, not physical
+Raspberry or BirdNET accuracy evidence.

@@ -3,6 +3,7 @@ from collections import Counter, deque
 from dataclasses import dataclass
 from datetime import timedelta
 from threading import Lock
+import math
 
 from .birdnet import WINDOW_SAMPLES, pcm16_to_float32
 from ..messaging.events import new_detection, stable_event_id
@@ -50,8 +51,9 @@ class Inference:
         self.stats=Counter()
 
     def process(self,window):
-        samples=pcm16_to_float32(window.pcm)
+        samples=None
         try:
+            samples=pcm16_to_float32(window.pcm)
             scores=self.model.predict(samples)
             start=parse_timestamp(window.observed_at)
             events=[]
@@ -71,5 +73,37 @@ class Inference:
             self.stats['errors']+=1
             raise
         finally:
-            samples.fill(0)
+            if samples is not None:
+                samples.fill(0)
             window.clear()
+
+
+class PublishingPipeline:
+    """Single worker connecting bounded audio windows to the metadata publisher.
+
+    The capture producer feeds WindowQueue. MQTT and model lifetimes belong to
+    the caller. Stop capture before shutdown; unprocessed PCM is wiped on exit.
+    """
+
+    def __init__(self, windows, inference, publisher):
+        self.windows, self.inference, self.publisher = windows, inference, publisher
+
+    def step(self):
+        self.publisher.flush()
+        window = self.windows.pop()
+        if window is None:
+            return []
+        events = self.inference.process(window)
+        for event in events:
+            self.publisher.publish_event(event)
+        return events
+
+    def run(self, stop, *, poll_interval=.1):
+        if not math.isfinite(poll_interval) or not 0 < poll_interval <= 1:
+            raise ValueError('poll_interval must be in (0, 1] seconds')
+        try:
+            while not stop.is_set():
+                self.step()
+                stop.wait(poll_interval)
+        finally:
+            self.windows.close()

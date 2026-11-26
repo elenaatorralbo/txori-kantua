@@ -10,8 +10,9 @@ restart test, also::
 
     TXORI_BROKER_RESTART_CMD="systemctl restart mosquitto"
 
-It covers the three acceptance criteria. **It has not been run yet**: there is
-no broker on the development machine.
+It covers the three acceptance criteria. For an isolated local broker without
+a Raspberry Pi, use the Docker procedure in docs/detection-publishing.md.
+The integration harness owns and verifies its broker restart separately.
 """
 
 from __future__ import annotations
