@@ -178,6 +178,6 @@ on Grafana. Do not treat the draft as completing #21 or the #23 demonstration.
 
 ## Sprint 2 follow-up (25 November)
 
-The [Elena Sprint 2 guide](sprint2-elena.md) documents bounded environmental
-publication with PUBACK/quality counters and the new `lcd_station` MQTT/GPIO
-runner. Physical backlight control and acceptance remain pending.
+Environmental publication supports bounded runs with PUBACK/quality counters.
+The `lcd_station` runner integrates MQTT and GPIO.
+Physical backlight control and acceptance remain pending.

@@ -158,3 +158,25 @@ def test_mqtt_start_failure_releases_all_hardware(monkeypatch):
                      '--warmup-ms', '0', '--debounce-ms', '50', '--pir-active', '1',
                      '--touch-active', '1', '--lcd-factory', 'test_board:create'])
     assert closed == [('backlight', False), 'lcd', 'inputs', 'mqtt']
+
+
+def test_gpio_setup_failure_extinguishes_lcd_and_preserves_original_error(monkeypatch):
+    import sys
+    import txori_kantua.lcd_station as module
+    actions = []
+    def close():
+        actions.append('close')
+        raise OSError('cleanup failed')
+    lcd = SimpleNamespace(write_rows=lambda rows: None,
+                          set_backlight=lambda enabled: actions.append(enabled), close=close)
+    def fail(*args):
+        raise OSError('GPIO busy')
+    monkeypatch.setenv('TXORI_STATION_ID', 'station-01')
+    monkeypatch.setitem(sys.modules, 'test_board', SimpleNamespace(create=lambda: lcd))
+    monkeypatch.setattr(module, 'GpioInputs', fail)
+    monkeypatch.setattr(module.signal, 'signal', lambda *args: None)
+    with pytest.raises(OSError, match='GPIO busy'):
+        module.main(['--chip', '0', '--pir-pin', '16', '--touch-pin', '18',
+                     '--warmup-ms', '0', '--debounce-ms', '50', '--pir-active', '1',
+                     '--touch-active', '1', '--lcd-factory', 'test_board:create'])
+    assert actions == [False, 'close']

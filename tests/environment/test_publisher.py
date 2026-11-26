@@ -70,3 +70,28 @@ def test_outage_queue_rejection_recovery_and_sensor_failure():
     assert received[0]['readings']['light']['value'] is None
     sender.close()
     receiver.close()
+
+
+import pytest
+
+
+@pytest.mark.parametrize('result,quality', [
+    (OSError('I2C read failed'), 'unavailable'),
+    (ValueError('malformed response'), 'error'),
+    (None, 'error'),
+    ({'light.raw': '123'}, 'error'),
+    ({'light.raw': True}, 'error'),
+    ({'light.raw': float('nan')}, 'error'),
+    ({'light.raw': float('inf')}, 'error'),
+])
+def test_adapter_faults_leave_other_channels_publishable(result, quality):
+    class FaultyLight(Light):
+        def read(self):
+            if isinstance(result, Exception):
+                raise result
+            return result
+    event = sample_event([FaultyLight(), Bme()], 'station-01', started=0)
+    validate('environment', event)
+    assert event['readings']['light'] == {'value': None, 'unit': 'raw', 'quality': quality}
+    assert all(event['readings'][metric]['quality'] == 'ok'
+               for metric in ('temperature', 'humidity', 'pressure'))

@@ -161,8 +161,12 @@ def main(argv=None):
         inputs = GpioInputs(args.chip, args.pir_pin, args.touch_pin,
                             args.pir_active, args.touch_active)
     except BaseException:
+        actions = []
+        if callable(getattr(lcd, 'set_backlight', None)):
+            actions.append(lambda: lcd.set_backlight(False))
         if callable(getattr(lcd, 'close', None)):
-            lcd.close()
+            actions.append(lcd.close)
+        _cleanup(actions)
         raise
     # On setup failure, attempt every cleanup without masking the cause.
     mqtt = None
