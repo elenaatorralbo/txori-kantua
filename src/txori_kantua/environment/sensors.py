@@ -13,6 +13,7 @@ again, so plugging a sensor back in is observed without restarting.
 from __future__ import annotations
 
 import time
+from collections.abc import Mapping
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -198,10 +199,16 @@ def sample_all(sources: Sequence[Source], *, started: float,
         stamp, elapsed = utc(), clock() - started
         try:
             values = source.read()
+            if not isinstance(values, Mapping):
+                raise Invalid("sensor returned no channel mapping")
             failure = None
         except Unavailable as exc:
             values, failure = {}, ("unavailable", str(exc))
         except Invalid as exc:
+            values, failure = {}, ("error", str(exc))
+        except OSError as exc:
+            values, failure = {}, ("unavailable", str(exc))
+        except (ValueError, TypeError, KeyError) as exc:
             values, failure = {}, ("error", str(exc))
         for channel in source.channels:
             common = dict(channel=channel.name, metric=channel.metric, unit=channel.unit,
@@ -213,6 +220,8 @@ def sample_all(sources: Sequence[Source], *, started: float,
             low, high = channel.plausible
             if value is None:
                 samples.append(Sample(**common, value=None, quality="error", error="no value returned"))
+            elif isinstance(value, bool) or not isinstance(value, (int, float)):
+                samples.append(Sample(**common, value=None, quality="error", error="non-numeric reading"))
             elif not low <= value <= high:
                 samples.append(Sample(**common, value=None, quality="error",
                                       error=f"{value:g} {channel.unit} outside {low:g}..{high:g}"))

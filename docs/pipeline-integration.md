@@ -175,3 +175,9 @@ read access to the database/WAL. Copy the dashboard into the provisioned path
 and the YAML into Grafana's provisioning directories. Import, SQL adapter syntax,
 permissions, visual inspection and resource consumption are **not yet verified**
 on Grafana. Do not treat the draft as completing #21 or the #23 demonstration.
+
+## Sprint 2 follow-up (25 November)
+
+Environmental publication supports bounded runs with PUBACK/quality counters.
+The `lcd_station` runner integrates MQTT and GPIO.
+Physical backlight control and acceptance remain pending.
